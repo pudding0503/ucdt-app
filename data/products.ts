@@ -104,7 +104,7 @@ export const products: Product[] = [
       en: "UCDT Extraction Core",
     },
     category: {
-      zh: "遥感 → 建筑轮廓",
+      zh: "遥感图像 → 建筑轮廓",
       en: "Remote Sensing → Building Footprints",
     },
     tagline: {
@@ -169,12 +169,12 @@ export const products: Product[] = [
       en: "UCDT Processing Core",
     },
     category: {
-      zh: "多源数据融合 / 网格化",
-      en: "Multi-source Fusion / Gridding",
+      zh: "数据聚合 / 网格导出",
+      en: "Data Aggregation and Gridding",
     },
     tagline: {
-      zh: "将多源城市数据聚合到统一空间基准，为后续分析和计算构建稳定中间层。",
-      en: "Aggregate heterogeneous urban datasets into a shared spatial baseline for downstream analysis and computation.",
+      zh: "自动化城市建筑模型提取和数据聚合，并按网格导出。",
+      en: "Automated extraction and aggregation of urban building models, with export by grid.",
     },
     description: {
       zh: "Processing Core 专注于投影检查、坐标处理、DEM 高程聚合与网格化输出，是 UCDT 工作流中的数据整形中枢。",
@@ -240,20 +240,20 @@ export const products: Product[] = [
       en: "UCDT Analysis Core",
     },
     category: {
-      zh: "指标计算",
+      zh: "网格分析 / 指标计算",
       en: "Indicator Analytics",
     },
     tagline: {
-      zh: "在共享基础数据之上快速开展指标分析，把城市问题转化为可比较的分析结果。",
-      en: "Run indicator-driven analysis on top of shared baseline data and turn urban questions into comparable outputs.",
+      zh: "以城市网格为单元，计算并分析城市碳排放指标。",
+      en: "Run indicator-driven analysis on top of shared baseline data and turn urban questions into navigable outputs.",
     },
     description: {
       zh: "Analysis Core 负责导入共享基础数据、组织分析层级与空间概览，是面向指标计算、统计展示与结果研判的核心前端。",
       en: "Analysis Core organizes shared datasets, analysis levels, and spatial overviews as the main interface for indicator computation, statistics, and result interpretation.",
     },
     workflowRole: {
-      zh: "在统一数据底座上拉通各层指标，形成可比较、可浏览的分析结果。",
-      en: "Connect indicators across shared baseline data and turn them into comparable, navigable analysis outputs.",
+      zh: "在统一数据底座上拉通各层指标，形成可浏览的分析结果。",
+      en: "Connect indicators across shared baseline data and turn them into navigable analysis outputs.",
     },
     highlights: [
       {
@@ -311,7 +311,7 @@ export const products: Product[] = [
       en: "UCDT Computing Core",
     },
     category: {
-      zh: "能耗 / 碳模拟",
+      zh: "能耗模拟 / 碳模拟",
       en: "Energy / Carbon Simulation",
     },
     tagline: {
@@ -376,7 +376,7 @@ export const products: Product[] = [
       en: "UCDT Planning Core",
     },
     category: {
-      zh: "规划决策",
+      zh: "零能零碳 / 规划决策",
       en: "Planning Decisions",
     },
     tagline: {
@@ -434,8 +434,8 @@ export const ecosystemHighlights: LocalizedText[] = [
     en: "Each application has its own accent color and role, while the overall visual system stays consistent for long-term growth.",
   },
   {
-    zh: "首版下载页优先服务版本发布与产品展示，后续可以平滑升级为文档与案例门户。",
-    en: "The first version prioritizes release access and product presentation, with room to evolve into a richer docs and showcase portal.",
+    zh: "提供 Linux CLI 以及 Windows 和 macOS GUI 应用。",
+    en: "Provide Linux CLI and Windows and macOS GUI applications.",
   },
 ];
 
@@ -472,12 +472,12 @@ export const faqItems: Array<{ question: LocalizedText; answer: LocalizedText }>
   },
   {
     question: {
-      zh: "这个站点适合部署到哪里？",
-      en: "Where is this site intended to be deployed?",
+      zh: "软件遇到问题如何反馈？",
+      en: "How can users report issues with the software?",
     },
     answer: {
-      zh: "该项目按 Next.js 与 Vercel 的默认部署路径设计，后续可直接连接仓库进行部署。",
-      en: "The project is designed around the standard Next.js and Vercel deployment flow, so it can be connected to a repository and deployed directly.",
+      zh: "可以通过 GitHub Issues 或官方支持渠道反馈软件问题。",
+      en: "Users can report software issues via GitHub Issues or official support channels.",
     },
   },
 ];

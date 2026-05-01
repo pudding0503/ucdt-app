@@ -57,15 +57,15 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
   const handoffTimerRef = useRef<number | null>(null);
   const transitionTimerRef = useRef<number | null>(null);
   const screenshots = product.screenshots ?? [];
-  const previewHeading = locale === "zh" ? "界面预览" : "See it in action";
+  const previewHeading = locale === "zh" ? "应用预览" : "See it in action";
   const previewText =
     locale === "zh"
-      ? "快速查看当前版本的界面风格、主要交互与整体布局。"
-      : "A clean, intuitive interface designed for focus and speed.";
-  const screenshotsHeading = locale === "zh" ? "界面截图" : "Screenshots";
+      ? "快速查看当前应用的界面、主要交互与整体布局。"
+      : "Quickly review the current app's interface, interactions, and layout.";
+  const screenshotsHeading = locale === "zh" ? "应用展示" : "Screenshots";
   const screenshotText =
     locale === "zh"
-      ? "补充展示关键界面与操作视图，便于快速浏览主要工作界面。"
+      ? "简洁直观的界面，专为提升专注力和操作速度而设计。"
       : "A clean, intuitive interface designed for focus and speed.";
   const previewGridStyle: CSSProperties = {
     backgroundImage:

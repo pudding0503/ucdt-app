@@ -181,10 +181,10 @@ export function HeroSection({ locale, activeProduct, isReleased, displayVersion,
         </div>
 
         <h1 className="mt-8 text-balance text-4xl font-semibold leading-[0.95] text-white sm:text-6xl lg:text-7xl">
-          {locale === "zh" ? "UCDT 城市数字孪生" : "Urban digital twin tools"}
+          {locale === "zh" ? "低碳城市数字孪生" : "Urban Carbon DTs'"}
           <br />
           <span style={{ color: activeProduct.accent.secondary }}>
-            {locale === "zh" ? "软件下载与展示页" : "for downloads and previews"}
+            {locale === "zh" ? "系列软件" : "Series Apps"}
           </span>
         </h1>
 
@@ -247,7 +247,7 @@ export function DownloadsSection({ locale, activeProduct }: DownloadsSectionProp
       <div className="max-w-md">
         <div className="flex flex-col items-center gap-1.5">
           <p className="flex items-center gap-1 text-[10px] text-white/30 sm:text-xs">
-            <span>{locale === "zh" ? "如果 macOS 提示“App is damaged”，请运行以下命令" : 'If macOS says "App is damaged", run this command'}</span>
+            <span>{locale === "zh" ? "如果 macOS 提示 “App is damaged”，请运行以下命令" : 'If macOS says "App is damaged", run this command'}</span>
             <span className="group relative inline-flex">
               <InfoIcon className="h-3 w-3 cursor-help text-white/20 transition-colors hover:text-white/40" />
               <span className="release-popover pointer-events-none invisible absolute bottom-full left-1/2 z-50 mb-2 w-56 -translate-x-1/2 translate-y-2 scale-[0.97] rounded-xl p-2.5 opacity-0 transition-standard group-hover:visible group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100">
@@ -262,7 +262,7 @@ export function DownloadsSection({ locale, activeProduct }: DownloadsSectionProp
             </span>
           </p>
           <code className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-[10px] text-white/55 sm:text-xs">
-            xattr -rd com.apple.quarantine /Applications/Openscreen.app
+            xattr -rd com.apple.quarantine /Applications/UCDT-xx.app
           </code>
         </div>
       </div>
@@ -376,8 +376,8 @@ export function HighlightsSection({ locale, activeProduct }: HighlightsSectionPr
         <p className="text-sm uppercase tracking-[0.3em] text-white/40">{locale === "zh" ? "体系亮点" : "Ecosystem Highlights"}</p>
         <h2 className="mt-3 max-w-3xl text-2xl font-semibold text-white sm:text-3xl">
           {locale === "zh"
-            ? "从数据准备到规划决策，UCDT 的五个核心模块可以自然串联。"
-            : "From data preparation to planning decisions, the five UCDT modules are designed to connect naturally."}
+            ? "从数据准备、模拟计算到规划决策，UCDT 的五个核心模块可以自然串联。"
+            : "From data preparation and simulation to planning and decision-making, UCDT’s five core modules can be seamlessly integrated."}
         </h2>
         <div className="mt-8 grid gap-4 md:grid-cols-3">
           {ecosystemHighlights.map((item, index) => {

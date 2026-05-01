@@ -1,7 +1,7 @@
 "use client";
 
 import * as Dialog from "@radix-ui/react-dialog";
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import type { Locale, Product } from "@/data/products";
 
@@ -17,6 +17,28 @@ type ProductPreviewProps = {
   locale: Locale;
 };
 
+const lightboxRestingTransform = "translate3d(0, 0, 0) scale(1)";
+const lightboxFrameRadius = "24px";
+const lightboxThumbnailRadius = "16px";
+const lightboxAnimationDuration = 320;
+const lightboxContentLeadDuration = 110;
+const lightboxImageSizes = "(max-width: 640px) calc(100vw - 2rem), min(calc(100vw - 4rem), calc((100vh - 5rem) * 1.8), 1320px)";
+const lightboxContentTransition = "opacity 120ms ease";
+const lightboxProxyTransition = `transform ${lightboxAnimationDuration}ms cubic-bezier(0.22, 1, 0.36, 1), border-radius ${lightboxAnimationDuration}ms cubic-bezier(0.22, 1, 0.36, 1), opacity 120ms ease`;
+const lightboxOverlayStyle: CSSProperties = {
+  backgroundColor: "rgba(2, 5, 11, 0.84)",
+  backdropFilter: "blur(10px)",
+  WebkitBackdropFilter: "blur(10px)",
+};
+
+function getLightboxWidthStyle(image: StaticImageData | null) {
+  if (!image) {
+    return undefined;
+  }
+
+  return `min(calc(100vw - 4rem), calc((100vh - 5rem) * ${image.width / image.height}), 1320px)`;
+}
+
 export function ProductPreview({ product, locale }: ProductPreviewProps) {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const [selectedImageOrigin, setSelectedImageOrigin] = useState<LightboxRect | null>(null);
@@ -25,13 +47,14 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
   const [isLightboxProxyVisible, setIsLightboxProxyVisible] = useState(false);
   const [lightboxFrameNode, setLightboxFrameNode] = useState<HTMLDivElement | null>(null);
   const [lightboxProxyRect, setLightboxProxyRect] = useState<LightboxRect | null>(null);
-  const [lightboxProxyTransform, setLightboxProxyTransform] = useState("translate3d(0, 0, 0) scale(1)");
-  const [lightboxProxyBorderRadius, setLightboxProxyBorderRadius] = useState("24px");
+  const [lightboxProxyTransform, setLightboxProxyTransform] = useState(lightboxRestingTransform);
+  const [lightboxProxyBorderRadius, setLightboxProxyBorderRadius] = useState(lightboxFrameRadius);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const selectedImageTriggerRef = useRef<HTMLButtonElement | null>(null);
   const animationFrameRef = useRef<number | null>(null);
   const handoffTimerRef = useRef<number | null>(null);
   const transitionTimerRef = useRef<number | null>(null);
+  const screenshots = product.screenshots ?? [];
   const previewHeading = locale === "zh" ? "界面预览" : "See it in action";
   const previewText =
     locale === "zh"
@@ -52,14 +75,10 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
     background: `linear-gradient(180deg, rgba(2, 5, 11, 0.08) 0%, rgba(3, 10, 17, 0.42) 16%, rgba(5, 17, 26, 0.72) 34%, ${product.accent.surface} 66%, rgba(7, 56, 46, 0.94) 100%), radial-gradient(120% 92% at 50% 100%, ${product.accent.primary} 0%, ${product.accent.glow} 24%, rgba(10, 37, 29, 0.9) 56%, rgba(2, 5, 11, 0) 100%)`,
   };
   const hasPreviewVideo = Boolean(product.previewVideo);
-  const activeScreenshot = selectedImage !== null && product.screenshots ? product.screenshots[selectedImage] : null;
+  const activeScreenshot = selectedImage !== null ? screenshots[selectedImage] ?? null : null;
   const activeScreenshotLabel =
     selectedImage !== null ? `${product.slug} screenshot ${selectedImage + 1}` : `${product.slug} screenshot preview`;
-  const activeScreenshotWidthStyle = activeScreenshot
-    ? `min(calc(100vw - 4rem), calc((100vh - 5rem) * ${activeScreenshot.width / activeScreenshot.height}), 1320px)`
-    : undefined;
-  const lightboxAnimationDuration = 320;
-  const lightboxContentLeadDuration = 110;
+  const activeScreenshotWidthStyle = getLightboxWidthStyle(activeScreenshot);
   const isDialogOpen = selectedImage !== null;
 
   const setLightboxFrameRef = useCallback((node: HTMLDivElement | null) => {
@@ -90,6 +109,26 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
     return Boolean(rect && rect.width > 0 && rect.height > 0);
   }, []);
 
+  const resetLightboxProxyState = useCallback(() => {
+    setIsLightboxProxyVisible(false);
+    setLightboxProxyRect(null);
+    setLightboxProxyTransform(lightboxRestingTransform);
+    setLightboxProxyBorderRadius(lightboxFrameRadius);
+  }, []);
+
+  const showLightboxContentImmediately = useCallback(() => {
+    setIsLightboxOverlayVisible(true);
+    setIsLightboxContentVisible(true);
+    resetLightboxProxyState();
+  }, [resetLightboxProxyState]);
+
+  const showLightboxProxy = useCallback((rect: LightboxRect, transform: string, borderRadius: string) => {
+    setIsLightboxProxyVisible(true);
+    setLightboxProxyRect(rect);
+    setLightboxProxyTransform(transform);
+    setLightboxProxyBorderRadius(borderRadius);
+  }, []);
+
   const clearPendingLightboxMotion = useCallback(() => {
     if (animationFrameRef.current !== null) {
       window.cancelAnimationFrame(animationFrameRef.current);
@@ -110,11 +149,8 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
   const resetLightboxAnimationState = useCallback(() => {
     setIsLightboxOverlayVisible(false);
     setIsLightboxContentVisible(false);
-    setIsLightboxProxyVisible(false);
-    setLightboxProxyRect(null);
-    setLightboxProxyTransform("translate3d(0, 0, 0) scale(1)");
-    setLightboxProxyBorderRadius("24px");
-  }, []);
+    resetLightboxProxyState();
+  }, [resetLightboxProxyState]);
 
   const finishLightboxClose = useCallback(() => {
     setSelectedImage(null);
@@ -155,20 +191,16 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
     const targetRect = getLightboxRect(lightboxFrameNode);
 
     if (!hasRenderableRect(targetRect) || !hasRenderableRect(selectedImageOrigin)) {
-      setIsLightboxContentVisible(true);
-      setIsLightboxProxyVisible(false);
+      showLightboxContentImmediately();
       return undefined;
     }
 
     setIsLightboxContentVisible(false);
-    setIsLightboxProxyVisible(true);
-    setLightboxProxyRect(targetRect);
-    setLightboxProxyTransform(getTransformFromRects(selectedImageOrigin, targetRect));
-    setLightboxProxyBorderRadius("16px");
+    showLightboxProxy(targetRect, getTransformFromRects(selectedImageOrigin, targetRect), lightboxThumbnailRadius);
 
     animationFrameRef.current = window.requestAnimationFrame(() => {
-      setLightboxProxyTransform("translate3d(0, 0, 0) scale(1)");
-      setLightboxProxyBorderRadius("24px");
+      setLightboxProxyTransform(lightboxRestingTransform);
+      setLightboxProxyBorderRadius(lightboxFrameRadius);
       animationFrameRef.current = null;
     });
 
@@ -185,7 +217,7 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
     return () => {
       clearPendingLightboxMotion();
     };
-  }, [clearPendingLightboxMotion, getLightboxRect, getTransformFromRects, hasRenderableRect, lightboxAnimationDuration, lightboxContentLeadDuration, lightboxFrameNode, selectedImage, selectedImageOrigin]);
+  }, [clearPendingLightboxMotion, getLightboxRect, getTransformFromRects, hasRenderableRect, lightboxFrameNode, selectedImage, selectedImageOrigin, showLightboxContentImmediately, showLightboxProxy]);
 
   useEffect(() => {
     return () => {
@@ -200,10 +232,7 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
     setSelectedImageOrigin(getLightboxRect(element));
     setIsLightboxOverlayVisible(true);
     setIsLightboxContentVisible(false);
-    setIsLightboxProxyVisible(false);
-    setLightboxProxyRect(null);
-    setLightboxProxyTransform("translate3d(0, 0, 0) scale(1)");
-    setLightboxProxyBorderRadius("24px");
+    resetLightboxProxyState();
     setSelectedImage(index);
   };
 
@@ -224,14 +253,11 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
       const resolvedOriginRect = originRect;
       const resolvedTargetRect = targetRect;
 
-      setLightboxProxyRect(targetRect);
-      setLightboxProxyTransform("translate3d(0, 0, 0) scale(1)");
-      setLightboxProxyBorderRadius("24px");
-      setIsLightboxProxyVisible(true);
+      showLightboxProxy(targetRect, lightboxRestingTransform, lightboxFrameRadius);
 
       animationFrameRef.current = window.requestAnimationFrame(() => {
         setLightboxProxyTransform(getTransformFromRects(resolvedOriginRect, resolvedTargetRect));
-        setLightboxProxyBorderRadius("16px");
+        setLightboxProxyBorderRadius(lightboxThumbnailRadius);
         animationFrameRef.current = null;
       });
 
@@ -322,14 +348,14 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
         </div>
       </section>
 
-      {product.screenshots?.length ? (
+      {screenshots.length ? (
         <section className="relative overflow-hidden pb-6 pt-10 sm:pb-10 sm:pt-14">
           <div className="relative z-10 text-center">
             <h2 className="text-3xl font-bold tracking-tight text-white md:text-4xl">{screenshotsHeading}</h2>
             <p className="mx-auto mt-4 max-w-xl text-lg font-light text-white/40">{screenshotText}</p>
           </div>
           <div className="relative z-10 mx-auto mt-12 grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-2 md:gap-12">
-            {product.screenshots.map((image, index) => (
+            {screenshots.map((image, index) => (
               <button
                 key={`${product.id}-${index}`}
                 type="button"
@@ -363,7 +389,7 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
         <Dialog.Portal>
           <Dialog.Overlay
             className={`fixed inset-0 z-[80] transition-opacity duration-300 ${isLightboxOverlayVisible ? "opacity-100" : "opacity-0"}`}
-            style={{ backgroundColor: "rgba(2, 5, 11, 0.84)", backdropFilter: "blur(10px)", WebkitBackdropFilter: "blur(10px)" }}
+            style={lightboxOverlayStyle}
           />
           {activeScreenshot ? (
             <Dialog.Content
@@ -372,11 +398,11 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
               onCloseAutoFocus={(event) => event.preventDefault()}
               className="fixed left-1/2 top-1/2 z-[81] w-fit overflow-hidden border border-white/10 bg-black/70 p-2 shadow-[0_32px_120px_rgba(0,0,0,0.48)] outline-none"
               style={{
-                borderRadius: "24px",
+                borderRadius: lightboxFrameRadius,
                 transform: "translate(-50%, -50%)",
                 opacity: isLightboxContentVisible ? 1 : 0,
                 pointerEvents: isLightboxContentVisible ? "auto" : "none",
-                transition: "opacity 120ms ease",
+                transition: lightboxContentTransition,
               }}
             >
               <Dialog.Title className="sr-only">{activeScreenshotLabel}</Dialog.Title>
@@ -401,7 +427,7 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
                   height={activeScreenshot.height}
                   className="block h-auto max-h-[calc(100vh-5rem)] w-full rounded-[1.1rem] object-contain"
                   placeholder="blur"
-                  sizes="(max-width: 640px) calc(100vw - 2rem), min(calc(100vw - 4rem), calc((100vh - 5rem) * 1.8), 1320px)"
+                  sizes={lightboxImageSizes}
                   priority
                 />
               </div>
@@ -420,8 +446,7 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
                 transform: lightboxProxyTransform,
                 transformOrigin: "top left",
                 opacity: isLightboxContentVisible ? 0 : 1,
-                transition:
-                  `transform ${lightboxAnimationDuration}ms cubic-bezier(0.22, 1, 0.36, 1), border-radius ${lightboxAnimationDuration}ms cubic-bezier(0.22, 1, 0.36, 1), opacity 120ms ease`,
+                transition: lightboxProxyTransition,
                 willChange: "transform",
               }}
             >
@@ -432,7 +457,7 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
                   fill
                   className="object-contain"
                   placeholder="blur"
-                  sizes="(max-width: 640px) calc(100vw - 2rem), min(calc(100vw - 4rem), calc((100vh - 5rem) * 1.8), 1320px)"
+                  sizes={lightboxImageSizes}
                   priority
                 />
               </div>

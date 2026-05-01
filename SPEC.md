@@ -2,6 +2,8 @@
 
 This project is a bilingual Next.js download page for the UCDT software suite and must remain a single-page, tab-switched experience designed for Vercel deployment.
 
+Project package milestone: `1.0.0`.
+
 ## Package Management
 - The project must use `pnpm` as its package manager.
 - Dependency installation must be local to the current repository only.
@@ -38,6 +40,8 @@ This project is a bilingual Next.js download page for the UCDT software suite an
 - Released and unreleased products must be visually distinguishable.
 - Refactor for reuse without intentionally changing the current UI result.
 - Keep shared section rendering logic reusable instead of re-growing a single monolithic page component.
+- Screenshot previews must remain centered, use a dark blurred overlay, and preserve stable close behavior through overlay click and keyboard escape.
+- Motion polish for screenshot previews must be optional in practice: if animation setup fails, the enlarged image still needs to appear immediately.
 - In the desktop `Module Responsibilities` cards, the product icon must not be compressed by adjacent bilingual text; stacked icon-plus-text layout is acceptable at larger breakpoints.
 
 ## Asset Requirements

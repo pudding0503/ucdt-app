@@ -1,5 +1,7 @@
 # DESIGN
 
+Project package milestone: `1.0.0`.
+
 ## Design Goal
 The site should preserve the current UCDT landing-page UI while staying maintainable, data-driven, and easy to extend as more products reach release status.
 
@@ -61,6 +63,8 @@ The site should preserve the current UCDT landing-page UI while staying maintain
   - centered wordmark and platform download buttons
 - Navigation remains lightweight and anchored within the same page
 - Motion should stay subtle and reusable; prefer shared transition utilities over ad-hoc animation declarations
+- Screenshot previews should open in a stable centered dialog with a dark blurred overlay; motion polish should remain secondary to guaranteed content visibility
+- The preview lightbox should keep the current thumbnail-to-center expansion feel, but fallback paths must always show the final image immediately if geometry or animation setup fails
 
 ## SEO and Metadata Notes
 - Metadata is centralized in `lib/site-metadata.ts`
@@ -80,3 +84,4 @@ The site should preserve the current UCDT landing-page UI while staying maintain
 - If a section starts collecting its own state, hover cards, and repeated style strings, split it before `download-page.tsx` becomes monolithic again
 - For motion polish, prefer low-risk opacity/translate transitions and always consider `prefers-reduced-motion`
 - When product logos sit beside bilingual labels, fix the logo render box and, if needed, separate the logo onto its own row at larger breakpoints instead of letting copy length distort the mark
+- For the screenshot lightbox, keep overlay/content visibility decoupled from animation bootstrap timing so modal scroll lock never outlives visible content

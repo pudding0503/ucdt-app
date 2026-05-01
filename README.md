@@ -4,6 +4,11 @@
  <p align="center">Get UCDT Series Apps</p>
 </p>
 
+## Project Status
+
+- Current project package version: `1.0.0`
+- The landing page is now in a stable maintenance phase with the current single-route UI preserved
+
 ## Features
 
 - Single-page tabbed product experience for 5 UCDT applications
@@ -13,6 +18,7 @@
 - Real release metadata and GitHub Releases links for Processing and Analysis
 - Procedural concept visuals retained as the main preview layer
 - Real screenshots rendered below the concept visual when available
+- Stable centered screenshot lightbox with dark overlay, blur, and animated thumbnail expansion
 - Shared metadata, route-based app icons, and social image routes for deployment readiness
 - Vercel-friendly Next.js structure
 
@@ -21,7 +27,7 @@
 - `app/page.tsx`: single-route entry that renders the download page
 - `components/download-page.tsx`: stateful composition layer for locale, active product, and FAQ state
 - `components/download-page-sections.tsx`: reusable presentational sections and display helpers
-- `components/product-preview.tsx`: preview video, screenshot grid, and lightbox behavior
+- `components/product-preview.tsx`: preview video lifecycle, screenshot grid, and stabilized lightbox behavior
 - `components/site-icons.tsx`: shared SVG icon primitives used across sections
 - `data/products.ts`: source of truth for product copy, status, accents, versions, links, and workflow roles
 - `lib/site-metadata.ts`: shared metadata configuration for layout, Open Graph, Twitter card, and canonical placeholders
@@ -85,6 +91,7 @@ Keep new marketing copy, FAQ content, workflow descriptions, and release-facing 
 - Prefer extending `components/download-page-sections.tsx` or splitting out another section component instead of re-growing `download-page.tsx`
 - Keep the page visually stable unless a design task explicitly asks for UI changes
 - When adding a released desktop app, update the product entry with `releaseUrl`, `repoUrl`, `license.url`, version, and platform availability together
+- Keep screenshot preview behavior robust: Radix Dialog handles portal/overlay/scroll lock, while the lightweight proxy layer only adds motion polish and must never be the sole path to showing the enlarged image
 - In the desktop `Module Responsibilities` cards, keep the icon on its own row at `xl` widths so bilingual text length does not squeeze the product mark
 - Local media tooling currently available on the primary Windows workstation: `magick convert`, `ffmpeg`, and an NVIDIA RTX 4060 Ti for future accelerated media-processing workflows
 - The current repository root and project folder name is `ucdt-app`

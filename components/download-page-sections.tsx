@@ -150,7 +150,7 @@ export function TopNav({ locale, onLocaleChange, githubUrl, accent }: TopNavProp
 export function HeroSection({ locale, activeProduct, isReleased, displayVersion, releaseLines }: HeroSectionProps) {
   return (
     <section className="relative mx-auto flex min-h-screen w-full max-w-6xl flex-col items-center px-4 pb-28 pt-36 text-center sm:px-6 lg:px-8 lg:pt-44">
-      <div className="pointer-events-none absolute left-1/2 top-10 z-0 h-[72rem] w-[140vw] max-w-none -translate-x-1/2 hero-grid opacity-[0.08] sm:top-12 lg:top-16" />
+      <div className="pointer-events-none absolute left-1/2 top-10 z-0 h-[88rem] w-[140vw] max-w-none -translate-x-1/2 hero-grid opacity-[0.08] sm:top-12 sm:h-[92rem] lg:top-16 lg:h-[96rem]" />
       <div className="max-w-4xl">
         <div className="release-pill group relative z-30 inline-flex cursor-default items-center gap-2 rounded-full px-4 py-2 text-xs text-white/82 sm:text-sm">
           <span className="relative flex h-3 w-3 items-center justify-center">
@@ -446,7 +446,7 @@ export function HighlightsSection({ locale, activeProduct }: HighlightsSectionPr
           <div className="mb-8 text-center">
             <h3 className="text-2xl font-semibold text-white sm:text-3xl">{locale === "zh" ? "流程关系图" : "Workflow Map"}</h3>
             <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-white/50 sm:text-base">
-              {locale === "zh" ? "按你提供的关系图素材直接展示，并保持原始比例。" : "Using the provided workflow artwork directly while preserving its original aspect ratio."}
+              {locale === "zh" ? "UCDT 系列软件流程关系" : "UCDT Series Apps Flow Diagram."}
             </p>
           </div>
           <div className="mx-auto max-w-6xl">
@@ -510,9 +510,9 @@ export function SiteFooter({ locale }: SiteFooterProps) {
           <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[10px] sm:text-[11px]" style={{ color: "#686C6E" }}>
             <p>GPL 3.0 License</p>
             <span className="hidden sm:inline">·</span>
-            <p>© 2026 Bitcookies</p>
+            <p>© 2026 <a href="https://bitcookies.nousbuild.com/" target="_blank" rel="noopener noreferrer">Bitcookies</a></p>
             <span className="hidden sm:inline">·</span>
-            <p>Developed by ONing</p>
+            <p>Developed by <a href="https://www.nousbuild.org/" target="_blank" rel="noopener noreferrer">ONing</a></p>
           </div>
           <Image src={bitcookiesWords} alt="Bitcookies" width={140} height={40} className="mt-8 h-8 w-auto opacity-80" />
         </div>

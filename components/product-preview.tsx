@@ -67,7 +67,7 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
     locale === "zh"
       ? "简洁直观的界面，专为提升专注力和操作速度而设计。"
       : "A clean, intuitive interface designed for focus and speed.";
-  const previewGridStyle: CSSProperties = {
+  const previewMockGridStyle: CSSProperties = {
     backgroundImage:
       "linear-gradient(to right, rgb(52, 178, 123) 1px, transparent 1px), linear-gradient(rgb(52, 178, 123) 1px, transparent 1px)",
     backgroundSize: "80px 80px",
@@ -280,7 +280,6 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
       <section className="relative overflow-visible pb-28 pt-6 sm:pb-36 sm:pt-10">
         <div className="pointer-events-none absolute left-1/2 top-0 z-0 h-full w-screen -translate-x-1/2 overflow-hidden">
           <div className="absolute inset-0" style={previewBackdropStyle} />
-          <div className="absolute inset-0 opacity-[0.12]" style={previewGridStyle} />
         </div>
         <div className="relative z-10 text-center">
           <h2 className="text-3xl font-bold tracking-tight text-white md:text-4xl">{previewHeading}</h2>
@@ -304,7 +303,7 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
                 />
               ) : (
                 <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#08101a]">
-                  <div className="absolute inset-0 opacity-[0.18]" style={previewGridStyle} />
+                  <div className="absolute inset-0 opacity-[0.18]" style={previewMockGridStyle} />
                   <div className="absolute inset-x-[8%] top-[14%] h-[20%] rounded-[1.5rem] border border-white/10 bg-white/[0.04] backdrop-blur-md" />
                   <div className="absolute left-[8%] top-[41%] h-[42%] w-[24%] rounded-[1.5rem] border border-white/10 bg-black/20 backdrop-blur-md" />
                   <div className="absolute right-[8%] top-[41%] h-[42%] w-[56%] rounded-[1.5rem] border border-white/10 bg-black/20 backdrop-blur-md" />

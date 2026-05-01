@@ -77,8 +77,8 @@ export const siteMeta = {
     en: "",
   },
   description: {
-    zh: "一个简洁、开源的城市数字孪生软件下载入口。\n为研究者、开发者与设计团队构建。",
-    en: "A simple, open-source hub for urban digital twin desktop tools.\nBuilt for researchers, developers, and design teams.",
+    zh: "低碳城市数字孪生应用\n为研究者、开发者与设计团队构建。",
+    en: "Urban Carbon DTs' Series Apps.\nBuilt for researchers, developers, and design teams.",
   },
   logo: siteLogo,
   githubUrl: "https://github.com/buildingdata",
@@ -97,7 +97,7 @@ export const products: Product[] = [
     status: "comingSoon",
     badge: {
       zh: "即将推出",
-      en: "Coming Soon",
+      en: "Coming",
     },
     title: {
       zh: "UCDT Extraction Core",
@@ -241,7 +241,7 @@ export const products: Product[] = [
     },
     category: {
       zh: "网格分析 / 指标计算",
-      en: "Indicator Analytics",
+      en: "Grid Analysis and Metric Calculation",
     },
     tagline: {
       zh: "以城市网格为单元，计算并分析城市碳排放指标。",
@@ -303,8 +303,8 @@ export const products: Product[] = [
     },
     status: "comingSoon",
     badge: {
-      zh: "研发中",
-      en: "In Development",
+      zh: "即将推出",
+      en: "Coming",
     },
     title: {
       zh: "UCDT Computing Core",
@@ -368,16 +368,16 @@ export const products: Product[] = [
     },
     status: "comingSoon",
     badge: {
-      zh: "路线图中",
-      en: "On the Roadmap",
+      zh: "即将推出",
+      en: "Coming",
     },
     title: {
       zh: "UCDT Planning Core",
       en: "UCDT Planning Core",
     },
     category: {
-      zh: "零能零碳 / 规划决策",
-      en: "Planning Decisions",
+      zh: "节能设计 / 规划决策",
+      en: "Energy Design and Planning Decisions",
     },
     tagline: {
       zh: "把多源分析与模拟结果整合为可推演、可对比、可沟通的规划决策界面。",

@@ -29,6 +29,23 @@ a {
   text-decoration: none;
 }
 
+a[href]:not(.interactive-chip):not(.platform-button) {
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  transition-property: color, text-decoration-color, opacity, text-shadow;
+  transition-duration: 220ms;
+  transition-timing-function: ease;
+}
+
+a[href]:not(.interactive-chip):not(.platform-button):hover,
+a[href]:not(.interactive-chip):not(.platform-button):focus-visible {
+  color: var(--accent, rgba(255, 255, 255, 0.96));
+  text-decoration-color: currentColor;
+  text-shadow: 0 0 18px color-mix(in srgb, var(--accent, rgba(255, 255, 255, 0.96)) 26%, transparent);
+}
+
 ::selection {
   background: rgba(255, 255, 255, 0.18);
   color: #ffffff;
@@ -196,7 +213,8 @@ a {
     .platform-button,
     .product-switch-card,
     .release-pill,
-    .content-fade-in {
+    .content-fade-in,
+    a[href]:not(.interactive-chip):not(.platform-button) {
       transition-duration: 0.01ms;
       animation: none;
     }

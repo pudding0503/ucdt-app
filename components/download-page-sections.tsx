@@ -149,7 +149,7 @@ export function TopNav({ locale, onLocaleChange, githubUrl, accent }: TopNavProp
 
 export function HeroSection({ locale, activeProduct, isReleased, displayVersion, releaseLines }: HeroSectionProps) {
   return (
-    <section className="relative mx-auto flex min-h-screen w-full max-w-6xl flex-col items-center px-4 pb-28 pt-36 text-center sm:px-6 lg:px-8 lg:pt-44">
+    <section className="relative mx-auto flex min-h-screen w-full max-w-6xl flex-col items-center px-4 pb-22 pt-36 text-center sm:px-6 sm:pb-24 lg:px-8 lg:pt-44 lg:pb-26">
       <div className="pointer-events-none absolute left-1/2 top-10 z-0 h-[88rem] w-[140vw] max-w-none -translate-x-1/2 hero-grid opacity-[0.08] sm:top-12 sm:h-[92rem] lg:top-16 lg:h-[96rem]" />
       <div className="max-w-4xl">
         <div className="release-pill group relative z-30 inline-flex cursor-default items-center gap-2 rounded-full px-4 py-2 text-xs text-white/82 sm:text-sm">
@@ -192,7 +192,7 @@ export function HeroSection({ locale, activeProduct, isReleased, displayVersion,
 
         <p className="mt-5 text-sm text-white/36 sm:text-base">{activeProduct.category[locale]}</p>
 
-        <div id="downloads" className="mt-12">
+        <div id="downloads" className="mt-9 sm:mt-10">
           <DownloadsSection locale={locale} activeProduct={activeProduct} />
         </div>
       </div>
@@ -202,7 +202,7 @@ export function HeroSection({ locale, activeProduct, isReleased, displayVersion,
 
 export function DownloadsSection({ locale, activeProduct }: DownloadsSectionProps) {
   return (
-    <div className="flex flex-col items-center gap-6">
+    <div className="flex flex-col items-center gap-4 sm:gap-5">
       <div className="flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:flex-wrap">
         {activeProduct.downloads.map((download) => {
           const platformLabel = download.platform === "macOS" ? "Mac" : download.platform;

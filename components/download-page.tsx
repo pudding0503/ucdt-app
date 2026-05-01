@@ -63,12 +63,12 @@ export function DownloadPage() {
         releaseLines={releaseLines}
       />
 
-      <section className="relative z-10 mx-auto -mt-24 w-full max-w-6xl px-4 pb-28 sm:-mt-28 sm:px-6 lg:-mt-32 lg:px-8">
+      <section className="relative z-10 mx-auto -mt-20 w-full max-w-6xl px-4 pb-28 sm:-mt-24 sm:px-6 md:-mt-28 lg:-mt-34 lg:px-8 xl:-mt-40 2xl:-mt-44">
         <div id="products" className="w-full">
           <ProductSwitcher locale={locale} activeId={activeProduct.id} onProductChange={setActiveId} />
         </div>
 
-        <div key={activeProduct.id} className="content-fade-in mt-20 w-full max-w-6xl">
+        <div key={activeProduct.id} className="content-fade-in mt-14 w-full max-w-6xl sm:mt-16">
           <ProductPreview product={activeProduct} locale={locale} />
         </div>
       </section>

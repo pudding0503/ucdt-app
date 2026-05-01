@@ -87,6 +87,7 @@ Keep new marketing copy, FAQ content, workflow descriptions, and release-facing 
 - When adding a released desktop app, update the product entry with `releaseUrl`, `repoUrl`, `license.url`, version, and platform availability together
 - In the desktop `Module Responsibilities` cards, keep the icon on its own row at `xl` widths so bilingual text length does not squeeze the product mark
 - Local media tooling currently available on the primary Windows workstation: `magick convert`, `ffmpeg`, and an NVIDIA RTX 4060 Ti for future accelerated media-processing workflows
+- The current repository root and project folder name is `ucdt-app`
 
 ## Deployment
 

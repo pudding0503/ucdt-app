@@ -1,8 +1,16 @@
 "use client";
 
+import * as Dialog from "@radix-ui/react-dialog";
 import Image from "next/image";
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import type { Locale, Product } from "@/data/products";
+
+type LightboxRect = {
+  top: number;
+  left: number;
+  width: number;
+  height: number;
+};
 
 type ProductPreviewProps = {
   product: Product;
@@ -11,7 +19,19 @@ type ProductPreviewProps = {
 
 export function ProductPreview({ product, locale }: ProductPreviewProps) {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
+  const [selectedImageOrigin, setSelectedImageOrigin] = useState<LightboxRect | null>(null);
+  const [isLightboxOverlayVisible, setIsLightboxOverlayVisible] = useState(false);
+  const [isLightboxContentVisible, setIsLightboxContentVisible] = useState(false);
+  const [isLightboxProxyVisible, setIsLightboxProxyVisible] = useState(false);
+  const [lightboxFrameNode, setLightboxFrameNode] = useState<HTMLDivElement | null>(null);
+  const [lightboxProxyRect, setLightboxProxyRect] = useState<LightboxRect | null>(null);
+  const [lightboxProxyTransform, setLightboxProxyTransform] = useState("translate3d(0, 0, 0) scale(1)");
+  const [lightboxProxyBorderRadius, setLightboxProxyBorderRadius] = useState("24px");
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const selectedImageTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const animationFrameRef = useRef<number | null>(null);
+  const handoffTimerRef = useRef<number | null>(null);
+  const transitionTimerRef = useRef<number | null>(null);
   const previewHeading = locale === "zh" ? "界面预览" : "See it in action";
   const previewText =
     locale === "zh"
@@ -32,6 +52,76 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
     background: `linear-gradient(180deg, rgba(2, 5, 11, 0.08) 0%, rgba(3, 10, 17, 0.42) 16%, rgba(5, 17, 26, 0.72) 34%, ${product.accent.surface} 66%, rgba(7, 56, 46, 0.94) 100%), radial-gradient(120% 92% at 50% 100%, ${product.accent.primary} 0%, ${product.accent.glow} 24%, rgba(10, 37, 29, 0.9) 56%, rgba(2, 5, 11, 0) 100%)`,
   };
   const hasPreviewVideo = Boolean(product.previewVideo);
+  const activeScreenshot = selectedImage !== null && product.screenshots ? product.screenshots[selectedImage] : null;
+  const activeScreenshotLabel =
+    selectedImage !== null ? `${product.slug} screenshot ${selectedImage + 1}` : `${product.slug} screenshot preview`;
+  const activeScreenshotWidthStyle = activeScreenshot
+    ? `min(calc(100vw - 4rem), calc((100vh - 5rem) * ${activeScreenshot.width / activeScreenshot.height}), 1320px)`
+    : undefined;
+  const lightboxAnimationDuration = 320;
+  const lightboxContentLeadDuration = 110;
+  const isDialogOpen = selectedImage !== null;
+
+  const setLightboxFrameRef = useCallback((node: HTMLDivElement | null) => {
+    setLightboxFrameNode(node);
+  }, []);
+
+  const getLightboxRect = useCallback((element: Element): LightboxRect => {
+    const rect = element.getBoundingClientRect();
+
+    return {
+      top: rect.top,
+      left: rect.left,
+      width: rect.width,
+      height: rect.height,
+    };
+  }, []);
+
+  const getTransformFromRects = useCallback((originRect: LightboxRect, targetRect: LightboxRect) => {
+    const translateX = originRect.left - targetRect.left;
+    const translateY = originRect.top - targetRect.top;
+    const scaleX = originRect.width / targetRect.width;
+    const scaleY = originRect.height / targetRect.height;
+
+    return `translate3d(${translateX}px, ${translateY}px, 0) scale(${scaleX}, ${scaleY})`;
+  }, []);
+
+  const hasRenderableRect = useCallback((rect: LightboxRect | null): rect is LightboxRect => {
+    return Boolean(rect && rect.width > 0 && rect.height > 0);
+  }, []);
+
+  const clearPendingLightboxMotion = useCallback(() => {
+    if (animationFrameRef.current !== null) {
+      window.cancelAnimationFrame(animationFrameRef.current);
+      animationFrameRef.current = null;
+    }
+
+    if (handoffTimerRef.current !== null) {
+      window.clearTimeout(handoffTimerRef.current);
+      handoffTimerRef.current = null;
+    }
+
+    if (transitionTimerRef.current !== null) {
+      window.clearTimeout(transitionTimerRef.current);
+      transitionTimerRef.current = null;
+    }
+  }, []);
+
+  const resetLightboxAnimationState = useCallback(() => {
+    setIsLightboxOverlayVisible(false);
+    setIsLightboxContentVisible(false);
+    setIsLightboxProxyVisible(false);
+    setLightboxProxyRect(null);
+    setLightboxProxyTransform("translate3d(0, 0, 0) scale(1)");
+    setLightboxProxyBorderRadius("24px");
+  }, []);
+
+  const finishLightboxClose = useCallback(() => {
+    setSelectedImage(null);
+    setSelectedImageOrigin(null);
+    resetLightboxAnimationState();
+    selectedImageTriggerRef.current = null;
+  }, [resetLightboxAnimationState]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -50,6 +140,112 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
       video.pause();
     };
   }, [hasPreviewVideo, product.id, product.previewVideo]);
+
+  useLayoutEffect(() => {
+    if (selectedImage === null) {
+      return undefined;
+    }
+
+    setIsLightboxOverlayVisible(true);
+
+    if (!lightboxFrameNode || !selectedImageOrigin) {
+      return undefined;
+    }
+
+    const targetRect = getLightboxRect(lightboxFrameNode);
+
+    if (!hasRenderableRect(targetRect) || !hasRenderableRect(selectedImageOrigin)) {
+      setIsLightboxContentVisible(true);
+      setIsLightboxProxyVisible(false);
+      return undefined;
+    }
+
+    setIsLightboxContentVisible(false);
+    setIsLightboxProxyVisible(true);
+    setLightboxProxyRect(targetRect);
+    setLightboxProxyTransform(getTransformFromRects(selectedImageOrigin, targetRect));
+    setLightboxProxyBorderRadius("16px");
+
+    animationFrameRef.current = window.requestAnimationFrame(() => {
+      setLightboxProxyTransform("translate3d(0, 0, 0) scale(1)");
+      setLightboxProxyBorderRadius("24px");
+      animationFrameRef.current = null;
+    });
+
+    handoffTimerRef.current = window.setTimeout(() => {
+      setIsLightboxContentVisible(true);
+      handoffTimerRef.current = null;
+    }, Math.max(lightboxAnimationDuration - lightboxContentLeadDuration, 120));
+
+    transitionTimerRef.current = window.setTimeout(() => {
+      setIsLightboxProxyVisible(false);
+      transitionTimerRef.current = null;
+    }, lightboxAnimationDuration);
+
+    return () => {
+      clearPendingLightboxMotion();
+    };
+  }, [clearPendingLightboxMotion, getLightboxRect, getTransformFromRects, hasRenderableRect, lightboxAnimationDuration, lightboxContentLeadDuration, lightboxFrameNode, selectedImage, selectedImageOrigin]);
+
+  useEffect(() => {
+    return () => {
+      clearPendingLightboxMotion();
+    };
+  }, [clearPendingLightboxMotion]);
+
+  const openLightbox = (index: number, element: HTMLButtonElement) => {
+    clearPendingLightboxMotion();
+
+    selectedImageTriggerRef.current = element;
+    setSelectedImageOrigin(getLightboxRect(element));
+    setIsLightboxOverlayVisible(true);
+    setIsLightboxContentVisible(false);
+    setIsLightboxProxyVisible(false);
+    setLightboxProxyRect(null);
+    setLightboxProxyTransform("translate3d(0, 0, 0) scale(1)");
+    setLightboxProxyBorderRadius("24px");
+    setSelectedImage(index);
+  };
+
+  const closeLightbox = () => {
+    if (selectedImage === null || transitionTimerRef.current !== null) {
+      return;
+    }
+
+    clearPendingLightboxMotion();
+
+    const originRect = selectedImageTriggerRef.current ? getLightboxRect(selectedImageTriggerRef.current) : selectedImageOrigin;
+    const targetRect = lightboxFrameNode ? getLightboxRect(lightboxFrameNode) : null;
+
+    setIsLightboxContentVisible(false);
+    setIsLightboxOverlayVisible(false);
+
+    if (hasRenderableRect(originRect) && hasRenderableRect(targetRect)) {
+      const resolvedOriginRect = originRect;
+      const resolvedTargetRect = targetRect;
+
+      setLightboxProxyRect(targetRect);
+      setLightboxProxyTransform("translate3d(0, 0, 0) scale(1)");
+      setLightboxProxyBorderRadius("24px");
+      setIsLightboxProxyVisible(true);
+
+      animationFrameRef.current = window.requestAnimationFrame(() => {
+        setLightboxProxyTransform(getTransformFromRects(resolvedOriginRect, resolvedTargetRect));
+        setLightboxProxyBorderRadius("16px");
+        animationFrameRef.current = null;
+      });
+
+      transitionTimerRef.current = window.setTimeout(() => {
+        finishLightboxClose();
+        transitionTimerRef.current = null;
+      }, lightboxAnimationDuration);
+    } else {
+      transitionTimerRef.current = window.setTimeout(() => {
+        finishLightboxClose();
+        transitionTimerRef.current = null;
+      }, lightboxAnimationDuration);
+    }
+  };
 
   return (
     <div className="relative overflow-visible">
@@ -137,7 +333,7 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
               <button
                 key={`${product.id}-${index}`}
                 type="button"
-                onClick={() => setSelectedImage(index)}
+                onClick={(event) => openLightbox(index, event.currentTarget)}
                 className="group relative overflow-hidden rounded-2xl border border-white/10 bg-[#111] text-left transition-colors duration-300 hover:border-white/20"
               >
                 <div className="aspect-square w-full overflow-hidden">
@@ -159,30 +355,91 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
         </section>
       ) : null}
 
-      {selectedImage !== null && product.screenshots ? (
-        <div
-          className="fixed inset-0 z-[80] overflow-y-auto bg-black/80 p-4 backdrop-blur-sm"
-          onClick={() => setSelectedImage(null)}
-        >
-          <div className="flex min-h-full items-center justify-center py-4 sm:py-6">
-            <div className="relative max-h-[90vh] max-w-6xl overflow-hidden rounded-[1.5rem] border border-white/10 bg-black/70 p-2" onClick={(event) => event.stopPropagation()}>
+      <Dialog.Root open={isDialogOpen} onOpenChange={(open) => {
+        if (!open) {
+          closeLightbox();
+        }
+      }}>
+        <Dialog.Portal>
+          <Dialog.Overlay
+            className={`fixed inset-0 z-[80] transition-opacity duration-300 ${isLightboxOverlayVisible ? "opacity-100" : "opacity-0"}`}
+            style={{ backgroundColor: "rgba(2, 5, 11, 0.84)", backdropFilter: "blur(10px)", WebkitBackdropFilter: "blur(10px)" }}
+          />
+          {activeScreenshot ? (
+            <Dialog.Content
+              ref={setLightboxFrameRef}
+              onOpenAutoFocus={(event) => event.preventDefault()}
+              onCloseAutoFocus={(event) => event.preventDefault()}
+              className="fixed left-1/2 top-1/2 z-[81] w-fit overflow-hidden border border-white/10 bg-black/70 p-2 shadow-[0_32px_120px_rgba(0,0,0,0.48)] outline-none"
+              style={{
+                borderRadius: "24px",
+                transform: "translate(-50%, -50%)",
+                opacity: isLightboxContentVisible ? 1 : 0,
+                pointerEvents: isLightboxContentVisible ? "auto" : "none",
+                transition: "opacity 120ms ease",
+              }}
+            >
+              <Dialog.Title className="sr-only">{activeScreenshotLabel}</Dialog.Title>
+              <Dialog.Description className="sr-only">
+                {locale === "zh" ? "查看当前软件截图的大图预览" : "View the enlarged screenshot preview."}
+              </Dialog.Description>
               <button
                 type="button"
-                onClick={() => setSelectedImage(null)}
-                className="absolute right-3 top-3 z-10 rounded-full border border-white/10 bg-black/60 px-3 py-1.5 text-sm text-white/80"
+                onClick={closeLightbox}
+                aria-label={locale === "zh" ? "关闭预览" : "Close preview"}
+                className={`absolute right-3 top-3 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-black/60 text-white/80 transition-all duration-300 hover:bg-black/75 ${
+                  isLightboxContentVisible ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
+                }`}
               >
-                {locale === "zh" ? "关闭" : "Close"}
+                <span aria-hidden="true" className="text-xl leading-none">×</span>
               </button>
-              <Image
-                src={product.screenshots[selectedImage]}
-                alt={`${product.slug} screenshot ${selectedImage + 1}`}
-                className="max-h-[82vh] w-auto rounded-[1.1rem]"
-                placeholder="blur"
-              />
+              <div className="relative" style={{ width: activeScreenshotWidthStyle }}>
+                <Image
+                  src={activeScreenshot}
+                  alt={activeScreenshotLabel}
+                  width={activeScreenshot.width}
+                  height={activeScreenshot.height}
+                  className="block h-auto max-h-[calc(100vh-5rem)] w-full rounded-[1.1rem] object-contain"
+                  placeholder="blur"
+                  sizes="(max-width: 640px) calc(100vw - 2rem), min(calc(100vw - 4rem), calc((100vh - 5rem) * 1.8), 1320px)"
+                  priority
+                />
+              </div>
+            </Dialog.Content>
+          ) : null}
+          {activeScreenshot && isLightboxProxyVisible && lightboxProxyRect ? (
+            <div
+              aria-hidden="true"
+              className="pointer-events-none fixed z-[82] overflow-hidden border border-white/10 bg-black/70 p-2 shadow-[0_32px_120px_rgba(0,0,0,0.48)]"
+              style={{
+                top: lightboxProxyRect.top,
+                left: lightboxProxyRect.left,
+                width: lightboxProxyRect.width,
+                height: lightboxProxyRect.height,
+                borderRadius: lightboxProxyBorderRadius,
+                transform: lightboxProxyTransform,
+                transformOrigin: "top left",
+                opacity: isLightboxContentVisible ? 0 : 1,
+                transition:
+                  `transform ${lightboxAnimationDuration}ms cubic-bezier(0.22, 1, 0.36, 1), border-radius ${lightboxAnimationDuration}ms cubic-bezier(0.22, 1, 0.36, 1), opacity 120ms ease`,
+                willChange: "transform",
+              }}
+            >
+              <div className="relative h-full w-full overflow-hidden rounded-[1.1rem] bg-[#05070d]">
+                <Image
+                  src={activeScreenshot}
+                  alt={activeScreenshotLabel}
+                  fill
+                  className="object-contain"
+                  placeholder="blur"
+                  sizes="(max-width: 640px) calc(100vw - 2rem), min(calc(100vw - 4rem), calc((100vh - 5rem) * 1.8), 1320px)"
+                  priority
+                />
+              </div>
             </div>
-          </div>
-        </div>
-      ) : null}
+          ) : null}
+        </Dialog.Portal>
+      </Dialog.Root>
     </div>
   );
 }

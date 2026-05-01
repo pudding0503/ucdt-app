@@ -21,10 +21,12 @@ const lightboxRestingTransform = "translate3d(0, 0, 0) scale(1)";
 const lightboxFrameRadius = "24px";
 const lightboxThumbnailRadius = "16px";
 const lightboxAnimationDuration = 320;
-const lightboxContentLeadDuration = 110;
+const lightboxContentLeadDuration = 145;
+const lightboxOpenCleanupDelay = lightboxAnimationDuration + 32;
+const lightboxProxyOpacityDuration = 180;
 const lightboxImageSizes = "(max-width: 640px) calc(100vw - 2rem), min(calc(100vw - 4rem), calc((100vh - 5rem) * 1.8), 1320px)";
-const lightboxContentTransition = "opacity 120ms ease";
-const lightboxProxyTransition = `transform ${lightboxAnimationDuration}ms cubic-bezier(0.22, 1, 0.36, 1), border-radius ${lightboxAnimationDuration}ms cubic-bezier(0.22, 1, 0.36, 1), opacity 120ms ease`;
+const lightboxContentTransition = "opacity 160ms cubic-bezier(0.22, 1, 0.36, 1)";
+const lightboxProxyTransition = `transform ${lightboxAnimationDuration}ms cubic-bezier(0.22, 1, 0.36, 1), border-radius ${lightboxAnimationDuration}ms cubic-bezier(0.22, 1, 0.36, 1), opacity ${lightboxProxyOpacityDuration}ms ease-out`;
 const lightboxOverlayStyle: CSSProperties = {
   backgroundColor: "rgba(2, 5, 11, 0.84)",
   backdropFilter: "blur(10px)",
@@ -212,7 +214,7 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
     transitionTimerRef.current = window.setTimeout(() => {
       setIsLightboxProxyVisible(false);
       transitionTimerRef.current = null;
-    }, lightboxAnimationDuration);
+    }, lightboxOpenCleanupDelay);
 
     return () => {
       clearPendingLightboxMotion();
@@ -403,6 +405,7 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
                 opacity: isLightboxContentVisible ? 1 : 0,
                 pointerEvents: isLightboxContentVisible ? "auto" : "none",
                 transition: lightboxContentTransition,
+                willChange: "opacity",
               }}
             >
               <Dialog.Title className="sr-only">{activeScreenshotLabel}</Dialog.Title>
@@ -447,7 +450,7 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
                 transformOrigin: "top left",
                 opacity: isLightboxContentVisible ? 0 : 1,
                 transition: lightboxProxyTransition,
-                willChange: "transform",
+                willChange: "transform, opacity",
               }}
             >
               <div className="relative h-full w-full overflow-hidden rounded-[1.1rem] bg-[#05070d]">

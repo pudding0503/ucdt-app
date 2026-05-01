@@ -1,7 +1,7 @@
 # DESIGN
 
 ## Design Goal
-The site should echo the visual feeling of the provided `example-web` reference while remaining an original, maintainable implementation tailored to the five-product UCDT suite.
+The site should preserve the current UCDT landing-page UI while staying maintainable, data-driven, and easy to extend as more products reach release status.
 
 ## Core Visual Principles
 - Deep near-black background
@@ -20,16 +20,24 @@ The site should echo the visual feeling of the provided `example-web` reference 
 ## Layout Strategy
 - Single-page experience
 - Large centered hero with immediate product identity
-- Open Screen-inspired floating navbar with GitHub CTA
+- Floating navbar with GitHub CTA and locale switch
 - Product switcher as the primary interaction model
 - Platform-specific download buttons presented as standalone actions
 - Shared download/details area that updates with the active tab
 - Secondary sections for ecosystem context and FAQ
 
+## Component Strategy
+- Keep `components/download-page.tsx` focused on state and composition only
+- Keep repeated presentational sections in `components/download-page-sections.tsx`
+- Keep shared SVG icons in `components/site-icons.tsx`
+- Keep product content and release metadata in `data/products.ts`
+- Prefer global utility classes for repeatable glass, card, and motion treatments
+
 ## Content Strategy
 - Bilingual Chinese / English copy from the first release
 - Released apps show real version information and GitHub Releases links
 - Unreleased apps use polished placeholder visuals rather than empty states
+- Workflow responsibility copy should remain product-specific and data-driven
 
 ## Asset Strategy
 - `assets/logo.png` is the site brand mark
@@ -40,6 +48,8 @@ The site should echo the visual feeling of the provided `example-web` reference 
 - Procedural concept visuals remain the primary preview for every product
 - Real screenshots are shown below the concept visual when available
 - Only Processing and Analysis currently have public GitHub repositories and release links
+- `app/favicon.ico` remains the browser favicon binary
+- `app/icon.tsx`, `app/apple-icon.tsx`, `app/manifest.ts`, `app/opengraph-image.tsx`, and `app/twitter-image.tsx` handle route-based metadata assets
 
 ## Interaction Notes
 - Switching products should update:
@@ -50,3 +60,23 @@ The site should echo the visual feeling of the provided `example-web` reference 
   - preview visuals
   - centered wordmark and platform download buttons
 - Navigation remains lightweight and anchored within the same page
+- Motion should stay subtle and reusable; prefer shared transition utilities over ad-hoc animation declarations
+
+## SEO and Metadata Notes
+- Metadata is centralized in `lib/site-metadata.ts`
+- Canonical URL and `metadataBase` should be driven by `NEXT_PUBLIC_SITE_URL` when the production domain is finalized
+- Use truthful metadata only: released apps can expose real release URLs, unreleased apps should remain clearly marked as planned/conceptual
+
+## Responsive Notes
+- The page is optimized as a single-column narrative on mobile rather than a re-laid-out alternate experience
+- Watch for full-bleed sections inside centered containers; background layers should break out to viewport width when needed, while content remains constrained
+- Product cards and CTA rows should wrap rather than shrink below comfortable tap targets
+- In the `Module Responsibilities` grid, use a stacked icon-then-text header at desktop widths so long English labels do not visually compress the product logos
+
+## 踩坑经验
+- Next.js App Router metadata is easiest to maintain when title, Open Graph, Twitter card, and icon configuration all come from one shared module
+- Full-bleed visual slabs should use viewport-width background layers instead of relying on the main content container width
+- Product content should stay in `data/products.ts`; if copy leaks into components, bilingual maintenance becomes error-prone quickly
+- If a section starts collecting its own state, hover cards, and repeated style strings, split it before `download-page.tsx` becomes monolithic again
+- For motion polish, prefer low-risk opacity/translate transitions and always consider `prefers-reduced-motion`
+- When product logos sit beside bilingual labels, fix the logo render box and, if needed, separate the logo onto its own row at larger breakpoints instead of letting copy length distort the mark

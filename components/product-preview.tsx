@@ -12,9 +12,15 @@ type ProductPreviewProps = {
 
 export function ProductPreview({ product, locale }: ProductPreviewProps) {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
+  const previewHeading = locale === "zh" ? "界面预览" : "See it in action";
+  const previewText =
+    locale === "zh"
+      ? "快速查看当前版本的界面风格、主要交互与整体布局。"
+      : "A clean, intuitive interface designed for focus and speed.";
+  const screenshotsHeading = locale === "zh" ? "界面截图" : "Screenshots";
   const screenshotText =
     locale === "zh"
-      ? "A clean, intuitive interface designed for focus and speed."
+      ? "补充展示关键界面与操作视图，便于快速浏览主要工作界面。"
       : "A clean, intuitive interface designed for focus and speed.";
   const previewGridStyle: CSSProperties = {
     backgroundImage:
@@ -34,8 +40,8 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
           <div className="absolute inset-0 opacity-[0.12]" style={previewGridStyle} />
         </div>
         <div className="relative z-10 text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-white md:text-4xl">See it in action</h2>
-          <p className="mx-auto mt-4 max-w-xl text-lg font-light text-white/40">A clean, intuitive interface designed for focus and speed.</p>
+          <h2 className="text-3xl font-bold tracking-tight text-white md:text-4xl">{previewHeading}</h2>
+          <p className="mx-auto mt-4 max-w-xl text-lg font-light text-white/40">{previewText}</p>
         </div>
         <div className="relative z-10 mx-auto mt-12 max-w-5xl">
           <div className="relative">
@@ -54,7 +60,7 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
       {product.screenshots?.length ? (
         <section className="relative overflow-hidden pb-6 pt-10 sm:pb-10 sm:pt-14">
           <div className="relative z-10 text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-white md:text-4xl">Screenshots</h2>
+            <h2 className="text-3xl font-bold tracking-tight text-white md:text-4xl">{screenshotsHeading}</h2>
             <p className="mx-auto mt-4 max-w-xl text-lg font-light text-white/40">{screenshotText}</p>
           </div>
           <div className="relative z-10 mx-auto mt-12 grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-2 md:gap-12">

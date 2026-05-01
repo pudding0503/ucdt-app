@@ -48,6 +48,7 @@ export type Product = {
   category: LocalizedText;
   tagline: LocalizedText;
   description: LocalizedText;
+  workflowRole: LocalizedText;
   highlights: LocalizedText[];
   releaseNote: LocalizedText;
   platforms: string[];
@@ -110,6 +111,10 @@ export const products: Product[] = [
       zh: "面向大尺度城市空间数据准备的提取核心，聚焦从影像、栅格与识别结果中生成稳定的建筑轮廓成果。",
       en: "A foundation layer for large-scale urban data preparation, focused on deriving reliable building footprints from imagery, rasters, and recognition outputs.",
     },
+    workflowRole: {
+      zh: "从遥感图像中提取建筑几何信息，为整套流程提供基础轮廓数据。",
+      en: "Extract building geometry from remote sensing imagery and provide the foundational footprint layer for the full workflow.",
+    },
     highlights: [
       {
         zh: "面向批量城市区块的轮廓提取流程",
@@ -170,6 +175,10 @@ export const products: Product[] = [
     description: {
       zh: "Processing Core 专注于投影检查、坐标处理、DEM 高程聚合与网格化输出，是 UCDT 工作流中的数据整形中枢。",
       en: "Processing Core focuses on projection checks, coordinate handling, DEM aggregation, and gridded outputs as the data-shaping hub within the UCDT workflow.",
+    },
+    workflowRole: {
+      zh: "负责多源城市数据的聚合与标准化，并导出统一网格成果。",
+      en: "Aggregate and standardize heterogeneous urban datasets, then export a shared gridded output.",
     },
     highlights: [
       {
@@ -237,6 +246,10 @@ export const products: Product[] = [
       zh: "Analysis Core 负责导入共享基础数据、组织分析层级与空间概览，是面向指标计算、统计展示与结果研判的核心前端。",
       en: "Analysis Core organizes shared datasets, analysis levels, and spatial overviews as the main interface for indicator computation, statistics, and result interpretation.",
     },
+    workflowRole: {
+      zh: "在统一数据底座上拉通各层指标，形成可比较、可浏览的分析结果。",
+      en: "Connect indicators across shared baseline data and turn them into comparable, navigable analysis outputs.",
+    },
     highlights: [
       {
         zh: "共享数据工作流与分析层级管理",
@@ -303,6 +316,10 @@ export const products: Product[] = [
       zh: "Computing Core 将聚焦模拟参数组织、场景计算与结果汇总，支持从城市网格到片区尺度的能耗与碳评估。",
       en: "Computing Core will focus on simulation parameters, scenario runs, and result aggregation for energy and carbon evaluation from grid to district scale.",
     },
+    workflowRole: {
+      zh: "承担建筑模型标准化与能耗、碳排放模拟，连接分析到评估计算。",
+      en: "Standardize building models and run energy/carbon simulations to bridge analysis with quantitative evaluation.",
+    },
     highlights: [
       {
         zh: "连接共享数据与建筑/片区能耗模型",
@@ -363,6 +380,10 @@ export const products: Product[] = [
     description: {
       zh: "Planning Core 将面向规划方案评估、参数对比与策略表达，形成从数据到决策的最后一层工作界面。",
       en: "Planning Core is intended for evaluating planning proposals, comparing parameters, and communicating strategies as the final decision layer of the suite.",
+    },
+    workflowRole: {
+      zh: "把各层指标转化为规划决策依据，用于方案比较、论证与设计协同。",
+      en: "Turn cross-layer indicators into planning guidance for scheme comparison, decision support, and design collaboration.",
     },
     highlights: [
       {

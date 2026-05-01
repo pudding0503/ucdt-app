@@ -23,6 +23,7 @@ This project is a bilingual Next.js download page for the UCDT software suite an
 - Treat `data/products.ts` as the source of truth for product copy, accent colors, state, versions, and links.
 - Treat GitHub Releases as the release source of truth for shipped apps.
 - Only Processing and Analysis currently have public GitHub repositories / release links.
+- Keep workflow role descriptions data-driven in `data/products.ts`.
 - Current released products:
   - Processing Core: `v1.16.0`
   - Analysis Core: `v2.2.0`
@@ -35,6 +36,9 @@ This project is a bilingual Next.js download page for the UCDT software suite an
 - Use dark backgrounds with subtle aurora-style accent glows.
 - Product tabs should update the active theme color and preview state.
 - Released and unreleased products must be visually distinguishable.
+- Refactor for reuse without intentionally changing the current UI result.
+- Keep shared section rendering logic reusable instead of re-growing a single monolithic page component.
+- In the desktop `Module Responsibilities` cards, the product icon must not be compressed by adjacent bilingual text; stacked icon-plus-text layout is acceptable at larger breakpoints.
 
 ## Asset Requirements
 - Use local runtime assets only.
@@ -47,7 +51,10 @@ This project is a bilingual Next.js download page for the UCDT software suite an
 - Show real screenshots underneath the concept visual when available.
 - Use real Processing and Analysis logos/screenshots where available.
 - Use programmatic placeholder visuals for Extraction, Computing, and Planning until new assets are provided.
+- `app/favicon.ico` should remain the browser favicon source.
+- `app/icon.tsx`, `app/apple-icon.tsx`, `app/manifest.ts`, and social image routes should be handled through Next.js App Router metadata routes.
 
 ## Deployment Requirements
 - The project should remain compatible with Vercel.
+- Metadata should allow a future production domain to be configured without rewriting the page content model.
 - A successful `pnpm build` is required before deployment.

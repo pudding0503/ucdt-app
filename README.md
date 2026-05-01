@@ -1,8 +1,11 @@
-# UCDT Web
-
-A bilingual Next.js landing and download page for the UCDT software suite.
+<p align="center">
+ <img width="100px" src="assets/logo.png" align="center" alt="UCDT Series Apps" />
+ <h2 align="center">UCDT Series</h2>
+ <p align="center">Get UCDT Series Apps</p>
+</p>
 
 ## Features
+
 - Single-page tabbed product experience for 5 UCDT applications
 - Dark glassmorphism visual system for the UCDT landing experience
 - Centered hero layout with GitHub CTA and per-platform download buttons
@@ -14,6 +17,7 @@ A bilingual Next.js landing and download page for the UCDT software suite.
 - Vercel-friendly Next.js structure
 
 ## Architecture
+
 - `app/page.tsx`: single-route entry that renders the download page
 - `components/download-page.tsx`: stateful composition layer for locale, active product, and FAQ state
 - `components/download-page-sections.tsx`: reusable presentational sections and display helpers
@@ -25,6 +29,7 @@ A bilingual Next.js landing and download page for the UCDT software suite.
 - `app/icon.tsx`, `app/apple-icon.tsx`, `app/opengraph-image.tsx`, `app/twitter-image.tsx`, `app/manifest.ts`: generated asset and metadata routes
 
 ## Development
+
 Install dependencies locally in this project:
 
 ```bash
@@ -44,11 +49,13 @@ pnpm build
 ```
 
 ## Package Manager
+
 - This project uses `pnpm` as the only supported package manager.
 - Install dependencies from the repository root so packages are placed in the current project only.
 - Do not use `npm install` for this repository.
 
 ## Content Source
+
 Product copy, accent colors, version labels, release URLs, and product state are managed in:
 
 - `data/products.ts`
@@ -56,6 +63,7 @@ Product copy, accent colors, version labels, release URLs, and product state are
 Keep new marketing copy, FAQ content, workflow descriptions, and release-facing labels in this file so the page remains data-driven.
 
 ## Asset Conventions
+
 - `assets/logo.png`: site logo
 - Product `logo.png`: transparent product logo asset
 - Product `logo-rounded.png`: product switcher icon
@@ -63,6 +71,7 @@ Keep new marketing copy, FAQ content, workflow descriptions, and release-facing 
 - At the moment, only Processing and Analysis expose public GitHub release/license links
 
 ## Metadata and Icons
+
 - App Router metadata is centralized in `lib/site-metadata.ts`
 - `NEXT_PUBLIC_SITE_URL` can be set later to enable canonical URL and absolute Open Graph URL output
 - The site currently defaults to author `ONing` and publisher `Bitcookies`
@@ -71,6 +80,7 @@ Keep new marketing copy, FAQ content, workflow descriptions, and release-facing 
 - Open Graph, Twitter, and manifest assets remain generated through App Router metadata routes
 
 ## Maintenance Notes
+
 - Reuse the shared utility classes in `app/globals.css` before adding new long Tailwind class strings
 - Prefer extending `components/download-page-sections.tsx` or splitting out another section component instead of re-growing `download-page.tsx`
 - Keep the page visually stable unless a design task explicitly asks for UI changes
@@ -78,4 +88,9 @@ Keep new marketing copy, FAQ content, workflow descriptions, and release-facing 
 - In the desktop `Module Responsibilities` cards, keep the icon on its own row at `xl` widths so bilingual text length does not squeeze the product mark
 
 ## Deployment
+
 This project is intended for deployment on Vercel.
+
+## License
+
+GPL 3.0

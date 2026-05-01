@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1445px" height="410px" viewBox="0 0 1445 410" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Logo</title>
+    <defs>
+        <path d="M111.423296,184.979224 C111.651654,98.0816403 182.027448,27.7004484 268.895503,27.4949378 C273.672423,27.4949378 278.407805,27.7858059 283.060109,28.2013317 C205.579,-20.3225393 104.281514,-4.93574538 44.6920775,64.4087436 C-14.8973592,133.753233 -14.8973592,236.246767 44.6920775,305.591256 C104.281514,374.935745 205.579,390.322539 283.060109,341.798668 C278.407805,342.214194 273.672423,342.505062 268.895503,342.505062 C182.011283,342.299456 111.628832,271.893035 111.423296,184.979224 Z" id="path-1"></path>
+        <filter x="-10.6%" y="-8.1%" width="121.2%" height="116.2%" filterUnits="objectBoundingBox" id="filter-3">
+            <feGaussianBlur stdDeviation="10" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <filter x="-300.0%" y="-300.0%" width="700.0%" height="700.0%" filterUnits="objectBoundingBox" id="filter-4">
+            <feGaussianBlur stdDeviation="20" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <filter x="-300.0%" y="-300.0%" width="700.0%" height="700.0%" filterUnits="objectBoundingBox" id="filter-5">
+            <feGaussianBlur stdDeviation="20" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <filter x="-200.0%" y="-200.0%" width="500.0%" height="500.0%" filterUnits="objectBoundingBox" id="filter-6">
+            <feGaussianBlur stdDeviation="20" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <filter x="-200.0%" y="-200.0%" width="500.0%" height="500.0%" filterUnits="objectBoundingBox" id="filter-7">
+            <feGaussianBlur stdDeviation="20" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <filter x="-200.0%" y="-200.0%" width="500.0%" height="500.0%" filterUnits="objectBoundingBox" id="filter-8">
+            <feGaussianBlur stdDeviation="20" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <filter x="-150.0%" y="-150.0%" width="400.0%" height="400.0%" filterUnits="objectBoundingBox" id="filter-9">
+            <feGaussianBlur stdDeviation="20" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+    </defs>
+    <g id="主页面" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Logo与文字" transform="translate(-95.000000, -95.000000)">
+            <g id="Logo" transform="translate(95.000000, 95.000000)">
+                <g id="Bitcookies">
+                    <g id="Cookies">
+                        <circle id="Outside-Shadow" fill="#FCDBB6" fill-rule="nonzero" cx="205" cy="205" r="205"></circle>
+                        <circle id="Outside-Circle" fill="#5D4131" fill-rule="nonzero" cx="205" cy="205" r="200"></circle>
+                        <circle id="Outside-Circle-Color" fill="#FCDBB6" cx="210" cy="210" r="185"></circle>
+                        <g id="Outside-Circle-Color-Shadow" transform="translate(25.000000, 25.000000)">
+                            <mask id="mask-2" fill="white">
+                                <use xlink:href="#path-1"></use>
+                            </mask>
+                            <g id="Outside-Circle-Color-Shadow-2" fill-rule="nonzero"></g>
+                            <path d="M111.423296,184.979224 C111.651654,98.0816403 182.027448,27.7004484 268.895503,27.4949378 C273.672423,27.4949378 278.407805,27.7858059 283.060109,28.2013317 C205.579,-20.3225393 104.281514,-4.93574538 44.6920775,64.4087436 C-14.8973592,133.753233 -14.8973592,236.246767 44.6920775,305.591256 C104.281514,374.935745 205.579,390.322539 283.060109,341.798668 C278.407805,342.214194 273.672423,342.505062 268.895503,342.505062 C182.011283,342.299456 111.628832,271.893035 111.423296,184.979224 Z" id="Outside-Circle-Color-Shadow-1" fill="#FFCB94" fill-rule="nonzero" filter="url(#filter-3)" mask="url(#mask-2)"></path>
+                        </g>
+                        <circle id="Inside-Circle-Color" fill="#BC8D5C" cx="208" cy="208" r="165"></circle>
+                        <path d="M195.002477,25.0000046 C126.24123,25.0000046 64.2514172,66.4229445 37.9414,129.951617 C11.6313828,193.480289 26.1830487,266.602416 74.8103664,315.218186 C123.437684,363.833957 196.563264,378.368256 260.085685,352.043151 C323.608106,325.718046 365.016314,263.718396 365,194.95715 C365,149.874718 347.088298,106.639336 315.20642,74.7650283 C283.324542,42.8907209 240.084907,24.989301 195.002477,25.0000046 L195.002477,25.0000046 Z M198.555025,349.048953 C110.765234,349.004347 39.6295192,277.808396 39.6592301,190.018597 C39.6889596,102.228798 110.872863,31.0810277 198.662665,31.0958798 C286.452466,31.1107366 357.6123,102.282592 357.6123,190.072396 C357.6123,232.249588 340.851957,272.698133 311.020609,302.514339 C281.18926,332.330545 240.732211,349.070354 198.555025,349.048953 Z" id="Inside-Circle" fill="#725342" fill-rule="nonzero"></path>
+                        <animateTransform attributeName="transform" type="rotate" from="0 205 205" to="360 205 205" begin="0s" dur="9s" repeatCount="indefinite" />
+                    </g>
+                    <g id="Chocolate" transform="translate(60.000000, 80.000000)">
+                        <g id="40" transform="translate(45.000000, 5.000000)">
+                            <circle fill="#725342" cx="20" cy="20" r="20"></circle>
+                            <circle id="20" fill="#5D4131" filter="url(#filter-4)" cx="20" cy="20" r="10"></circle>
+                            <animateTransform attributeName="transform" additive="sum" type="scale" values="1;1.2;1" begin="2s" dur="3s" repeatCount="indefinite" />
+                        </g>
+                        <g id="40" transform="translate(105.000000, 225.000000)">
+                            <circle fill="#725342" cx="20" cy="20" r="20"></circle>
+                            <circle id="20" fill="#5D4131" filter="url(#filter-5)" cx="20" cy="20" r="10"></circle>
+                            <animateTransform attributeName="transform" additive="sum" type="scale" values="1;1.2;1" begin="0s" dur="3s" repeatCount="indefinite" />
+                        </g>
+                        <g id="50" transform="translate(0.000000, 180.000000)">
+                            <circle fill="#725342" cx="25" cy="25" r="25"></circle>
+                            <circle id="30" fill="#5D4131" filter="url(#filter-6)" cx="25" cy="25" r="15"></circle>
+                            <animateTransform attributeName="transform" additive="sum" type="scale" values="1;0.8;1" begin="4s" dur="6s" repeatCount="indefinite" />
+                        </g>
+                        <g id="50" transform="translate(220.000000, 200.000000)">
+                            <circle fill="#725342" cx="25" cy="25" r="25"></circle>
+                            <circle id="30" fill="#5D4131" filter="url(#filter-7)" cx="25" cy="25" r="15"></circle>
+                            <animateTransform attributeName="transform" additive="sum" type="scale" values="1;0.8;1" begin="2s" dur="6s" repeatCount="indefinite" />
+                        </g>
+                        <g id="50" transform="translate(240.000000, 0.000000)">
+                            <circle fill="#725342" cx="25" cy="25" r="25"></circle>
+                            <circle id="30" fill="#5D4131" filter="url(#filter-8)" cx="25" cy="25" r="15"></circle>
+                            <animateTransform attributeName="transform" additive="sum" type="scale" values="1;0.8;1" begin="0s" dur="6s" repeatCount="indefinite" />
+                        </g>
+                        <g id="60" transform="translate(135.000000, 95.000000)">
+                            <circle fill="#725342" cx="30" cy="30" r="30"></circle>
+                            <circle id="40" fill="#5D4131" filter="url(#filter-9)" cx="30" cy="30" r="20"></circle>
+                            <animateTransform attributeName="transform" additive="sum" type="scale" values="1;1.2;1" begin="0s" dur="9s" repeatCount="indefinite" />
+                        </g>
+                    </g>
+                </g>
+                <g id="Words" transform="translate(505.000000, 25.000000)">
+                    <path d="M80,140 L80,100 L20,100 L20,140 L80,140 Z M50,20 L20,20 L20,80 L50,80 L50,20 Z M100,160 L0,160 L0,0 L70,0 L70,80 L100,80 L100,160 Z" id="B" fill="#BC8D5C"></path>
+                    <path d="M180,20 L140,20 L140,0 L240,0 L240,20 L200,20 L200,140 L240,140 L240,160 L140,160 L140,140 L180,140 L180,20 Z" id="I" fill="#BC8D5C"></path>
+                    <path d="M280,20 L280,0 L380,0 L380,20 L340,20 L340,160 L320,160 L320,20 L280,20 Z" id="T" fill="#BC8D5C"></path>
+                    <path d="M80,340 L80,320 L100,320 L100,360 L0,360 L0,200 L100,200 L100,240 L80,240 L80,220 L20,220 L20,340 L80,340 Z" id="C" fill="#694C3C"></path>
+                    <path d="M220,340 L220,220 L160,220 L160,340 L220,340 Z M240,360 L140,360 L140,200 L240,200 L240,360 Z" id="O" fill="#694C3C"></path>
+                    <path d="M360,340 L360,220 L300,220 L300,340 L360,340 Z M380,360 L280,360 L280,200 L380,200 L380,360 Z" id="O" fill="#694C3C"></path>
+                    <path d="M440,200 L440,275 L459.999,250.001 L460,250 L460,250 L500,200 L520,200 L479.999,250.001 L520,320 L520,320 L520,360 L500,360 L500,320 L500,320 L468.333,264.584 L440,300 L440,360 L420,360 L420,200 L440,200 Z" id="K" fill="#694C3C"></path>
+                    <path d="M600,220 L560,220 L560,200 L660,200 L660,220 L620,220 L620,340 L660,340 L660,360 L560,360 L560,340 L600,340 L600,220 Z" id="I" fill="#694C3C"></path>
+                    <path d="M700,360 L700,260 L720,260 L720,200 L800,200 L800,220 L740,220 L740,260 L760,260 L760,280 L720,280 L720,340 L800,340 L800,360 L700,360 Z" id="E" fill="#694C3C"></path>
+                    <path d="M840,360 L840,340 L920,340 L920,280 L840,280 L840,200 L900,200 L900,220 L860,220 L860,260 L940,260 L940,360 L840,360 Z" id="S" fill="#694C3C"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

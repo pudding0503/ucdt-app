@@ -1,16 +1,19 @@
 import type { StaticImageData } from "next/image";
 import siteLogo from "@/assets/logo.png";
+import analysisDemoVideo from "@/assets/ucdt-analysis/demo.webm";
 import analysisIcon from "@/assets/ucdt-analysis/logo-rounded.png";
 import analysisWordmark from "@/assets/ucdt-analysis/logo-words.png";
 import analysisShot1 from "@/assets/ucdt-analysis/screenshot-1.png";
 import analysisShot2 from "@/assets/ucdt-analysis/screenshot-2.png";
 import analysisShot3 from "@/assets/ucdt-analysis/screenshot-3.png";
+import analysisShot4 from "@/assets/ucdt-analysis/screenshot-4.png";
 import computingIcon from "@/assets/ucdt-computing/logo-rounded.png";
 import computingWordmark from "@/assets/ucdt-computing/logo-words.png";
 import extractionIcon from "@/assets/ucdt-extraction/logo-rounded.png";
 import extractionWordmark from "@/assets/ucdt-extraction/logo-words.png";
 import planningIcon from "@/assets/ucdt-planning/logo-rounded.png";
 import planningWordmark from "@/assets/ucdt-planning/logo-words.png";
+import processingDemoVideo from "@/assets/ucdt-processing/demo.webm";
 import processingIcon from "@/assets/ucdt-processing/logo-rounded.png";
 import processingWordmark from "@/assets/ucdt-processing/logo-words.png";
 import processingShot1 from "@/assets/ucdt-processing/screenshot-1.png";
@@ -58,6 +61,7 @@ export type Product = {
   releaseMarkdown?: string;
   icon: StaticImageData;
   wordmark: StaticImageData;
+  previewVideo?: string;
   license: {
     name: string;
     url?: string;
@@ -205,6 +209,7 @@ export const products: Product[] = [
     releaseMarkdown: "### 更新\n- 调整了瓦片的命名结构，固定为经度3位，纬度2位\n- 修复了 grid_id 网格的错误命名问题\n- 修复了批量任务的 grid_id 问题",
     icon: processingIcon,
     wordmark: processingWordmark,
+    previewVideo: processingDemoVideo,
     license: {
       name: "GPL 3.0",
       url: "https://github.com/buildingdata/ucdt-processing-gui/blob/main/LICENSE",
@@ -275,6 +280,7 @@ export const products: Product[] = [
     releaseMarkdown: "### 更新\n- 增强了拖放和原生文件选择器功能，现支持单个文件、多个文件及文件夹\n- 在用户界面中引入了“当前文件”选择器，用于批量管理和切换已导入的文件\n- 更新了架构和接口文档，以反映导入流程中的变更\n- 修改了 Electron 主进程，以处理批量输入解析和文件标记\n- 调整了渲染器，确保指标和预览仅针对当前选中的文件",
     icon: analysisIcon,
     wordmark: analysisWordmark,
+    previewVideo: analysisDemoVideo,
     license: {
       name: "GPL 3.0",
       url: "https://github.com/buildingdata/ucdt-analysis-gui/blob/main/LICENSE",
@@ -284,7 +290,7 @@ export const products: Product[] = [
       { platform: "Windows", available: true, href: "https://github.com/buildingdata/ucdt-analysis-gui/releases" },
       { platform: "Linux", available: false },
     ],
-    screenshots: [analysisShot1, analysisShot2, analysisShot3],
+    screenshots: [analysisShot1, analysisShot2, analysisShot3, analysisShot4],
   },
   {
     id: "computing",

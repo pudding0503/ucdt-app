@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { pageSectionLargeBlockTopClass, pageSectionShellClass } from "@/components/layout-spacing";
 import { ProductPreview } from "@/components/product-preview";
 import {
   FaqSection,
@@ -23,7 +24,7 @@ import {
 export function DownloadPage() {
   const [locale, setLocale] = useState<Locale>("zh");
   const [activeId, setActiveId] = useState(products[1].id);
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const activeProduct = useMemo(
     () => products.find((product) => product.id === activeId) ?? products[0],
@@ -63,12 +64,12 @@ export function DownloadPage() {
         releaseLines={releaseLines}
       />
 
-      <section className="relative z-10 mx-auto -mt-20 w-full max-w-6xl px-4 pb-28 sm:-mt-24 sm:px-6 md:-mt-28 lg:-mt-34 lg:px-8 xl:-mt-40 2xl:-mt-44">
+      <section className={`${pageSectionShellClass} z-10 -mt-16 pb-10 sm:-mt-20 sm:pb-12 lg:-mt-24 lg:pb-14 xl:-mt-28`}>
         <div id="products" className="w-full">
           <ProductSwitcher locale={locale} activeId={activeProduct.id} onProductChange={setActiveId} />
         </div>
 
-        <div key={activeProduct.id} className="content-fade-in mt-14 w-full max-w-6xl sm:mt-16">
+        <div key={activeProduct.id} className={`content-fade-in w-full max-w-6xl ${pageSectionLargeBlockTopClass}`}>
           <ProductPreview product={activeProduct} locale={locale} />
         </div>
       </section>

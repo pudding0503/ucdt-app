@@ -1,6 +1,6 @@
 # DESIGN
 
-Project package milestone: `1.0.0`.
+Project package milestone: `1.1.0`.
 
 ## Design Goal
 The site should preserve the current UCDT landing-page UI while staying maintainable, data-driven, and easy to extend as more products reach release status.
@@ -31,12 +31,14 @@ The site should preserve the current UCDT landing-page UI while staying maintain
 ## Component Strategy
 - Keep `components/download-page.tsx` focused on state and composition only
 - Keep repeated presentational sections in `components/download-page-sections.tsx`
+- Keep shared Tailwind-first spacing and small alignment conventions in `components/layout-spacing.ts`
 - Keep shared SVG icons in `components/site-icons.tsx`
 - Keep product content and release metadata in `data/products.ts`
 - Prefer global utility classes for repeatable glass, card, and motion treatments
 
 ## Content Strategy
 - Bilingual Chinese / English copy from the first release
+- Prefer concise English UI copy over literal line-by-line translation when shorter phrasing improves card rhythm or prevents awkward wrap lines
 - Released apps show real version information and GitHub Releases links
 - Unreleased apps use polished placeholder visuals rather than empty states
 - Workflow responsibility copy should remain product-specific and data-driven
@@ -75,6 +77,7 @@ The site should preserve the current UCDT landing-page UI while staying maintain
 - The page is optimized as a single-column narrative on mobile rather than a re-laid-out alternate experience
 - Watch for full-bleed sections inside centered containers; background layers should break out to viewport width when needed, while content remains constrained
 - Product cards and CTA rows should wrap rather than shrink below comfortable tap targets
+- Use `text-wrap: balance` / Tailwind `text-balance` selectively on high-visibility headings, card titles, FAQ prompts, and summary text when it reduces visually awkward short final lines
 - In the `Module Responsibilities` grid, use a stacked icon-then-text header at desktop widths so long English labels do not visually compress the product logos
 
 ## 踩坑经验
@@ -85,3 +88,4 @@ The site should preserve the current UCDT landing-page UI while staying maintain
 - For motion polish, prefer low-risk opacity/translate transitions and always consider `prefers-reduced-motion`
 - When product logos sit beside bilingual labels, fix the logo render box and, if needed, separate the logo onto its own row at larger breakpoints instead of letting copy length distort the mark
 - For the screenshot lightbox, keep overlay/content visibility decoupled from animation bootstrap timing so modal scroll lock never outlives visible content
+- On the current Windows workstation, prefer `pwsh` as the default shell for local project commands and documentation examples

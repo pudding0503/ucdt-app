@@ -3,6 +3,15 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import Image, { type StaticImageData } from "next/image";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
+import {
+  pageMediaGridGapClass,
+  pageSectionBodyClass,
+  pageSectionHeaderClass,
+  pageSectionTextClass,
+  pageSectionTightSpacingClass,
+  pageSectionTitleClass,
+  pageSectionWideSpacingClass,
+} from "@/components/layout-spacing";
 import type { Locale, Product } from "@/data/products";
 
 type LightboxRect = {
@@ -61,12 +70,12 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
   const previewText =
     locale === "zh"
       ? "快速查看当前应用的界面、主要交互与整体布局。"
-      : "Quickly review the current app's interface, interactions, and layout.";
+      : "A quick look at the app UI, core interactions, and layout.";
   const screenshotsHeading = locale === "zh" ? "应用展示" : "Screenshots";
   const screenshotText =
     locale === "zh"
       ? "简洁直观的界面，专为提升专注力和操作速度而设计。"
-      : "A clean, intuitive interface designed for focus and speed.";
+      : "A clean, focused UI built for speed.";
   const previewMockGridStyle: CSSProperties = {
     backgroundImage:
       "linear-gradient(to right, rgb(52, 178, 123) 1px, transparent 1px), linear-gradient(rgb(52, 178, 123) 1px, transparent 1px)",
@@ -277,15 +286,15 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
 
   return (
     <div className="relative overflow-visible">
-      <section className="relative overflow-visible pb-28 pt-6 sm:pb-36 sm:pt-10">
+      <section className={`relative overflow-visible ${pageSectionWideSpacingClass} pt-6 sm:pt-10`}>
         <div className="pointer-events-none absolute left-1/2 top-0 z-0 h-full w-screen -translate-x-1/2 overflow-hidden">
           <div className="absolute inset-0" style={previewBackdropStyle} />
         </div>
-        <div className="relative z-10 text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-white md:text-4xl">{previewHeading}</h2>
-          <p className="mx-auto mt-4 max-w-xl text-lg font-light text-white/40">{previewText}</p>
+        <div className={pageSectionHeaderClass}>
+          <h2 className={pageSectionTitleClass}>{previewHeading}</h2>
+          <p className={pageSectionTextClass}>{previewText}</p>
         </div>
-        <div className="relative z-10 mx-auto mt-12 max-w-5xl">
+        <div className={`relative z-10 mx-auto max-w-5xl ${pageSectionBodyClass}`}>
           <div className="relative">
             <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#0d1015] shadow-[0_24px_80px_rgba(0,0,0,0.36)]">
               <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-black/28 via-transparent to-transparent" />
@@ -350,12 +359,12 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
       </section>
 
       {screenshots.length ? (
-        <section className="relative overflow-hidden pb-6 pt-10 sm:pb-10 sm:pt-14">
-          <div className="relative z-10 text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-white md:text-4xl">{screenshotsHeading}</h2>
-            <p className="mx-auto mt-4 max-w-xl text-lg font-light text-white/40">{screenshotText}</p>
+        <section className={`relative overflow-hidden ${pageSectionTightSpacingClass}`}>
+          <div className={pageSectionHeaderClass}>
+            <h2 className={pageSectionTitleClass}>{screenshotsHeading}</h2>
+            <p className={pageSectionTextClass}>{screenshotText}</p>
           </div>
-          <div className="relative z-10 mx-auto mt-12 grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-2 md:gap-12">
+          <div className={`relative z-10 mx-auto grid max-w-6xl grid-cols-1 md:grid-cols-2 ${pageMediaGridGapClass} ${pageSectionBodyClass}`}>
             {screenshots.map((image, index) => (
               <button
                 key={`${product.id}-${index}`}

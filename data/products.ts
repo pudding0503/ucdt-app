@@ -78,7 +78,7 @@ export const siteMeta = {
   },
   description: {
     zh: "低碳城市数字孪生应用\n为研究者、开发者与设计团队构建。",
-    en: "Urban Carbon DTs' Series Apps.\nBuilt for researchers, developers, and design teams.",
+    en: "UCDT Series Apps.\nBuilt for researchers, developers, and design teams.",
   },
   logo: siteLogo,
   githubUrl: "https://github.com/buildingdata",
@@ -105,37 +105,37 @@ export const products: Product[] = [
     },
     category: {
       zh: "遥感图像 → 建筑轮廓",
-      en: "Remote Sensing → Building Footprints",
+      en: "Remote Sensing → Footprints",
     },
     tagline: {
       zh: "把遥感影像转换为可用于城市数字孪生的建筑轮廓底板。",
-      en: "Turn remote sensing imagery into building footprints ready for urban digital twin workflows.",
+      en: "Turn remote imagery into footprint-ready base layers.",
     },
     description: {
       zh: "面向大尺度城市空间数据准备的提取核心，聚焦从影像、栅格与识别结果中生成稳定的建筑轮廓成果。",
-      en: "A foundation layer for large-scale urban data preparation, focused on deriving reliable building footprints from imagery, rasters, and recognition outputs.",
+      en: "A data-prep foundation for large urban contexts, focused on turning imagery, rasters, and recognition outputs into stable building footprints.",
     },
     workflowRole: {
       zh: "从遥感图像中提取建筑几何信息，为整套流程提供基础轮廓数据。",
-      en: "Extract building geometry from remote sensing imagery and provide the foundational footprint layer for the full workflow.",
+      en: "Extract building geometry from remote imagery and supply the footprint base for the full workflow.",
     },
     highlights: [
       {
         zh: "面向批量城市区块的轮廓提取流程",
-        en: "Batch-ready footprint extraction workflows for city blocks",
+        en: "Batch-ready footprint extraction for city blocks",
       },
       {
         zh: "为后续 Processing / Analysis 模块提供标准底图",
-        en: "Standardized base geometry for downstream Processing and Analysis modules",
+        en: "Base geometry for Processing and Analysis",
       },
       {
         zh: "适合后续接入模型推理与人工修订流程",
-        en: "Ready to connect with model inference and human QA pipelines",
+        en: "Ready for model inference and human QA",
       },
     ],
     releaseNote: {
       zh: "当前页面展示为概念版模块，待正式发行后接入下载。",
-      en: "This module is currently presented as a concept preview and will be connected to downloads after release.",
+      en: "Shown as a concept module for now. Downloads will be added after release.",
     },
     platforms: ["Windows", "Linux"],
     version: "Planned",
@@ -170,37 +170,37 @@ export const products: Product[] = [
     },
     category: {
       zh: "数据聚合 / 网格导出",
-      en: "Data Aggregation and Gridding",
+      en: "Data Aggregation / Grid Export",
     },
     tagline: {
       zh: "自动化城市建筑模型提取和数据聚合，并按网格导出。",
-      en: "Automated extraction and aggregation of urban building models, with export by grid.",
+      en: "Automate building-model extraction, data aggregation, and grid export.",
     },
     description: {
       zh: "Processing Core 专注于投影检查、坐标处理、DEM 高程聚合与网格化输出，是 UCDT 工作流中的数据整形中枢。",
-      en: "Processing Core focuses on projection checks, coordinate handling, DEM aggregation, and gridded outputs as the data-shaping hub within the UCDT workflow.",
+      en: "Processing Core handles projection checks, coordinates, DEM aggregation, and gridded outputs as the data-shaping hub of the UCDT workflow.",
     },
     workflowRole: {
       zh: "负责多源城市数据的聚合与标准化，并导出统一网格成果。",
-      en: "Aggregate and standardize heterogeneous urban datasets, then export a shared gridded output.",
+      en: "Aggregate and standardize urban datasets, then export shared grid outputs.",
     },
     highlights: [
       {
         zh: "统一 UTM / 经纬度输入与投影验证",
-        en: "Unified UTM / geographic inputs with projection validation",
+        en: "Unified UTM / lat-long input checks",
       },
       {
         zh: "支持 DEM 聚合与 footprint 网格化处理",
-        en: "Support for DEM aggregation and footprint-based gridding",
+        en: "DEM aggregation and footprint-based gridding",
       },
       {
         zh: "面向大规模任务的并发与分块策略",
-        en: "Concurrency and chunking strategies for large processing jobs",
+        en: "Chunking and concurrency for large jobs",
       },
     ],
     releaseNote: {
       zh: "当前稳定版本通过 GitHub Releases 分发，适合进入正式数据预处理流程。",
-      en: "The stable release is currently distributed through GitHub Releases and is ready for production preprocessing workflows.",
+      en: "Distributed through GitHub Releases and ready for production preprocessing.",
     },
     platforms: ["Windows"],
     version: "v1.16.0",
@@ -241,37 +241,37 @@ export const products: Product[] = [
     },
     category: {
       zh: "网格分析 / 指标计算",
-      en: "Grid Analysis and Metric Calculation",
+      en: "Grid Analysis / Metrics",
     },
     tagline: {
       zh: "以城市网格为单元，计算并分析城市碳排放指标。",
-      en: "Run indicator-driven analysis on top of shared baseline data and turn urban questions into navigable outputs.",
+      en: "Analyze urban carbon indicators on top of shared grid data.",
     },
     description: {
       zh: "Analysis Core 负责导入共享基础数据、组织分析层级与空间概览，是面向指标计算、统计展示与结果研判的核心前端。",
-      en: "Analysis Core organizes shared datasets, analysis levels, and spatial overviews as the main interface for indicator computation, statistics, and result interpretation.",
+      en: "Analysis Core organizes shared data, analysis levels, and spatial views for metrics, statistics, and result review.",
     },
     workflowRole: {
       zh: "在统一数据底座上拉通各层指标，形成可浏览的分析结果。",
-      en: "Connect indicators across shared baseline data and turn them into navigable analysis outputs.",
+      en: "Connect indicators across shared data and turn them into browsable results.",
     },
     highlights: [
       {
         zh: "共享数据工作流与分析层级管理",
-        en: "Shared-data workflow with analysis-level management",
+        en: "Shared-data workflow and analysis-level control",
       },
       {
         zh: "空间概览、主题设置与版本信息一体化",
-        en: "Integrated spatial overview, theming, and version information",
+        en: "Spatial overview, theming, and version info in one place",
       },
       {
         zh: "为 Computing / Planning 模块提供结果支撑",
-        en: "Provides downstream support for Computing and Planning modules",
+        en: "Supports downstream Computing and Planning",
       },
     ],
     releaseNote: {
       zh: "最新版本已通过 GitHub Releases 提供，可直接进入指标分析与结果浏览工作流。",
-      en: "The latest version is available on GitHub Releases and can be used immediately for indicator analysis and result review.",
+      en: "Available on GitHub Releases and ready for indicator analysis and result review.",
     },
     platforms: ["Windows"],
     version: "v2.2.0",
@@ -316,15 +316,15 @@ export const products: Product[] = [
     },
     tagline: {
       zh: "连接基础数据与能耗碳排模拟，为城市运行评估提供统一计算引擎。",
-      en: "Bridge shared urban data with energy and carbon simulations through a unified computing engine.",
+      en: "Bridge shared data and energy-carbon simulation with one computing engine.",
     },
     description: {
       zh: "Computing Core 将聚焦模拟参数组织、场景计算与结果汇总，支持从城市网格到片区尺度的能耗与碳评估。",
-      en: "Computing Core will focus on simulation parameters, scenario runs, and result aggregation for energy and carbon evaluation from grid to district scale.",
+      en: "Computing Core will focus on simulation parameters, scenario runs, and result summaries from grid to district scale.",
     },
     workflowRole: {
       zh: "承担建筑模型标准化与能耗、碳排放模拟，连接分析到评估计算。",
-      en: "Standardize building models and run energy/carbon simulations to bridge analysis with quantitative evaluation.",
+      en: "Standardize models and run energy-carbon simulation between analysis and evaluation.",
     },
     highlights: [
       {
@@ -333,16 +333,16 @@ export const products: Product[] = [
       },
       {
         zh: "支持多场景参数计算与结果回写",
-        en: "Support multi-scenario parameter runs and result feedback",
+        en: "Run multi-scenario parameters and write results back",
       },
       {
         zh: "为规划与策略对比提供量化底座",
-        en: "Provide a quantitative basis for planning and strategy comparison",
+        en: "Quantitative support for planning and strategy comparison",
       },
     ],
     releaseNote: {
       zh: "当前以概念展示形式呈现，后续将补充真实界面与下载入口。",
-      en: "Currently shown as a concept preview; real interface assets and downloads will be added later.",
+      en: "Shown as a concept preview for now. Real UI assets and downloads will follow.",
     },
     platforms: ["Windows", "Linux"],
     version: "Planned",
@@ -377,37 +377,37 @@ export const products: Product[] = [
     },
     category: {
       zh: "节能设计 / 规划决策",
-      en: "Energy Design and Planning Decisions",
+      en: "Energy Design / Planning",
     },
     tagline: {
       zh: "把多源分析与模拟结果整合为可推演、可对比、可沟通的规划决策界面。",
-      en: "Translate multi-source analysis and simulation results into a planning interface for scenario comparison and decision support.",
+      en: "Turn multi-source analysis and simulation outputs into a planning UI for comparison and communication.",
     },
     description: {
       zh: "Planning Core 将面向规划方案评估、参数对比与策略表达，形成从数据到决策的最后一层工作界面。",
-      en: "Planning Core is intended for evaluating planning proposals, comparing parameters, and communicating strategies as the final decision layer of the suite.",
+      en: "Planning Core is aimed at scheme evaluation, parameter comparison, and strategy communication as the final layer from data to decisions.",
     },
     workflowRole: {
       zh: "把各层指标转化为规划决策依据，用于方案比较、论证与设计协同。",
-      en: "Turn cross-layer indicators into planning guidance for scheme comparison, decision support, and design collaboration.",
+      en: "Turn cross-layer indicators into planning guidance for comparison, justification, and design collaboration.",
     },
     highlights: [
       {
         zh: "把 Analysis / Computing 结果聚合到决策视图",
-        en: "Aggregate Analysis and Computing outputs into a decision-ready view",
+        en: "Bring Analysis / Computing outputs into one decision view",
       },
       {
         zh: "支持方案对比、指标对照与可视化表达",
-        en: "Support scenario comparison, metric benchmarking, and visual communication",
+        en: "Scenario comparison, metric benchmarking, and visual communication",
       },
       {
         zh: "为规划论证与跨团队协作提供统一入口",
-        en: "Provide a unified entry point for planning justification and cross-team collaboration",
+        en: "One entry point for planning review and cross-team collaboration",
       },
     ],
     releaseNote: {
       zh: "当前以视觉占位展示产品方向，待后续正式发布后更新下载与说明。",
-      en: "The current view is a visual placeholder for product direction and will be updated with downloads after release.",
+      en: "Shown as a visual placeholder for now. Downloads and docs will be updated after release.",
     },
     platforms: ["Web", "Desktop"],
     version: "Planned",
@@ -427,15 +427,15 @@ export const products: Product[] = [
 export const ecosystemHighlights: LocalizedText[] = [
   {
     zh: "统一的数据底座让 5 款核心软件形成连续工作流，而不是割裂的独立工具。",
-    en: "A shared data foundation turns the five core applications into one continuous workflow instead of isolated tools.",
+    en: "A shared data base turns five core apps into one continuous workflow.",
   },
   {
     zh: "每款软件有独立主题色与角色定位，但视觉系统保持一致，适合长期扩展。",
-    en: "Each application has its own accent color and role, while the overall visual system stays consistent for long-term growth.",
+    en: "Each app has its own accent and role, while the visual system stays consistent.",
   },
   {
     zh: "提供 Linux CLI 以及 Windows 和 macOS GUI 应用。",
-    en: "Provide Linux CLI and Windows and macOS GUI applications.",
+    en: "Linux CLI plus Windows and macOS GUI apps.",
   },
 ];
 
@@ -447,27 +447,27 @@ export const faqItems: Array<{ question: LocalizedText; answer: LocalizedText }>
     },
     answer: {
       zh: "当前已发行的是 UCDT Processing Core 和 UCDT Analysis Core，下载按钮会跳转到各自的 GitHub Releases 页面。",
-      en: "UCDT Processing Core and UCDT Analysis Core are currently released, and their download buttons lead to the corresponding GitHub Releases pages.",
+      en: "UCDT Processing Core and UCDT Analysis Core are currently available. Their download buttons open the corresponding GitHub Releases pages.",
     },
   },
   {
     question: {
       zh: "其余三款软件为什么没有下载入口？",
-      en: "Why do the other three tools not have download links yet?",
+      en: "Why don’t the other three tools have download links yet?",
     },
     answer: {
       zh: "Extraction、Computing 与 Planning 仍处于概念展示或研发阶段，因此当前只展示产品方向、工作流位置与视觉占位。",
-      en: "Extraction, Computing, and Planning are still at the concept or development stage, so the current site shows their product direction, workflow role, and visual placeholders only.",
+      en: "Extraction, Computing, and Planning are still in concept or development stages, so the site currently shows only their direction, workflow role, and visual placeholders.",
     },
   },
   {
     question: {
       zh: "页面后续能否接入更多文档或案例？",
-      en: "Can the site be extended with docs or case studies later?",
+      en: "Can this site grow to include docs or case studies?",
     },
     answer: {
       zh: "可以。当前结构是数据驱动的，后续可继续加入发布记录、文档入口、示例项目与案例页面。",
-      en: "Yes. The current structure is data-driven and can be extended with release notes, docs, sample projects, and case-study pages later.",
+      en: "Yes. The structure is data-driven and can later add release notes, docs, sample projects, and case studies.",
     },
   },
   {
@@ -477,7 +477,7 @@ export const faqItems: Array<{ question: LocalizedText; answer: LocalizedText }>
     },
     answer: {
       zh: "可以通过 GitHub Issues 或官方支持渠道反馈软件问题。",
-      en: "Users can report software issues via GitHub Issues or official support channels.",
+      en: "Report issues via GitHub Issues or official support channels.",
     },
   },
 ];

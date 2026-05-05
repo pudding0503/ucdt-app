@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import { products, siteMeta } from "@/data/products";
 
 const configuredSiteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+const defaultProductionSiteUrl = "https://ucdt-app.vercel.app";
 const fallbackSiteUrl = "http://localhost:3000";
+const resolvedSiteUrl = configuredSiteUrl ?? (process.env.VERCEL ? defaultProductionSiteUrl : fallbackSiteUrl);
+const hasPublicSiteOrigin = resolvedSiteUrl !== fallbackSiteUrl;
 
-export const siteOrigin = configuredSiteUrl
-  ? new URL(configuredSiteUrl.startsWith("http") ? configuredSiteUrl : `https://${configuredSiteUrl}`)
-  : new URL(fallbackSiteUrl);
+export const siteOrigin = new URL(resolvedSiteUrl.startsWith("http") ? resolvedSiteUrl : `https://${resolvedSiteUrl}`);
 
 const keywords = [
   "UCDT",
@@ -43,12 +44,12 @@ export const siteMetadata: Metadata = {
   icons: {
     icon: [
       { url: "/favicon.ico", type: "image/x-icon", sizes: "any" },
-      { url: "/icon", type: "image/png", sizes: "512x512" },
+      { url: "/icon", type: "image/svg+xml", sizes: "512x512" },
     ],
-    apple: [{ url: "/apple-icon", sizes: "180x180", type: "image/png" }],
+    apple: [{ url: "/apple-icon", sizes: "180x180", type: "image/svg+xml" }],
     shortcut: ["/favicon.ico"],
   },
-  alternates: configuredSiteUrl
+  alternates: hasPublicSiteOrigin
     ? {
         canonical: "/",
         languages: {
@@ -65,7 +66,7 @@ export const siteMetadata: Metadata = {
     title: "UCDT Series | Urban Digital Twin Downloads",
     description:
       "A bilingual UCDT landing page for releases, previews, and product overview across extraction, processing, analysis, computing, and planning workflows.",
-    url: configuredSiteUrl ? "/" : undefined,
+    url: hasPublicSiteOrigin ? "/" : undefined,
     images: [
       {
         url: "/opengraph-image",

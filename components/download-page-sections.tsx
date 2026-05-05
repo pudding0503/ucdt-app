@@ -3,6 +3,25 @@ import type { CSSProperties } from "react";
 import bitcookiesWords from "@/assets/bitcookies-words.svg";
 import workflowLink from "@/assets/link.png";
 import {
+  pageBulletDotClass,
+  pageBulletRowClass,
+  pageCompactGapClass,
+  pageGridGapClass,
+  pageInlineDotClass,
+  pageInlineDotTextClass,
+  pagePanelPaddingClass,
+  pageSectionBlockTopClass,
+  pageSectionHeaderClass,
+  pageSectionLargeBlockTopClass,
+  pageSectionShellClass,
+  pageSectionSpacingClass,
+  pageSectionSubBlockTopClass,
+  pageSectionTightSpacingClass,
+  pageSectionTitleClass,
+  pageSectionWideSpacingClass,
+  pageStackGapClass,
+} from "@/components/layout-spacing";
+import {
   DatabaseIcon,
   PaletteIcon,
   SparkIcon,
@@ -23,8 +42,8 @@ import {
 
 const highlightIcons = [DatabaseIcon, PaletteIcon, SparkIcon] as const;
 const statusText: Record<ProductStatus, Record<Locale, string>> = {
-  released: { zh: "现已可用", en: "Available now" },
-  comingSoon: { zh: "敬请期待", en: "Coming soon" },
+  released: { zh: "现已可用", en: "Released" },
+  comingSoon: { zh: "敬请期待", en: "Coming" },
 };
 
 type TopNavProps = {
@@ -149,7 +168,7 @@ export function TopNav({ locale, onLocaleChange, githubUrl, accent }: TopNavProp
 
 export function HeroSection({ locale, activeProduct, isReleased, displayVersion, releaseLines }: HeroSectionProps) {
   return (
-    <section className="relative mx-auto flex min-h-screen w-full max-w-6xl flex-col items-center px-4 pb-22 pt-36 text-center sm:px-6 sm:pb-24 lg:px-8 lg:pt-44 lg:pb-26">
+    <section className={`${pageSectionShellClass} relative flex min-h-[48rem] flex-col items-center pt-36 text-center sm:min-h-[50rem] lg:min-h-[52rem] lg:pt-44 ${pageSectionWideSpacingClass}`}>
       <div className="pointer-events-none absolute left-1/2 top-10 z-0 h-[88rem] w-[140vw] max-w-none -translate-x-1/2 hero-grid opacity-[0.08] sm:top-12 sm:h-[92rem] lg:top-16 lg:h-[96rem]" />
       <div className="max-w-4xl">
         <div className="release-pill group relative z-30 inline-flex cursor-default items-center gap-2 rounded-full px-4 py-2 text-xs text-white/82 sm:text-sm">
@@ -159,10 +178,10 @@ export function HeroSection({ locale, activeProduct, isReleased, displayVersion,
           </span>
           <span>
             {isReleased
-              ? `${displayVersion}. ${locale === "zh" ? "当前公开版本" : "Public release available"}`
+              ? `${displayVersion}. ${locale === "zh" ? "当前公开版本" : "Public release"}`
               : locale === "zh"
                 ? `${displayVersion}. 当前为概念预览阶段`
-                : `${displayVersion}. Currently shown as a concept preview`}
+                : `${displayVersion}. Concept preview`}
           </span>
           {releaseLines.length ? (
             <div className="release-popover pointer-events-none invisible absolute left-1/2 top-full z-50 mt-3 w-[22rem] -translate-x-1/2 translate-y-3 scale-[0.97] rounded-2xl p-4 text-left opacity-0 transition-standard group-hover:visible group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100">
@@ -188,11 +207,11 @@ export function HeroSection({ locale, activeProduct, isReleased, displayVersion,
           </span>
         </h1>
 
-        <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-white/58 sm:text-lg">{activeProduct.tagline[locale]}</p>
+        <p className="mx-auto mt-6 max-w-2xl text-balance text-base leading-7 text-white/58 sm:text-lg">{activeProduct.tagline[locale]}</p>
 
-        <p className="mt-5 text-sm text-white/36 sm:text-base">{activeProduct.category[locale]}</p>
+        <p className="mt-5 text-balance text-sm text-white/36 sm:text-base">{activeProduct.category[locale]}</p>
 
-        <div id="downloads" className="mt-9 sm:mt-10">
+        <div id="downloads" className={pageSectionBlockTopClass}>
           <DownloadsSection locale={locale} activeProduct={activeProduct} />
         </div>
       </div>
@@ -202,8 +221,8 @@ export function HeroSection({ locale, activeProduct, isReleased, displayVersion,
 
 export function DownloadsSection({ locale, activeProduct }: DownloadsSectionProps) {
   return (
-    <div className="flex flex-col items-center gap-4 sm:gap-5">
-      <div className="flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:flex-wrap">
+    <div className={`flex flex-col items-center ${pageStackGapClass}`}>
+      <div className={`flex flex-col items-stretch justify-center ${pageCompactGapClass} sm:flex-row sm:flex-wrap`}>
         {activeProduct.downloads.map((download) => {
           const platformLabel = download.platform === "macOS" ? "Mac" : download.platform;
           const label = locale === "zh" ? `下载 ${platformLabel}` : `Download for ${platformLabel}`;
@@ -272,7 +291,7 @@ export function DownloadsSection({ locale, activeProduct }: DownloadsSectionProp
 
 export function ProductSwitcher({ locale, activeId, onProductChange }: ProductSwitcherProps) {
   return (
-    <div className="mx-auto grid max-w-6xl gap-3 sm:grid-cols-2 xl:grid-cols-5">
+    <div className={`mx-auto grid max-w-6xl ${pageCompactGapClass} sm:grid-cols-2 xl:grid-cols-5`}>
       {products.map((product) => {
         const selected = product.id === activeId;
         return (
@@ -297,8 +316,8 @@ export function ProductSwitcher({ locale, activeId, onProductChange }: ProductSw
                 {product.badge[locale]}
               </span>
             </div>
-            <p className="mt-4 text-lg font-semibold text-white">{getShortName(product.slug)}</p>
-            <p className="mt-2 text-sm text-white/62">{product.category[locale]}</p>
+            <p className="mt-4 text-balance text-lg font-semibold text-white">{getShortName(product.slug)}</p>
+            <p className="mt-2 text-balance text-sm text-white/62">{product.category[locale]}</p>
           </button>
         );
       })}
@@ -308,9 +327,9 @@ export function ProductSwitcher({ locale, activeId, onProductChange }: ProductSw
 
 export function ProductOverviewSection({ locale, activeProduct, activeStatus, displayVersion }: ProductOverviewSectionProps) {
   return (
-    <section className="relative mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
-      <div className="glass-panel rounded-[2rem] p-6 sm:p-8">
-        <div className="flex flex-col items-start gap-4 text-left">
+    <section className={`${pageSectionShellClass} ${pageSectionTightSpacingClass}`}>
+      <div className={`glass-panel rounded-[2rem] ${pagePanelPaddingClass}`}>
+        <div className={`flex flex-col items-start text-left ${pageStackGapClass}`}>
           <div className="flex flex-wrap items-center gap-3">
             <span
               className="rounded-full border px-3 py-1 text-xs font-medium uppercase tracking-[0.22em]"
@@ -327,11 +346,11 @@ export function ProductOverviewSection({ locale, activeProduct, activeStatus, di
             </span>
           </div>
 
-          <p className="text-lg text-white/68">{activeProduct.category[locale]}</p>
-          <p className="max-w-2xl text-sm leading-7 text-white/58 sm:text-base">{activeProduct.releaseNote[locale]}</p>
+          <p className="text-balance text-lg text-white/68">{activeProduct.category[locale]}</p>
+          <p className="max-w-2xl text-balance text-sm leading-7 text-white/58 sm:text-base">{activeProduct.releaseNote[locale]}</p>
         </div>
 
-        <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className={`${pageSectionBlockTopClass} grid ${pageGridGapClass} md:grid-cols-2 xl:grid-cols-4`}>
           <DetailCard label={locale === "zh" ? "版本" : "Version"} value={displayVersion} />
           <DetailCard label={locale === "zh" ? "平台" : "Platforms"} value={activeProduct.platforms.join(" · ")} compact />
           <div className="detail-card rounded-[1.5rem] p-5">
@@ -356,10 +375,10 @@ export function ProductOverviewSection({ locale, activeProduct, activeStatus, di
           </div>
         </div>
 
-        <div className="mt-8 grid gap-3">
+        <div className={`${pageSectionBlockTopClass} grid ${pageCompactGapClass}`}>
           {activeProduct.highlights.map((item) => (
-            <div key={item.en} className="glass-chip flex items-start gap-3 rounded-[1.25rem] px-4 py-4">
-              <span className="mt-1 inline-block h-2.5 w-2.5 rounded-full" style={{ backgroundColor: activeProduct.accent.primary }} />
+            <div key={item.en} className={`glass-chip rounded-[1.25rem] px-4 py-4 ${pageBulletRowClass}`}>
+              <span className={pageBulletDotClass} style={{ backgroundColor: activeProduct.accent.primary }} />
               <p className="text-sm leading-7 text-white/72 sm:text-base">{item[locale]}</p>
             </div>
           ))}
@@ -371,15 +390,15 @@ export function ProductOverviewSection({ locale, activeProduct, activeStatus, di
 
 export function HighlightsSection({ locale, activeProduct }: HighlightsSectionProps) {
   return (
-    <section id="highlights" className="relative mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
-      <div className="glass-panel rounded-[2rem] p-6 sm:p-8">
+    <section id="highlights" className={`${pageSectionShellClass} ${pageSectionWideSpacingClass}`}>
+      <div className={`glass-panel rounded-[2rem] ${pagePanelPaddingClass}`}>
         <p className="text-sm uppercase tracking-[0.3em] text-white/40">{locale === "zh" ? "体系亮点" : "Ecosystem Highlights"}</p>
-        <h2 className="mt-3 max-w-3xl text-2xl font-semibold text-white sm:text-3xl">
+        <h2 className="mt-4 max-w-3xl text-balance text-2xl font-semibold text-white sm:text-3xl">
           {locale === "zh"
             ? "从数据准备、模拟计算到规划决策，UCDT 的五个核心模块可以自然串联。"
-            : "From data preparation and simulation to planning and decision-making, UCDT’s five core modules can be seamlessly integrated."}
+            : "From data prep and simulation to planning, UCDT’s five core apps work as one connected flow."}
         </h2>
-        <div className="mt-8 grid gap-4 md:grid-cols-3">
+        <div className={`${pageSectionBlockTopClass} grid ${pageGridGapClass} md:grid-cols-3`}>
           {ecosystemHighlights.map((item, index) => {
             const Icon = highlightIcons[index] ?? SparkIcon;
 
@@ -391,22 +410,22 @@ export function HighlightsSection({ locale, activeProduct }: HighlightsSectionPr
                 >
                   <Icon className="h-5 w-5" />
                 </div>
-                <p className="text-sm leading-7 text-white/72 sm:text-base">{item[locale]}</p>
+                <p className="text-balance text-sm leading-7 text-white/72 sm:text-base">{item[locale]}</p>
               </div>
             );
           })}
         </div>
 
-        <div className="mt-12">
+        <div className={pageSectionLargeBlockTopClass}>
           <div className="max-w-3xl">
             <p className="text-sm uppercase tracking-[0.3em] text-white/40">{locale === "zh" ? "模块分工" : "Module Responsibilities"}</p>
-            <p className="mt-3 text-sm leading-7 text-white/54 sm:text-base">
+            <p className="mt-4 text-balance text-sm leading-7 text-white/54 sm:text-base">
               {locale === "zh"
                 ? "按软件查看五个核心模块分别承担的工作内容，便于快速理解整套体系如何串联。"
-                : "See how each core app contributes a distinct role within the full five-part workflow."}
+                : "See how each app fits into the five-part workflow."}
             </p>
           </div>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+          <div className={`${pageSectionSubBlockTopClass} grid ${pageGridGapClass} sm:grid-cols-2 xl:grid-cols-5`}>
             {products.map((product) => {
               const selected = product.id === activeProduct.id;
 
@@ -427,29 +446,29 @@ export function HighlightsSection({ locale, activeProduct }: HighlightsSectionPr
                       </div>
                     </div>
                     <div className="min-w-0 xl:w-full">
-                      <p className="truncate text-base font-semibold text-white xl:overflow-visible xl:whitespace-normal xl:text-clip">{getShortName(product.slug)}</p>
-                      <p className="mt-1 text-xs text-white/46">{product.category[locale]}</p>
+                      <p className="truncate text-balance text-base font-semibold text-white xl:overflow-visible xl:whitespace-normal xl:text-clip">{getShortName(product.slug)}</p>
+                      <p className="mt-1 text-balance text-xs text-white/46">{product.category[locale]}</p>
                     </div>
                   </div>
-                  <div className="mt-4 flex items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-white/42">
-                    <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: product.accent.primary }} />
+                  <div className={`mt-4 text-[11px] uppercase tracking-[0.24em] text-white/42 ${pageInlineDotTextClass}`}>
+                    <span className={pageInlineDotClass} style={{ backgroundColor: product.accent.primary }} />
                     <span>{product.badge[locale]}</span>
                   </div>
-                  <p className="mt-4 text-sm leading-7 text-white/72">{product.workflowRole[locale]}</p>
+                  <p className="mt-4 text-balance text-sm leading-7 text-white/72">{product.workflowRole[locale]}</p>
                 </div>
               );
             })}
           </div>
         </div>
 
-        <div className="mt-14 rounded-[2rem] bg-white/[0.02] px-4 py-6 sm:px-6 sm:py-8">
-          <div className="mb-8 text-center">
-            <h3 className="text-2xl font-semibold text-white sm:text-3xl">{locale === "zh" ? "流程关系图" : "Workflow Map"}</h3>
-            <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-white/50 sm:text-base">
-              {locale === "zh" ? "UCDT 系列软件流程关系" : "UCDT Series Apps Flow Diagram."}
+        <div className={`${pageSectionLargeBlockTopClass} rounded-[2rem] bg-white/[0.02] px-4 py-6 sm:px-6 sm:py-8`}>
+          <div className="text-center">
+            <h3 className="text-balance text-2xl font-semibold text-white sm:text-3xl">{locale === "zh" ? "流程关系图" : "Workflow Map"}</h3>
+            <p className="mx-auto mt-4 max-w-2xl text-balance text-sm leading-7 text-white/50 sm:text-base">
+              {locale === "zh" ? "UCDT 系列软件流程关系" : "How the UCDT apps connect."}
             </p>
           </div>
-          <div className="mx-auto max-w-6xl">
+          <div className={`${pageSectionSubBlockTopClass} mx-auto max-w-6xl`}>
             <Image src={workflowLink} alt="UCDT workflow map" className="h-auto w-full" priority />
           </div>
         </div>
@@ -460,10 +479,12 @@ export function HighlightsSection({ locale, activeProduct }: HighlightsSectionPr
 
 export function FaqSection({ locale, openFaq, onFaqChange }: FaqSectionProps) {
   return (
-    <section id="faq" className="relative mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+    <section id="faq" className={`${pageSectionShellClass} ${pageSectionSpacingClass}`}>
       <div className="mx-auto max-w-3xl">
-        <h2 className="text-center text-3xl font-bold text-white md:text-4xl">{locale === "zh" ? "常见问题" : "Frequently Asked Questions"}</h2>
-        <div className="mt-12 space-y-2">
+        <div className={pageSectionHeaderClass}>
+          <h2 className={pageSectionTitleClass}>{locale === "zh" ? "常见问题" : "FAQ"}</h2>
+        </div>
+        <div className="mt-10 space-y-2 sm:mt-12">
           {faqItems.map((item, index) => {
             const isOpen = openFaq === index;
 
@@ -474,10 +495,10 @@ export function FaqSection({ locale, openFaq, onFaqChange }: FaqSectionProps) {
                   onClick={() => onFaqChange(isOpen ? null : index)}
                   className="group flex w-full items-center justify-between py-6 text-left focus:outline-none"
                 >
-                  <span className="text-lg font-medium text-white/90 transition-colors group-hover:text-[var(--accent)]">{item.question[locale]}</span>
+                  <span className="text-balance text-lg font-medium text-white/90 transition-colors group-hover:text-[var(--accent)]">{item.question[locale]}</span>
                   <span className={`ml-4 text-2xl text-white/40 transition-standard ${isOpen ? "rotate-45" : ""}`}>+</span>
                 </button>
-                {isOpen ? <div className="pb-6 pr-10 text-sm leading-7 text-white/60 sm:text-base">{item.answer[locale]}</div> : null}
+                {isOpen ? <div className="pb-6 pr-10 text-balance text-sm leading-7 text-white/60 sm:text-base">{item.answer[locale]}</div> : null}
               </div>
             );
           })}
@@ -491,15 +512,15 @@ export function SiteFooter({ locale }: SiteFooterProps) {
   const footerDescriptionLines = siteMeta.description[locale].split("\n");
 
   return (
-    <footer className="relative mx-auto w-full max-w-7xl px-4 pb-20 pt-10 sm:px-6 lg:px-8">
+    <footer className="relative mx-auto w-full max-w-7xl px-4 pb-16 pt-8 sm:px-6 sm:pb-20 sm:pt-10 lg:px-8">
       <div className="mx-auto w-full max-w-7xl">
         <hr className="border-white/10" />
-        <div className="relative z-10 flex flex-col items-center px-6 py-12 text-center">
-          <div className="mb-8 flex items-center gap-3">
+        <div className="relative z-10 flex flex-col items-center px-6 py-10 text-center sm:py-12">
+          <div className="flex items-center gap-3">
             <Image src={siteMeta.logo} alt="UCDT Series" className="h-8 w-auto opacity-90" />
             <span className="text-xl font-bold tracking-tight text-white">{siteMeta.name}</span>
           </div>
-          <p className="mb-10 max-w-md text-sm leading-relaxed text-white/40">
+          <p className="mt-8 max-w-md text-balance text-sm leading-relaxed text-white/40 sm:mt-10">
             {footerDescriptionLines.map((line, index) => (
               <span key={line}>
                 {line}
@@ -507,14 +528,14 @@ export function SiteFooter({ locale }: SiteFooterProps) {
               </span>
             ))}
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[10px] sm:text-[11px]" style={{ color: "#686C6E" }}>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[10px] sm:mt-10 sm:text-[11px]" style={{ color: "#686C6E" }}>
             <p>GPL 3.0 License</p>
             <span className="hidden sm:inline">·</span>
             <p>© 2026 <a href="https://bitcookies.nousbuild.com/" target="_blank" rel="noopener noreferrer">Bitcookies</a></p>
             <span className="hidden sm:inline">·</span>
             <p>Developed by <a href="https://www.nousbuild.org/" target="_blank" rel="noopener noreferrer">ONing</a></p>
           </div>
-          <Image src={bitcookiesWords} alt="Bitcookies" width={140} height={40} className="mt-8 h-8 w-auto opacity-80" />
+          <Image src={bitcookiesWords} alt="Bitcookies" width={140} height={40} className="mt-8 h-8 w-auto opacity-80 sm:mt-10" />
         </div>
       </div>
     </footer>

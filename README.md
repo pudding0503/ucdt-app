@@ -6,8 +6,8 @@
 
 ## Project Status
 
-- Current project package version: `1.0.0`
-- The landing page is now in a stable maintenance phase with the current single-route UI preserved
+- Current project package version: `1.1.0`
+- The landing page is in an active maintenance phase with the current single-route UI preserved
 
 ## Features
 
@@ -27,6 +27,7 @@
 - `app/page.tsx`: single-route entry that renders the download page
 - `components/download-page.tsx`: stateful composition layer for locale, active product, and FAQ state
 - `components/download-page-sections.tsx`: reusable presentational sections and display helpers
+- `components/layout-spacing.ts`: shared Tailwind-first spacing and small alignment grammar for reusable section rhythm
 - `components/product-preview.tsx`: preview video lifecycle, screenshot grid, and stabilized lightbox behavior
 - `components/site-icons.tsx`: shared SVG icon primitives used across sections
 - `data/products.ts`: source of truth for product copy, status, accents, versions, links, and workflow roles
@@ -35,6 +36,14 @@
 - `app/icon.tsx`, `app/apple-icon.tsx`, `app/opengraph-image.tsx`, `app/twitter-image.tsx`, `app/manifest.ts`: generated asset and metadata routes
 
 ## Development
+
+Preferred shell on the current Windows workstation:
+
+```bash
+pwsh
+```
+
+All commands below are intended to run in `pwsh` from the repository root.
 
 Install dependencies locally in this project:
 
@@ -59,6 +68,7 @@ pnpm build
 - This project uses `pnpm` as the only supported package manager.
 - Install dependencies from the repository root so packages are placed in the current project only.
 - Do not use `npm install` for this repository.
+- On the current Windows machine, prefer PowerShell 7.4 (`pwsh`) over legacy Windows PowerShell.
 
 ## Content Source
 
@@ -79,7 +89,8 @@ Keep new marketing copy, FAQ content, workflow descriptions, and release-facing 
 ## Metadata and Icons
 
 - App Router metadata is centralized in `lib/site-metadata.ts`
-- `NEXT_PUBLIC_SITE_URL` can be set later to enable canonical URL and absolute Open Graph URL output
+- On Vercel, metadata now defaults to the production origin `https://ucdt-app.vercel.app/` for canonical URL and absolute Open Graph / Twitter URL output
+- `NEXT_PUBLIC_SITE_URL` remains the override if the project later moves to a custom domain
 - The site currently defaults to author `ONing` and publisher `Bitcookies`
 - `app/favicon.ico` is the committed browser favicon source
 - `app/icon.tsx` and `app/apple-icon.tsx` provide the route-based app icon and Apple touch icon
@@ -88,12 +99,14 @@ Keep new marketing copy, FAQ content, workflow descriptions, and release-facing 
 ## Maintenance Notes
 
 - Reuse the shared utility classes in `app/globals.css` before adding new long Tailwind class strings
+- Reuse the shared section rhythm and alignment helpers in `components/layout-spacing.ts` before introducing new one-off spacing or dot/text alignment classes
 - Prefer extending `components/download-page-sections.tsx` or splitting out another section component instead of re-growing `download-page.tsx`
 - Keep the page visually stable unless a design task explicitly asks for UI changes
+- Use `text-balance` selectively for high-visibility headings, card titles, FAQ prompts, and long UI-facing summaries to reduce awkward single-word or single-character wrap lines
 - When adding a released desktop app, update the product entry with `releaseUrl`, `repoUrl`, `license.url`, version, and platform availability together
 - Keep screenshot preview behavior robust: Radix Dialog handles portal/overlay/scroll lock, while the lightweight proxy layer only adds motion polish and must never be the sole path to showing the enlarged image
 - In the desktop `Module Responsibilities` cards, keep the icon on its own row at `xl` widths so bilingual text length does not squeeze the product mark
-- Local media tooling currently available on the primary Windows workstation: `magick convert`, `ffmpeg`, and an NVIDIA RTX 4060 Ti for future accelerated media-processing workflows
+- Local terminal/media tooling currently available on the primary Windows workstation: `pwsh`, `magick convert`, `ffmpeg`, and an NVIDIA RTX 4060 Ti for future accelerated media-processing workflows
 - The current repository root and project folder name is `ucdt-app`
 
 ## Deployment

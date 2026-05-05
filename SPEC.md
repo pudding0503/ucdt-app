@@ -2,7 +2,7 @@
 
 This project is a bilingual Next.js download page for the UCDT software suite and must remain a single-page, tab-switched experience designed for Vercel deployment.
 
-Project package milestone: `1.3.0`.
+Project package milestone: `1.4.0`.
 
 ## Package Management
 - The project must use `pnpm` as its package manager.
@@ -26,6 +26,7 @@ Project package milestone: `1.3.0`.
 - Treat `data/products.ts` as the source of truth for product copy, accent colors, state, versions, and links.
 - Treat GitHub Releases as the release source of truth for shipped apps.
 - Only Processing and Analysis currently have public GitHub repositories / release links.
+- In the hero download row, macOS should expose a CPU-selection dropdown, Windows should stay a direct download button, and Linux should route users to the corresponding GitHub repository when source access is the intended path.
 - Keep workflow role descriptions data-driven in `data/products.ts`.
 - Current released products:
   - Processing Core: `v1.16.0`
@@ -43,6 +44,7 @@ Project package milestone: `1.3.0`.
 - Reuse the shared Tailwind-first spacing and alignment grammar in `components/layout-spacing.ts` instead of introducing fresh one-off spacing values for repeated patterns.
 - If Hero or product switcher spacing needs special breakpoint behavior, encode it as dedicated shared helpers in `components/layout-spacing.ts` instead of forcing reuse of broad section padding tokens.
 - Use `text-wrap: balance` / Tailwind `text-balance` selectively on high-visibility headings, card titles, FAQ prompts, and long summary text when it improves wrap quality.
+- The release notes hover card, macOS download dropdown, and macOS quarantine info tooltip should share the same opaque popover surface treatment unless a future design task explicitly diverges them.
 - Keep shared section rendering logic reusable instead of re-growing a single monolithic page component.
 - Screenshot previews must remain centered, use a dark blurred overlay, and preserve stable close behavior through overlay click and keyboard escape.
 - Motion polish for screenshot previews must be optional in practice: if animation setup fails, the enlarged image still needs to appear immediately.

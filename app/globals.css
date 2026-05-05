@@ -189,10 +189,39 @@ a[href]:not(.interactive-chip):not(.platform-button):focus-visible {
   }
 
   .release-popover {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(8, 18, 28, 0.95);
+    isolation: isolate;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: linear-gradient(180deg, #202a35 0%, #16202a 100%);
     box-shadow: 0 18px 60px rgba(0, 0, 0, 0.52);
-    backdrop-filter: blur(24px);
+    backdrop-filter: blur(18px);
+  }
+
+  .release-popover::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .release-popover::after {
+    content: "";
+    position: absolute;
+    left: 1.5rem;
+    right: 1.5rem;
+    top: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.12), transparent);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .release-popover > * {
+    position: relative;
+    z-index: 1;
   }
 
   @keyframes content-fade-in {

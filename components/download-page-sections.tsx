@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import bitcookiesWords from "@/assets/bitcookies-words.svg";
 import workflowLink from "@/assets/link.png";
 import {
@@ -199,8 +199,6 @@ export function HeroSection({ locale, activeProduct, isReleased, displayVersion,
           </span>
           {releaseLines.length ? (
             <div className="release-popover pointer-events-none invisible absolute left-1/2 top-full z-50 mt-3 w-[22rem] -translate-x-1/2 translate-y-3 scale-[0.97] rounded-2xl p-4 text-left opacity-0 transition-standard group-hover:visible group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100">
-              <div className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-              <div className="absolute inset-0 rounded-2xl bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))]" />
               <div className="relative">
                 <p className="mb-2 text-[10px] uppercase tracking-[0.28em] text-white/42">{locale === "zh" ? "版本更新说明" : "GitHub Release Notes"}</p>
                 <div className="space-y-1.5 text-xs leading-6 text-white/92">
@@ -235,8 +233,19 @@ export function HeroSection({ locale, activeProduct, isReleased, displayVersion,
 
 export function DownloadsSection({ locale, activeProduct }: DownloadsSectionProps) {
   const [copiedCommand, setCopiedCommand] = useState(false);
+  const [openPlatformMenu, setOpenPlatformMenu] = useState<"macOS" | null>(null);
+  const macMenuRef = useRef<HTMLDivElement | null>(null);
   const quarantineCommand = "xattr -rd com.apple.quarantine /Applications/UCDT-xx.app";
   const noteTextStyle = { color: activeProduct.accent.secondary };
+  const macMenuItems = locale === "zh"
+    ? [
+        { title: "Apple Silicon" },
+        { title: "Intel Chip", detail: "旧款 Mac (x64)" },
+      ]
+    : [
+        { title: "Apple Silicon" },
+        { title: "Intel Chip", detail: "Older Macs (x64)" },
+      ];
 
   useEffect(() => {
     if (!copiedCommand) {
@@ -247,6 +256,36 @@ export function DownloadsSection({ locale, activeProduct }: DownloadsSectionProp
 
     return () => window.clearTimeout(timeoutId);
   }, [copiedCommand]);
+
+  useEffect(() => {
+    setOpenPlatformMenu(null);
+  }, [activeProduct.id]);
+
+  useEffect(() => {
+    if (openPlatformMenu !== "macOS") {
+      return;
+    }
+
+    const handlePointerDown = (event: MouseEvent) => {
+      if (macMenuRef.current && !macMenuRef.current.contains(event.target as Node)) {
+        setOpenPlatformMenu(null);
+      }
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpenPlatformMenu(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [openPlatformMenu]);
 
   const handleCopyCommand = async () => {
     try {
@@ -259,26 +298,79 @@ export function DownloadsSection({ locale, activeProduct }: DownloadsSectionProp
 
   return (
     <div className={`flex flex-col items-center ${pageStackGapClass}`}>
-      <div className={`flex flex-col items-stretch justify-center ${pageCompactGapClass} sm:flex-row sm:flex-wrap`}>
+      <div key={activeProduct.id} className={`flex flex-col items-stretch justify-center ${pageCompactGapClass} sm:flex-row sm:flex-wrap`}>
         {activeProduct.downloads.map((download) => {
+          const isMacDownload = download.platform === "macOS";
+          const isLinuxDownload = download.platform === "Linux";
           const platformLabel = download.platform === "macOS" ? "Mac" : download.platform;
           const label = locale === "zh" ? `下载 ${platformLabel}` : `Download for ${platformLabel}`;
-          const isAvailable = Boolean(download.available && download.href);
+          const directHref = isLinuxDownload ? activeProduct.repoUrl : download.href;
+          const isDirectAction = Boolean(isLinuxDownload ? activeProduct.repoUrl : download.available && download.href);
+          const isMacMenuEnabled = isMacDownload && activeProduct.status === "released";
+          const macMenuOpen = openPlatformMenu === "macOS";
 
-          if (isAvailable) {
+          if (isMacDownload) {
+            return (
+              <div key={download.platform} ref={macMenuRef} className="relative min-w-[200px]">
+                <button
+                  type="button"
+                  onClick={() => setOpenPlatformMenu((current) => (current === "macOS" ? null : "macOS"))}
+                  disabled={!isMacMenuEnabled}
+                  aria-expanded={isMacMenuEnabled ? macMenuOpen : undefined}
+                  aria-haspopup={isMacMenuEnabled ? "menu" : undefined}
+                  aria-controls={isMacMenuEnabled ? `${activeProduct.id}-mac-download-menu` : undefined}
+                  className={`platform-button relative inline-flex w-full items-center justify-center rounded-lg px-4 py-2.5 text-sm font-medium transition-standard ${isMacMenuEnabled ? "platform-button--active text-black" : "text-white/45"}`}
+                >
+                  <div className="flex items-center gap-2.5">
+                    <PlatformIcon platform={download.platform} className="mb-0.5 h-[18px] w-[18px]" />
+                    <span>{label}</span>
+                  </div>
+                  <ChevronIcon className={`absolute right-4 h-[10px] w-[10px] transition-standard ${isMacMenuEnabled ? "text-black/50" : "text-white/30"} ${macMenuOpen ? "rotate-180" : "rotate-0"}`} />
+                </button>
+
+                {isMacMenuEnabled ? (
+                  <div
+                    id={`${activeProduct.id}-mac-download-menu`}
+                    role="menu"
+                    className={`release-popover absolute left-0 top-full z-50 mt-3 w-full min-w-[200px] overflow-hidden rounded-lg text-left transition-standard ${macMenuOpen ? "visible translate-y-0 scale-100 opacity-100" : "pointer-events-none invisible translate-y-3 scale-[0.97] opacity-0"}`}
+                  >
+                    <div className="relative">
+                      {macMenuItems.map((item, index) => (
+                        <button
+                          key={item.title}
+                          type="button"
+                          role="menuitem"
+                          className={`group block w-full text-left transition-standard hover:bg-white/[0.04] ${index === 0 ? "rounded-t-lg px-4 pb-2.5 pt-4" : "border-t border-white/30 px-4 py-2.5"}`}
+                        >
+                          <p className="text-sm font-semibold leading-6 text-white/94 transition-standard group-hover:text-white">{item.title}</p>
+                          {item.detail ? (
+                            <p className="mt-0.5 text-[11px] leading-4 text-white/30 transition-standard group-hover:text-white/42">{item.detail}</p>
+                          ) : null}
+                        </button>
+                      ))}
+                      <div className="text-balance border-t border-white/30 px-4 pb-4 pt-3 text-center text-[10px] leading-[0.85rem] text-white/30">
+                        {locale === "zh" ? "* 安装完成后，请阅读下方说明。" : "* Read command and instruction below post installation."}
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
+              </div>
+            );
+          }
+
+          if (isDirectAction && directHref) {
             return (
               <a
                 key={download.platform}
-                href={download.href}
+                href={directHref}
                 target="_blank"
                 rel="noreferrer"
-                className="platform-button platform-button--active inline-flex min-w-[200px] items-center justify-between rounded-lg px-4 py-2.5 text-sm font-medium text-black"
+                className="platform-button platform-button--active inline-flex min-w-[200px] items-center justify-center rounded-lg px-4 py-2.5 text-sm font-medium text-black"
               >
                 <div className="flex items-center gap-2.5">
                   <PlatformIcon platform={download.platform} className="mb-0.5 h-[18px] w-[18px]" />
                   <span>{label}</span>
                 </div>
-                <ChevronIcon className="h-[10px] w-[10px] text-black/50" />
               </a>
             );
           }
@@ -288,13 +380,12 @@ export function DownloadsSection({ locale, activeProduct }: DownloadsSectionProp
               key={download.platform}
               type="button"
               disabled
-              className="platform-button inline-flex min-w-[200px] items-center justify-between rounded-lg px-4 py-2.5 text-sm font-medium text-white/45"
+              className="platform-button inline-flex min-w-[200px] items-center justify-center rounded-lg px-4 py-2.5 text-sm font-medium text-white/45"
             >
               <div className="flex items-center gap-2.5">
                 <PlatformIcon platform={download.platform} className="mb-0.5 h-[18px] w-[18px]" />
                 <span>{label}</span>
               </div>
-              <ChevronIcon className="h-[10px] w-[10px] text-white/30" />
             </button>
           );
         })}
@@ -306,9 +397,7 @@ export function DownloadsSection({ locale, activeProduct }: DownloadsSectionProp
             <span className="opacity-50" style={noteTextStyle}>{locale === "zh" ? "如果 macOS 提示 “App is damaged”，请运行以下命令" : 'If macOS says "App is damaged", run this command'}</span>
             <span className="group relative inline-flex">
               <InfoIcon className="h-3 w-3 cursor-help text-white/20 transition-colors hover:text-white/40" />
-              <span className="release-popover pointer-events-none invisible absolute bottom-full left-1/2 z-50 mb-2 w-56 -translate-x-1/2 translate-y-2 scale-[0.97] rounded-xl p-2.5 opacity-0 transition-standard group-hover:visible group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100">
-                <span className="absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-                <span className="absolute inset-0 rounded-xl bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))]" />
+              <span className="release-popover pointer-events-none invisible absolute bottom-full left-1/2 z-50 mb-2 w-56 -translate-x-1/2 translate-y-2 scale-[0.97] rounded-2xl p-2.5 opacity-0 transition-standard group-hover:visible group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100">
                 <span className="relative block text-left text-[10px] leading-5 text-white/72">
                   {locale === "zh"
                     ? "首次下载的未签名应用在 macOS 上可能会被隔离，这条命令用于移除隔离属性。"

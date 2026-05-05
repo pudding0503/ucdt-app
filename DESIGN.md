@@ -1,6 +1,6 @@
 # DESIGN
 
-Project package milestone: `1.3.0`.
+Project package milestone: `1.4.0`.
 
 ## Design Goal
 The site should preserve the current UCDT landing-page UI while staying maintainable, data-driven, and easy to extend as more products reach release status.
@@ -63,8 +63,10 @@ The site should preserve the current UCDT landing-page UI while staying maintain
   - download CTA behavior
   - preview visuals
   - centered wordmark and platform download buttons
+- In the hero download row, only macOS uses a dropdown interaction; Windows stays a direct release action, while Linux directs users to the product repository for source-oriented access
 - Navigation remains lightweight and anchored within the same page
 - Motion should stay subtle and reusable; prefer shared transition utilities over ad-hoc animation declarations
+- Release notes hover, macOS download dropdown, and the macOS quarantine info tooltip should share the same opaque popover surface language for color, border, and shadow treatment
 - Screenshot previews should open in a stable centered dialog with a dark blurred overlay; motion polish should remain secondary to guaranteed content visibility
 - The preview lightbox should keep the current thumbnail-to-center expansion feel, but fallback paths must always show the final image immediately if geometry or animation setup fails
 

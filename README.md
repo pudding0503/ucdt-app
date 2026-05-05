@@ -6,7 +6,7 @@
 
 ## Project Status
 
-- Current project package version: `1.3.0`
+- Current project package version: `1.4.0`
 - The landing page is in an active maintenance phase with the current single-route UI preserved
 
 ## Features
@@ -14,6 +14,7 @@
 - Single-page tabbed product experience for 5 UCDT applications
 - Dark glassmorphism visual system for the UCDT landing experience
 - Centered hero layout with GitHub CTA and per-platform download buttons
+- macOS download button uses a two-option CPU dropdown, Windows stays direct-download, and Linux routes users to the relevant GitHub repository for source-based builds
 - Chinese / English content switching
 - Real release metadata and GitHub Releases links for Processing and Analysis
 - Procedural concept visuals retained as the main preview layer
@@ -103,10 +104,12 @@ Keep new marketing copy, FAQ content, workflow descriptions, and release-facing 
 - Reuse the shared utility classes in `app/globals.css` before adding new long Tailwind class strings
 - Reuse the shared section rhythm and alignment helpers in `components/layout-spacing.ts` before introducing new one-off spacing or dot/text alignment classes
 - Prefer dedicated shared helpers in `components/layout-spacing.ts` for responsive Hero and product switcher spacing instead of reusing broad section padding tokens when a section needs different breakpoint behavior
+- Keep the release notes hover card, macOS download dropdown, and macOS quarantine info tooltip visually aligned on the same opaque `release-popover` surface unless a design task explicitly separates them again
 - Prefer extending `components/download-page-sections.tsx` or splitting out another section component instead of re-growing `download-page.tsx`
 - Keep the page visually stable unless a design task explicitly asks for UI changes
 - Use `text-balance` selectively for high-visibility headings, card titles, FAQ prompts, and long UI-facing summaries to reduce awkward single-word or single-character wrap lines
 - When adding a released desktop app, update the product entry with `releaseUrl`, `repoUrl`, `license.url`, version, and platform availability together
+- Keep the download CTA row feeling synchronized when switching active products; the platform buttons should update as a group instead of appearing to refresh left-to-right
 - Keep screenshot preview behavior robust: Radix Dialog handles portal/overlay/scroll lock, while the lightweight proxy layer only adds motion polish and must never be the sole path to showing the enlarged image
 - In the desktop `Module Responsibilities` cards, keep the icon on its own row at `xl` widths so bilingual text length does not squeeze the product mark
 - Local terminal/media tooling currently available on the primary Windows workstation: `pwsh`, `magick convert`, `ffmpeg`, and an NVIDIA RTX 4060 Ti for future accelerated media-processing workflows

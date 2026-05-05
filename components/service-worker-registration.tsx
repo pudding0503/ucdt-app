@@ -10,7 +10,7 @@ export function ServiceWorkerRegistration() {
 
     const register = async () => {
       try {
-        const registration = await navigator.serviceWorker.register("/sw.js", { scope: "/" });
+        const registration = await navigator.serviceWorker.register("/sw", { scope: "/" });
         void registration.update();
       } catch {
         return;

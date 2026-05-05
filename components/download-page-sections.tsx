@@ -3,23 +3,35 @@ import { useEffect, useState, type CSSProperties } from "react";
 import bitcookiesWords from "@/assets/bitcookies-words.svg";
 import workflowLink from "@/assets/link.png";
 import {
-  pageBulletDotClass,
-  pageBulletRowClass,
+  pageSectionShellClass,
+  pageSectionTightSpacingClass,
+  pageSectionSpacingClass,
+  pageSectionWideSpacingClass,
+  pageSectionHeaderClass,
+  pageSectionTitleClass,
+  pageSectionBlockTopClass,
+  pageSectionSubBlockTopClass,
+  pageSectionLargeBlockTopClass,
+  pagePanelPaddingClass,
+  pageHeroSectionClass,
+  pageHeroBackdropGridClass,
+  pageProductSwitchBadgeClass,
+  pageProductSwitchCardClass,
+  pageProductSwitchCategoryClass,
+  pageProductSwitchHeaderClass,
+  pageProductSwitchIconFrameClass,
+  pageProductSwitchIconImageClass,
+  pageProductSwitchIconInnerClass,
+  pageProductSwitchTitleClass,
+  pageProductSwitcherGridClass,
+  pageProductSwitcherWrapClass,
+  pageStackGapClass,
   pageCompactGapClass,
   pageGridGapClass,
-  pageInlineDotClass,
+  pageBulletRowClass,
+  pageBulletDotClass,
   pageInlineDotTextClass,
-  pagePanelPaddingClass,
-  pageSectionBlockTopClass,
-  pageSectionHeaderClass,
-  pageSectionLargeBlockTopClass,
-  pageSectionShellClass,
-  pageSectionSpacingClass,
-  pageSectionSubBlockTopClass,
-  pageSectionTightSpacingClass,
-  pageSectionTitleClass,
-  pageSectionWideSpacingClass,
-  pageStackGapClass,
+  pageInlineDotClass,
 } from "@/components/layout-spacing";
 import {
   DatabaseIcon,
@@ -170,8 +182,8 @@ export function TopNav({ locale, onLocaleChange, githubUrl, accent }: TopNavProp
 
 export function HeroSection({ locale, activeProduct, isReleased, displayVersion, releaseLines }: HeroSectionProps) {
   return (
-    <section className={`${pageSectionShellClass} relative flex min-h-[48rem] flex-col items-center pt-36 text-center sm:min-h-[50rem] lg:min-h-[52rem] lg:pt-44 ${pageSectionWideSpacingClass}`}>
-      <div className="pointer-events-none absolute left-1/2 top-10 z-0 h-[88rem] w-[140vw] max-w-none -translate-x-1/2 hero-grid opacity-[0.08] sm:top-12 sm:h-[92rem] lg:top-16 lg:h-[96rem]" />
+    <section className={`${pageSectionShellClass} ${pageHeroSectionClass}`}>
+      <div className={pageHeroBackdropGridClass} />
       <div className="max-w-4xl">
         <div className="release-pill group relative z-30 inline-flex cursor-default items-center gap-2 rounded-full px-4 py-2 text-xs text-white/82 sm:text-sm">
           <span className="relative flex h-3 w-3 items-center justify-center">
@@ -329,36 +341,38 @@ export function DownloadsSection({ locale, activeProduct }: DownloadsSectionProp
 
 export function ProductSwitcher({ locale, activeId, onProductChange }: ProductSwitcherProps) {
   return (
-    <div className={`mx-auto grid max-w-6xl ${pageCompactGapClass} sm:grid-cols-2 xl:grid-cols-5`}>
-      {products.map((product) => {
-        const selected = product.id === activeId;
-        return (
-          <button
-            key={product.id}
-            type="button"
-            onClick={() => onProductChange(product.id)}
-            className="product-switch-card rounded-[1.6rem] border px-4 py-4 text-left backdrop-blur-md"
-            style={{
-              borderColor: selected ? product.accent.primary : "rgba(255,255,255,0.1)",
-              background: selected ? `linear-gradient(180deg, rgba(13,18,28,0.98), ${product.accent.surface})` : "rgba(10,14,22,0.82)",
-              boxShadow: selected ? `0 20px 50px ${product.accent.glow}` : "none",
-            }}
-          >
-            <div className="flex items-center justify-between gap-3">
-              <div className="flex h-[58px] w-[58px] items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-[#111827] p-1.5">
-                <div className="flex aspect-square h-11 w-11 items-center justify-center overflow-hidden rounded-xl">
-                  <Image src={product.icon} alt={`${product.slug} icon`} width={44} height={44} className="h-11 w-11 object-cover" />
+    <div className={pageProductSwitcherWrapClass}>
+      <div className={pageProductSwitcherGridClass}>
+        {products.map((product) => {
+          const selected = product.id === activeId;
+          return (
+            <button
+              key={product.id}
+              type="button"
+              onClick={() => onProductChange(product.id)}
+              className={pageProductSwitchCardClass}
+              style={{
+                borderColor: selected ? product.accent.primary : "rgba(255,255,255,0.1)",
+                background: selected ? `linear-gradient(180deg, rgba(13,18,28,0.98), ${product.accent.surface})` : "rgba(10,14,22,0.82)",
+                boxShadow: selected ? `0 20px 50px ${product.accent.glow}` : "none",
+              }}
+            >
+              <div className={pageProductSwitchHeaderClass}>
+                <div className={pageProductSwitchIconFrameClass}>
+                  <div className={pageProductSwitchIconInnerClass}>
+                    <Image src={product.icon} alt={`${product.slug} icon`} width={44} height={44} className={pageProductSwitchIconImageClass} />
+                  </div>
                 </div>
+                <span className={pageProductSwitchBadgeClass}>
+                  {product.badge[locale]}
+                </span>
               </div>
-              <span className="rounded-full border border-white/10 bg-black/20 px-2.5 py-1 text-[11px] uppercase tracking-[0.2em] text-white/60">
-                {product.badge[locale]}
-              </span>
-            </div>
-            <p className="mt-4 text-balance text-lg font-semibold text-white">{getShortName(product.slug)}</p>
-            <p className="mt-2 text-balance text-sm text-white/62">{product.category[locale]}</p>
-          </button>
-        );
-      })}
+              <p className={pageProductSwitchTitleClass}>{getShortName(product.slug)}</p>
+              <p className={pageProductSwitchCategoryClass}>{product.category[locale]}</p>
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }

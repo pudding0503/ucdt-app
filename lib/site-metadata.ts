@@ -100,6 +100,9 @@ export const siteMetadata: Metadata = {
     title: siteMeta.name,
     statusBarStyle: "black-translucent",
   },
+  other: {
+    "mobile-web-app-capable": "yes",
+  },
   formatDetection: {
     email: false,
     address: false,

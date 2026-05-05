@@ -6,7 +6,7 @@
 
 ## Project Status
 
-- Current project package version: `1.2.0`
+- Current project package version: `1.3.0`
 - The landing page is in an active maintenance phase with the current single-route UI preserved
 
 ## Features
@@ -27,13 +27,13 @@
 - `app/page.tsx`: single-route entry that renders the download page
 - `components/download-page.tsx`: stateful composition layer for locale, active product, and FAQ state
 - `components/download-page-sections.tsx`: reusable presentational sections and display helpers
-- `components/layout-spacing.ts`: shared Tailwind-first spacing and small alignment grammar for reusable section rhythm
+- `components/layout-spacing.ts`: shared Tailwind-first spacing and small alignment grammar for reusable section rhythm, including dedicated Hero and product switcher helpers for responsive spacing maintenance
 - `components/product-preview.tsx`: preview video lifecycle, screenshot grid, and stabilized lightbox behavior
 - `components/site-icons.tsx`: shared SVG icon primitives used across sections
 - `data/products.ts`: source of truth for product copy, status, accents, versions, links, and workflow roles
 - `lib/site-metadata.ts`: shared metadata configuration for layout, Open Graph, Twitter card, and canonical placeholders
 - `app/favicon.ico`: committed favicon binary used for browser favicon resolution
-- `app/icon.tsx`, `app/apple-icon.tsx`, `app/opengraph-image.tsx`, `app/twitter-image.tsx`, `app/manifest.ts`: generated asset and metadata routes
+- `app/icon.tsx`, `app/apple-icon.tsx`, `app/opengraph-image.tsx`, `app/twitter-image.tsx`, `app/manifest.ts`, `app/sw/route.ts`: generated asset, metadata, and service worker routes
 
 ## Development
 
@@ -96,12 +96,13 @@ Keep new marketing copy, FAQ content, workflow descriptions, and release-facing 
 - `assets/logo.png` is the primary PWA / install identity asset and is resized through `lib/pwa-assets.ts`
 - `app/icon.tsx`, `app/apple-icon.tsx`, and `app/pwa-icon-192/route.ts` provide PNG install icons for browser, Apple touch, and manifest usage
 - Open Graph, Twitter, and manifest assets remain generated through App Router metadata routes
-- `components/service-worker-registration.tsx` registers `public/sw.js` in production so the app has real service worker-backed install/runtime support instead of manifest-only metadata
+- `components/service-worker-registration.tsx` registers the dynamic `/sw` route backed by `app/sw/route.ts`, keeping the cache version synchronized with `package.json`
 
 ## Maintenance Notes
 
 - Reuse the shared utility classes in `app/globals.css` before adding new long Tailwind class strings
 - Reuse the shared section rhythm and alignment helpers in `components/layout-spacing.ts` before introducing new one-off spacing or dot/text alignment classes
+- Prefer dedicated shared helpers in `components/layout-spacing.ts` for responsive Hero and product switcher spacing instead of reusing broad section padding tokens when a section needs different breakpoint behavior
 - Prefer extending `components/download-page-sections.tsx` or splitting out another section component instead of re-growing `download-page.tsx`
 - Keep the page visually stable unless a design task explicitly asks for UI changes
 - Use `text-balance` selectively for high-visibility headings, card titles, FAQ prompts, and long UI-facing summaries to reduce awkward single-word or single-character wrap lines

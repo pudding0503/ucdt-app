@@ -4,13 +4,13 @@ import * as Dialog from "@radix-ui/react-dialog";
 import Image, { type StaticImageData } from "next/image";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import {
-  pageMediaGridGapClass,
   pageSectionBodyClass,
   pageSectionHeaderClass,
   pageSectionTextClass,
   pageSectionTightSpacingClass,
   pageSectionTitleClass,
   pageSectionWideSpacingClass,
+  pageMediaGridGapClass,
 } from "@/components/layout-spacing";
 import type { Locale, Product } from "@/data/products";
 

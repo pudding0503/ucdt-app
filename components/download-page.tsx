@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { pageSectionLargeBlockTopClass, pageSectionShellClass } from "@/components/layout-spacing";
+import { pageSectionShellClass, pageSectionLargeBlockTopClass, pageProductSwitcherSectionClass } from "@/components/layout-spacing";
 import { ProductPreview } from "@/components/product-preview";
 import {
   FaqSection,
@@ -64,7 +64,7 @@ export function DownloadPage() {
         releaseLines={releaseLines}
       />
 
-      <section className={`${pageSectionShellClass} z-10 -mt-16 pb-10 sm:-mt-20 sm:pb-12 lg:-mt-24 lg:pb-14 xl:-mt-28`}>
+      <section className={`${pageSectionShellClass} ${pageProductSwitcherSectionClass}`}>
         <div id="products" className="w-full">
           <ProductSwitcher locale={locale} activeId={activeProduct.id} onProductChange={setActiveId} />
         </div>

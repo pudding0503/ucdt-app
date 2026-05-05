@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { CSSProperties } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import bitcookiesWords from "@/assets/bitcookies-words.svg";
 import workflowLink from "@/assets/link.png";
 import {
@@ -25,6 +25,8 @@ import {
   DatabaseIcon,
   PaletteIcon,
   SparkIcon,
+  CheckIcon,
+  CopyIcon,
   GitHubIcon,
   InfoIcon,
   ChevronIcon,
@@ -220,6 +222,29 @@ export function HeroSection({ locale, activeProduct, isReleased, displayVersion,
 }
 
 export function DownloadsSection({ locale, activeProduct }: DownloadsSectionProps) {
+  const [copiedCommand, setCopiedCommand] = useState(false);
+  const quarantineCommand = "xattr -rd com.apple.quarantine /Applications/UCDT-xx.app";
+  const noteTextStyle = { color: activeProduct.accent.secondary };
+
+  useEffect(() => {
+    if (!copiedCommand) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => setCopiedCommand(false), 1600);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [copiedCommand]);
+
+  const handleCopyCommand = async () => {
+    try {
+      await navigator.clipboard.writeText(quarantineCommand);
+      setCopiedCommand(true);
+    } catch {
+      setCopiedCommand(false);
+    }
+  };
+
   return (
     <div className={`flex flex-col items-center ${pageStackGapClass}`}>
       <div className={`flex flex-col items-stretch justify-center ${pageCompactGapClass} sm:flex-row sm:flex-wrap`}>
@@ -263,10 +288,10 @@ export function DownloadsSection({ locale, activeProduct }: DownloadsSectionProp
         })}
       </div>
 
-      <div className="max-w-md">
+      <div className={`max-w-md ${pageSectionSubBlockTopClass}`}>
         <div className="flex flex-col items-center gap-1.5">
-          <p className="flex items-center gap-1 text-[10px] text-white/30 sm:text-xs">
-            <span>{locale === "zh" ? "如果 macOS 提示 “App is damaged”，请运行以下命令" : 'If macOS says "App is damaged", run this command'}</span>
+          <p className="flex items-center gap-1 text-[9px] sm:text-[11px]">
+            <span className="opacity-50" style={noteTextStyle}>{locale === "zh" ? "如果 macOS 提示 “App is damaged”，请运行以下命令" : 'If macOS says "App is damaged", run this command'}</span>
             <span className="group relative inline-flex">
               <InfoIcon className="h-3 w-3 cursor-help text-white/20 transition-colors hover:text-white/40" />
               <span className="release-popover pointer-events-none invisible absolute bottom-full left-1/2 z-50 mb-2 w-56 -translate-x-1/2 translate-y-2 scale-[0.97] rounded-xl p-2.5 opacity-0 transition-standard group-hover:visible group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100">
@@ -280,9 +305,22 @@ export function DownloadsSection({ locale, activeProduct }: DownloadsSectionProp
               </span>
             </span>
           </p>
-          <code className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-[10px] text-white/55 sm:text-xs">
-            xattr -rd com.apple.quarantine /Applications/UCDT-xx.app
-          </code>
+          <div className="inline-flex max-w-full items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5">
+            <code className="min-w-0 overflow-x-auto whitespace-nowrap text-[9px] opacity-60 sm:text-[11px]" style={noteTextStyle}>{quarantineCommand}</code>
+            <button
+              type="button"
+              onClick={handleCopyCommand}
+              className="inline-flex h-5.5 w-5.5 shrink-0 items-center justify-center rounded-full transition-standard hover:bg-white/6"
+              style={{ color: activeProduct.accent.secondary }}
+              aria-label={copiedCommand ? (locale === "zh" ? "已复制命令" : "Command copied") : locale === "zh" ? "复制命令" : "Copy command"}
+              title={copiedCommand ? (locale === "zh" ? "已复制" : "Copied") : locale === "zh" ? "复制" : "Copy"}
+            >
+              <span className="relative h-3 w-3">
+                <CopyIcon className={`absolute inset-0 h-3 w-3 transition-standard ${copiedCommand ? "scale-75 opacity-0" : "scale-100 opacity-60"}`} />
+                <CheckIcon className={`absolute inset-0 h-3 w-3 transition-standard ${copiedCommand ? "scale-100 opacity-80" : "scale-75 opacity-0"}`} />
+              </span>
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -17,6 +17,22 @@ export function InfoIcon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+export function CopyIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 448 512" fill="currentColor" aria-hidden="true" {...props}>
+      <path d="M384 336H192c-35.3 0-64-28.7-64-64V80c0-17.7 14.3-32 32-32h140.1c8.5 0 16.6 3.4 22.6 9.4l84 84c6 6 9.4 14.1 9.4 22.6V272c0 35.3-28.7 64-64 64zM160 0c-44.2 0-80 35.8-80 80V272c0 61.9 50.1 112 112 112H384c44.2 0 80-35.8 80-80V163.9c0-21.2-8.4-41.6-23.4-56.6l-84-84C341.6 8.4 321.2 0 300 0H160zM64 128H48c-26.5 0-48 21.5-48 48V464c0 26.5 21.5 48 48 48H272c26.5 0 48-21.5 48-48V432H272v32H48V176H64V128z" />
+    </svg>
+  );
+}
+
+export function CheckIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 448 512" fill="currentColor" aria-hidden="true" {...props}>
+      <path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3l22.6-22.6c12.5-12.5 32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0l-.1 0z" />
+    </svg>
+  );
+}
+
 export function ChevronIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 448 512" fill="currentColor" aria-hidden="true" {...props}>

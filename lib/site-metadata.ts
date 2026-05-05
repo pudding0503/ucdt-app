@@ -28,7 +28,7 @@ export const siteMetadata: Metadata = {
   metadataBase: siteOrigin,
   applicationName: siteMeta.name,
   title: {
-    default: "UCDT Series | Urban Digital Twin Downloads",
+    default: "UCDT Series | Urban Carbon DTs' Core",
     template: `%s | ${siteMeta.name}`,
   },
   description:
@@ -44,9 +44,9 @@ export const siteMetadata: Metadata = {
   icons: {
     icon: [
       { url: "/favicon.ico", type: "image/x-icon", sizes: "any" },
-      { url: "/icon", type: "image/svg+xml", sizes: "512x512" },
+      { url: "/icon", type: "image/png", sizes: "512x512" },
     ],
-    apple: [{ url: "/apple-icon", sizes: "180x180", type: "image/svg+xml" }],
+    apple: [{ url: "/apple-icon", sizes: "180x180", type: "image/png" }],
     shortcut: ["/favicon.ico"],
   },
   alternates: hasPublicSiteOrigin
@@ -63,7 +63,7 @@ export const siteMetadata: Metadata = {
     locale: "zh_CN",
     alternateLocale: ["en_US"],
     siteName: siteMeta.name,
-    title: "UCDT Series | Urban Digital Twin Downloads",
+    title: "UCDT Series | Urban Carbon DTs' Core",
     description:
       "A bilingual UCDT landing page for releases, previews, and product overview across extraction, processing, analysis, computing, and planning workflows.",
     url: hasPublicSiteOrigin ? "/" : undefined,
@@ -78,7 +78,7 @@ export const siteMetadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "UCDT Series | Urban Digital Twin Downloads",
+    title: "UCDT Series | Urban Carbon DTs' Core",
     description:
       "Explore releases, previews, and workflow roles for the five UCDT desktop tools in one bilingual landing page.",
     creator: "ONing",

@@ -9,7 +9,7 @@ export default function OpenGraphImage() {
       width: size.width,
       height: size.height,
       eyebrow: "UCDT SERIES",
-      title: "Urban Digital Twin Downloads",
+      title: "Urban Carbon DTs' Core",
       description: "Releases, previews, and product roles for Extraction, Processing, Analysis, Computing, and Planning.",
       footer: "Bitcookies · ONing · Vercel-ready Next.js site",
     }),

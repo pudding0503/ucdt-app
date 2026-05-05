@@ -9,7 +9,7 @@ export default function TwitterImage() {
       width: size.width,
       height: size.height,
       eyebrow: "UCDT SERIES",
-      title: "Urban Digital Twin Downloads",
+      title: "Urban Carbon DTs' Core",
       description: "Bilingual releases, previews, and product roles for the five-part UCDT workflow.",
       footer: "Extraction · Processing · Analysis · Computing · Planning",
     }),

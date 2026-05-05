@@ -6,7 +6,7 @@
 
 ## Project Status
 
-- Current project package version: `1.1.0`
+- Current project package version: `1.2.0`
 - The landing page is in an active maintenance phase with the current single-route UI preserved
 
 ## Features
@@ -93,8 +93,10 @@ Keep new marketing copy, FAQ content, workflow descriptions, and release-facing 
 - `NEXT_PUBLIC_SITE_URL` remains the override if the project later moves to a custom domain
 - The site currently defaults to author `ONing` and publisher `Bitcookies`
 - `app/favicon.ico` is the committed browser favicon source
-- `app/icon.tsx` and `app/apple-icon.tsx` provide the route-based app icon and Apple touch icon
+- `assets/logo.png` is the primary PWA / install identity asset and is resized through `lib/pwa-assets.ts`
+- `app/icon.tsx`, `app/apple-icon.tsx`, and `app/pwa-icon-192/route.ts` provide PNG install icons for browser, Apple touch, and manifest usage
 - Open Graph, Twitter, and manifest assets remain generated through App Router metadata routes
+- `components/service-worker-registration.tsx` registers `public/sw.js` in production so the app has real service worker-backed install/runtime support instead of manifest-only metadata
 
 ## Maintenance Notes
 

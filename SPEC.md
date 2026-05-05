@@ -2,7 +2,7 @@
 
 This project is a bilingual Next.js download page for the UCDT software suite and must remain a single-page, tab-switched experience designed for Vercel deployment.
 
-Project package milestone: `1.1.0`.
+Project package milestone: `1.2.0`.
 
 ## Package Management
 - The project must use `pnpm` as its package manager.
@@ -50,6 +50,7 @@ Project package milestone: `1.1.0`.
 ## Asset Requirements
 - Use local runtime assets only.
 - Use `assets/logo.png` as the site logo.
+- Use `assets/logo.png` as the primary PWA install icon source for manifest, browser app icon, and Apple touch icon generation.
 - Each product asset folder should use:
   - `logo.png` for the transparent product logo
   - `logo-rounded.png` for the switcher icon
@@ -59,7 +60,8 @@ Project package milestone: `1.1.0`.
 - Use real Processing and Analysis logos/screenshots where available.
 - Use programmatic placeholder visuals for Extraction, Computing, and Planning until new assets are provided.
 - `app/favicon.ico` should remain the browser favicon source.
-- `app/icon.tsx`, `app/apple-icon.tsx`, `app/manifest.ts`, and social image routes should be handled through Next.js App Router metadata routes.
+- `app/icon.tsx`, `app/apple-icon.tsx`, `app/pwa-icon-192/route.ts`, `app/manifest.ts`, and social image routes should be handled through Next.js App Router metadata routes.
+- Production PWA support must include a registered service worker via `components/service-worker-registration.tsx` and `public/sw.js`.
 
 ## Deployment Requirements
 - The project should remain compatible with Vercel.

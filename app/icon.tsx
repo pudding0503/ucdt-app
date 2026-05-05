@@ -1,8 +1,8 @@
-import { createIconSvg, svgResponse } from "@/lib/metadata-svg";
+import { pngResponse, renderPwaLogoPng } from "@/lib/pwa-assets";
 
 export const size = { width: 512, height: 512 };
-export const contentType = "image/svg+xml";
+export const contentType = "image/png";
 
-export default function Icon() {
-  return svgResponse(createIconSvg({ size: size.width, radius: 96 }));
+export default async function Icon() {
+  return pngResponse(await renderPwaLogoPng(size.width));
 }

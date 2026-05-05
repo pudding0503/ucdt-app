@@ -1,6 +1,6 @@
 # DESIGN
 
-Project package milestone: `1.1.0`.
+Project package milestone: `1.2.0`.
 
 ## Design Goal
 The site should preserve the current UCDT landing-page UI while staying maintainable, data-driven, and easy to extend as more products reach release status.
@@ -72,6 +72,8 @@ The site should preserve the current UCDT landing-page UI while staying maintain
 - Metadata is centralized in `lib/site-metadata.ts`
 - Canonical URL and `metadataBase` should be driven by `NEXT_PUBLIC_SITE_URL` when the production domain is finalized
 - Use truthful metadata only: released apps can expose real release URLs, unreleased apps should remain clearly marked as planned/conceptual
+- `assets/logo.png` is the source of truth for PWA install identity and should stay visually aligned with the browser/app install surface
+- `public/sw.js` plus `components/service-worker-registration.tsx` provide the current service worker baseline; keep any future offline/runtime caching changes low-risk and same-origin focused
 
 ## Responsive Notes
 - The page is optimized as a single-column narrative on mobile rather than a re-laid-out alternate experience

@@ -12,7 +12,7 @@ export const pageSectionLargeBlockTopClass = "mt-10 sm:mt-12 lg:mt-14";
 export const pagePanelPaddingClass = "p-6 sm:p-8";
 
 export const pageHeroSectionClass = "relative flex min-h-[42rem] flex-col items-center pb-10 pt-36 text-center sm:min-h-[44rem] sm:pb-10 lg:min-h-[52rem] lg:pb-16 lg:pt-44";
-export const pageHeroBackdropGridClass = "pointer-events-none absolute left-1/2 top-10 z-0 h-[88rem] w-[140vw] max-w-none -translate-x-1/2 hero-grid opacity-[0.08] sm:top-12 sm:h-[92rem] lg:top-16 lg:h-[96rem]";
+export const pageHeroBackdropGridClass = "pointer-events-none absolute left-1/2 top-10 z-0 h-[88rem] w-[140vw] max-w-none -translate-x-1/2 hero-grid opacity-[0.12] sm:top-12 sm:h-[92rem] lg:top-16 lg:h-[96rem]";
 
 export const pageProductSwitcherSectionClass = "z-10 mt-8 pb-10 sm:-mt-8 sm:pb-12 lg:-mt-24 lg:pb-14 xl:-mt-28";
 export const pageProductSwitcherWrapClass = "mx-auto max-w-6xl";

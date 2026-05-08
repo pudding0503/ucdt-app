@@ -16,19 +16,23 @@ import {
   TopNav,
 } from "@/components/download-page-sections";
 import {
-  products,
   siteMeta,
   type Locale,
+  type Product,
 } from "@/data/products";
 
-export function DownloadPage() {
+type DownloadPageProps = {
+  products: Product[];
+};
+
+export function DownloadPage({ products }: DownloadPageProps) {
   const [locale, setLocale] = useState<Locale>("zh");
-  const [activeId, setActiveId] = useState(products[1].id);
+  const [activeId, setActiveId] = useState(() => products.find((product) => product.id === "processing")?.id ?? products[0].id);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const activeProduct = useMemo(
     () => products.find((product) => product.id === activeId) ?? products[0],
-    [activeId],
+    [activeId, products],
   );
 
   const isReleased = activeProduct.status === "released";
@@ -66,7 +70,7 @@ export function DownloadPage() {
 
       <section className={`${pageSectionShellClass} ${pageProductSwitcherSectionClass}`}>
         <div id="products" className="w-full">
-          <ProductSwitcher locale={locale} activeId={activeProduct.id} onProductChange={setActiveId} />
+          <ProductSwitcher locale={locale} products={products} activeId={activeProduct.id} onProductChange={setActiveId} />
         </div>
 
         <div key={activeProduct.id} className={`content-fade-in w-full max-w-6xl ${pageSectionLargeBlockTopClass}`}>
@@ -81,7 +85,7 @@ export function DownloadPage() {
           activeStatus={activeProduct.status}
           displayVersion={displayVersion}
         />
-        <HighlightsSection locale={locale} activeProduct={activeProduct} />
+        <HighlightsSection locale={locale} activeProduct={activeProduct} products={products} />
       </div>
       <FaqSection locale={locale} openFaq={openFaq} onFaqChange={setOpenFaq} />
       <SiteFooter locale={locale} />

@@ -47,7 +47,6 @@ import {
 import {
   ecosystemHighlights,
   faqItems,
-  products,
   siteMeta,
   type Locale,
   type Product,
@@ -82,6 +81,7 @@ type DownloadsSectionProps = {
 
 type ProductSwitcherProps = {
   locale: Locale;
+  products: Product[];
   activeId: string;
   onProductChange: (productId: string) => void;
 };
@@ -96,6 +96,7 @@ type ProductOverviewSectionProps = {
 type HighlightsSectionProps = {
   locale: Locale;
   activeProduct: Product;
+  products: Product[];
 };
 
 type FaqSectionProps = {
@@ -428,7 +429,7 @@ export function DownloadsSection({ locale, activeProduct }: DownloadsSectionProp
   );
 }
 
-export function ProductSwitcher({ locale, activeId, onProductChange }: ProductSwitcherProps) {
+export function ProductSwitcher({ locale, products, activeId, onProductChange }: ProductSwitcherProps) {
   return (
     <div className={pageProductSwitcherWrapClass}>
       <div className={pageProductSwitcherGridClass}>
@@ -529,7 +530,7 @@ export function ProductOverviewSection({ locale, activeProduct, activeStatus, di
   );
 }
 
-export function HighlightsSection({ locale, activeProduct }: HighlightsSectionProps) {
+export function HighlightsSection({ locale, activeProduct, products }: HighlightsSectionProps) {
   return (
     <section id="highlights" className={`${pageSectionShellClass} ${pageSectionWideSpacingClass}`}>
       <div className={`glass-panel rounded-[2rem] ${pagePanelPaddingClass}`}>

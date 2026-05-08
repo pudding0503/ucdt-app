@@ -1,6 +1,6 @@
 # DESIGN
 
-Project package milestone: `1.4.2`.
+Project package milestone: `1.4.3`.
 
 ## Design Goal
 The site should preserve the current UCDT landing-page UI while staying maintainable, data-driven, and easy to extend as more products reach release status.

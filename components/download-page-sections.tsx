@@ -130,6 +130,67 @@ type ReleaseNoteBlock =
       images: ReleaseNoteImage[];
     };
 
+ type ReleaseNoteInlineSegment =
+   | {
+       type: "text";
+       content: string;
+     }
+   | {
+       type: "code";
+       content: string;
+     }
+   | {
+       type: "link";
+       label: string;
+       href: string;
+     };
+
+ function parseReleaseNoteInlineSegments(content: string): ReleaseNoteInlineSegment[] {
+   const pattern = /(\[[^\]]+\]\((https?:\/\/[^\s)]+)\)|`[^`]+`)/g;
+   const segments: ReleaseNoteInlineSegment[] = [];
+   let lastIndex = 0;
+
+   for (const match of content.matchAll(pattern)) {
+     const [fullMatch] = match;
+     const matchIndex = match.index ?? 0;
+
+     if (matchIndex > lastIndex) {
+       segments.push({
+         type: "text",
+         content: content.slice(lastIndex, matchIndex),
+       });
+     }
+
+     if (fullMatch.startsWith("`") && fullMatch.endsWith("`")) {
+       segments.push({
+         type: "code",
+         content: fullMatch.slice(1, -1),
+       });
+     } else {
+       const linkMatch = fullMatch.match(/^\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)$/);
+
+       if (linkMatch) {
+         segments.push({
+           type: "link",
+           label: linkMatch[1],
+           href: linkMatch[2],
+         });
+       }
+     }
+
+     lastIndex = matchIndex + fullMatch.length;
+   }
+
+   if (lastIndex < content.length) {
+     segments.push({
+       type: "text",
+       content: content.slice(lastIndex),
+     });
+   }
+
+   return segments;
+ }
+
 export function markdownToLines(markdown?: string): ReleaseNoteBlock[] {
   if (!markdown) {
     return [] as ReleaseNoteBlock[];
@@ -230,6 +291,12 @@ export function TopNav({ locale, onLocaleChange, githubUrl, accent }: TopNavProp
 }
 
 export function HeroSection({ locale, activeProduct, isReleased, displayVersion, releaseLines }: HeroSectionProps) {
+  const inlineCodeStyle = {
+    color: activeProduct.accent.secondary,
+    borderColor: activeProduct.accent.glow,
+    background: `linear-gradient(180deg, rgba(6,10,16,0.96), ${activeProduct.accent.surface})`,
+  };
+
   return (
     <section className={`${pageSectionShellClass} ${pageHeroSectionClass}`}>
       <div className={pageHeroBackdropGridClass} />
@@ -253,7 +320,32 @@ export function HeroSection({ locale, activeProduct, isReleased, displayVersion,
                 <div className="space-y-1.5 text-xs leading-6 text-white/92">
                   {releaseLines.map((line, index) => (
                     line.type === "text" ? (
-                      <p key={`${line.content}-${index}`}>{line.content}</p>
+                      <p key={`${line.content}-${index}`}>
+                        {parseReleaseNoteInlineSegments(line.content).map((segment, segmentIndex) => (
+                          segment.type === "text" ? (
+                            <span key={`text-${segmentIndex}`}>{segment.content}</span>
+                          ) : segment.type === "code" ? (
+                            <code
+                              key={`code-${segmentIndex}`}
+                              className="mx-0.5 rounded-md border px-1.5 py-0.5 text-[11px] font-medium"
+                              style={inlineCodeStyle}
+                            >
+                              {segment.content}
+                            </code>
+                          ) : (
+                            <a
+                              key={`link-${segmentIndex}`}
+                              href={segment.href}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="underline underline-offset-2"
+                              style={{ color: activeProduct.accent.secondary }}
+                            >
+                              {segment.label}
+                            </a>
+                          )
+                        ))}
+                      </p>
                     ) : (
                       <div key={`images-${index}`} className="flex flex-wrap items-center gap-1.5">
                         {line.images.map((image) => (

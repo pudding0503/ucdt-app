@@ -71,7 +71,7 @@ type HeroSectionProps = {
   activeProduct: Product;
   isReleased: boolean;
   displayVersion: string;
-  releaseLines: string[];
+  releaseLines: ReleaseNoteBlock[];
 };
 
 type DownloadsSectionProps = {
@@ -115,15 +115,63 @@ export type ThemeStyle = CSSProperties & {
   "--accent-surface"?: string;
 };
 
-export function markdownToLines(markdown?: string) {
+type ReleaseNoteImage = {
+  alt: string;
+  src: string;
+};
+
+type ReleaseNoteBlock =
+  | {
+      type: "text";
+      content: string;
+    }
+  | {
+      type: "images";
+      images: ReleaseNoteImage[];
+    };
+
+export function markdownToLines(markdown?: string): ReleaseNoteBlock[] {
   if (!markdown) {
-    return [] as string[];
+    return [] as ReleaseNoteBlock[];
   }
 
   return markdown
     .split("\n")
-    .map((line) => line.replace(/^###\s*/, "").replace(/^-\s*/, "• ").trim())
-    .filter(Boolean);
+    .flatMap((line) => {
+      const trimmedLine = line.trim();
+
+      if (!trimmedLine) {
+        return [] as ReleaseNoteBlock[];
+      }
+
+      const imageMatches = [...trimmedLine.matchAll(/!\[(.*?)\]\((https?:\/\/[^\s)]+)\)/g)];
+      const textContent = trimmedLine
+        .replace(/!\[(.*?)\]\((https?:\/\/[^\s)]+)\)/g, "")
+        .replace(/^###\s*/, "")
+        .replace(/^-\s*/, "• ")
+        .trim();
+
+      const blocks: ReleaseNoteBlock[] = [];
+
+      if (textContent) {
+        blocks.push({
+          type: "text",
+          content: textContent,
+        });
+      }
+
+      if (imageMatches.length) {
+        blocks.push({
+          type: "images",
+          images: imageMatches.map((match) => ({
+            alt: match[1] || "Release badge",
+            src: match[2],
+          })),
+        });
+      }
+
+      return blocks;
+    });
 }
 
 export function getShortName(slug: string) {
@@ -203,8 +251,23 @@ export function HeroSection({ locale, activeProduct, isReleased, displayVersion,
               <div className="relative">
                 <p className="mb-2 text-[10px] uppercase tracking-[0.28em] text-white/42">{locale === "zh" ? "版本更新说明" : "GitHub Release Notes"}</p>
                 <div className="space-y-1.5 text-xs leading-6 text-white/92">
-                  {releaseLines.map((line) => (
-                    <p key={line}>{line}</p>
+                  {releaseLines.map((line, index) => (
+                    line.type === "text" ? (
+                      <p key={`${line.content}-${index}`}>{line.content}</p>
+                    ) : (
+                      <div key={`images-${index}`} className="flex flex-wrap items-center gap-1.5">
+                        {line.images.map((image) => (
+                          <img
+                            key={`${image.src}-${image.alt}`}
+                            src={image.src}
+                            alt={image.alt}
+                            className="h-5 w-auto rounded-sm"
+                            loading="lazy"
+                            referrerPolicy="no-referrer"
+                          />
+                        ))}
+                      </div>
+                    )
                   ))}
                 </div>
               </div>

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type FocusEvent } from "react";
 import bitcookiesWords from "@/assets/bitcookies-words.svg";
 import workflowLink from "@/assets/link.png";
 import {
@@ -126,6 +126,10 @@ type ReleaseNoteBlock =
       content: string;
     }
   | {
+      type: "listItem";
+      content: string;
+    }
+  | {
       type: "images";
       images: ReleaseNoteImage[];
     };
@@ -206,17 +210,18 @@ export function markdownToLines(markdown?: string): ReleaseNoteBlock[] {
       }
 
       const imageMatches = [...trimmedLine.matchAll(/!\[(.*?)\]\((https?:\/\/[^\s)]+)\)/g)];
+      const isListItem = /^-\s*/.test(trimmedLine);
       const textContent = trimmedLine
         .replace(/!\[(.*?)\]\((https?:\/\/[^\s)]+)\)/g, "")
         .replace(/^###\s*/, "")
-        .replace(/^-\s*/, "• ")
+        .replace(/^-\s*/, "")
         .trim();
 
       const blocks: ReleaseNoteBlock[] = [];
 
       if (textContent) {
         blocks.push({
-          type: "text",
+          type: isListItem ? "listItem" : "text",
           content: textContent,
         });
       }
@@ -291,76 +296,121 @@ export function TopNav({ locale, onLocaleChange, githubUrl, accent }: TopNavProp
 }
 
 export function HeroSection({ locale, activeProduct, isReleased, displayVersion, releaseLines }: HeroSectionProps) {
+  const [releasePopoverOpen, setReleasePopoverOpen] = useState(false);
+  const [releasePopoverVisible, setReleasePopoverVisible] = useState(false);
   const inlineCodeStyle = {
     color: activeProduct.accent.secondary,
     borderColor: activeProduct.accent.glow,
     background: `linear-gradient(180deg, rgba(6,10,16,0.96), ${activeProduct.accent.surface})`,
   };
+  const releasePopoverWrapClass = `absolute left-1/2 top-full z-50 w-[22rem] -translate-x-1/2 pt-3 ${
+    releasePopoverVisible ? "visible pointer-events-auto" : "pointer-events-none invisible"
+  }`;
+  const releasePopoverPanelClass = `release-popover rounded-2xl p-4 text-left transition-standard ${
+    releasePopoverOpen
+      ? "translate-y-0 scale-100 opacity-100"
+      : "translate-y-3 scale-[0.97] opacity-0"
+  }`;
+  const handleReleasePopoverBlur = (event: FocusEvent<HTMLDivElement>) => {
+    if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+      setReleasePopoverOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    if (releasePopoverOpen) {
+      setReleasePopoverVisible(true);
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => setReleasePopoverVisible(false), 300);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [releasePopoverOpen]);
+
+  const renderReleaseNoteInlineSegments = (content: string, keyPrefix: string) => (
+    parseReleaseNoteInlineSegments(content).map((segment, segmentIndex) => (
+      segment.type === "text" ? (
+        <span key={`${keyPrefix}-text-${segmentIndex}`}>{segment.content}</span>
+      ) : segment.type === "code" ? (
+        <code
+          key={`${keyPrefix}-code-${segmentIndex}`}
+          className="mx-0.5 rounded-md border px-1.5 py-0.5 text-[11px] font-medium"
+          style={inlineCodeStyle}
+        >
+          {segment.content}
+        </code>
+      ) : (
+        <a
+          key={`${keyPrefix}-link-${segmentIndex}`}
+          href={segment.href}
+          target="_blank"
+          rel="noreferrer"
+          className="underline underline-offset-2"
+          style={{ color: activeProduct.accent.secondary }}
+        >
+          {segment.label}
+        </a>
+      )
+    ))
+  );
 
   return (
     <section className={`${pageSectionShellClass} ${pageHeroSectionClass}`}>
       <div className={pageHeroBackdropGridClass} />
       <div className="max-w-4xl">
-        <div className="release-pill group relative z-30 inline-flex cursor-default items-center gap-2 rounded-full px-4 py-2 text-xs text-white/82 sm:text-sm">
-          <span className="relative flex h-3 w-3 items-center justify-center">
-            <span className="absolute inline-flex h-3 w-3 rounded-full opacity-70 group-hover:animate-ping" style={{ backgroundColor: activeProduct.accent.primary }} />
-            <span className="relative inline-flex h-2 w-2 rounded-full" style={{ backgroundColor: activeProduct.accent.primary }} />
-          </span>
-          <span>
-            {isReleased
-              ? `${displayVersion}. ${locale === "zh" ? "当前公开版本" : "Public release"}`
-              : locale === "zh"
-                ? `${displayVersion}. 当前为概念预览阶段`
-                : `${displayVersion}. Concept preview`}
-          </span>
+        <div
+          className="relative z-30 inline-flex flex-col items-center"
+          onMouseEnter={() => setReleasePopoverOpen(true)}
+          onMouseLeave={() => setReleasePopoverOpen(false)}
+          onFocus={() => setReleasePopoverOpen(true)}
+          onBlur={handleReleasePopoverBlur}
+        >
+          <div className="release-pill inline-flex cursor-default items-center gap-2 rounded-full px-4 py-2 text-xs text-white/82 sm:text-sm">
+            <span className="relative flex h-3 w-3 items-center justify-center">
+              <span className={`absolute inline-flex h-3 w-3 rounded-full opacity-70 ${releasePopoverOpen ? "animate-ping" : ""}`} style={{ backgroundColor: activeProduct.accent.primary }} />
+              <span className="relative inline-flex h-2 w-2 rounded-full" style={{ backgroundColor: activeProduct.accent.primary }} />
+            </span>
+            <span>
+              {isReleased
+                ? `${displayVersion}. ${locale === "zh" ? "当前公开版本" : "Public release"}`
+                : locale === "zh"
+                  ? `${displayVersion}. 当前为概念预览阶段`
+                  : `${displayVersion}. Concept preview`}
+            </span>
+          </div>
           {releaseLines.length ? (
-            <div className="release-popover pointer-events-none invisible absolute left-1/2 top-full z-50 mt-3 w-[22rem] -translate-x-1/2 translate-y-3 scale-[0.97] rounded-2xl p-4 text-left opacity-0 transition-standard group-hover:visible group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100">
-              <div className="relative">
-                <p className="mb-2 text-[10px] uppercase tracking-[0.28em] text-white/42">{locale === "zh" ? "版本更新说明" : "GitHub Release Notes"}</p>
-                <div className="space-y-1.5 text-xs leading-6 text-white/92">
-                  {releaseLines.map((line, index) => (
-                    line.type === "text" ? (
-                      <p key={`${line.content}-${index}`}>
-                        {parseReleaseNoteInlineSegments(line.content).map((segment, segmentIndex) => (
-                          segment.type === "text" ? (
-                            <span key={`text-${segmentIndex}`}>{segment.content}</span>
-                          ) : segment.type === "code" ? (
-                            <code
-                              key={`code-${segmentIndex}`}
-                              className="mx-0.5 rounded-md border px-1.5 py-0.5 text-[11px] font-medium"
-                              style={inlineCodeStyle}
-                            >
-                              {segment.content}
-                            </code>
-                          ) : (
-                            <a
-                              key={`link-${segmentIndex}`}
-                              href={segment.href}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="underline underline-offset-2"
-                              style={{ color: activeProduct.accent.secondary }}
-                            >
-                              {segment.label}
-                            </a>
-                          )
-                        ))}
-                      </p>
-                    ) : (
-                      <div key={`images-${index}`} className="flex flex-wrap items-center gap-1.5">
-                        {line.images.map((image) => (
-                          <img
-                            key={`${image.src}-${image.alt}`}
-                            src={image.src}
-                            alt={image.alt}
-                            className="h-5 w-auto rounded-sm"
-                            loading="lazy"
-                            referrerPolicy="no-referrer"
-                          />
-                        ))}
-                      </div>
-                    )
-                  ))}
+            <div className={releasePopoverWrapClass}>
+              <div className={releasePopoverPanelClass}>
+                <div className="relative">
+                  <p className="mb-2 text-[10px] uppercase tracking-[0.28em] text-white/42">{locale === "zh" ? "版本更新说明" : "GitHub Release Notes"}</p>
+                  <div className="space-y-1.5 text-xs leading-6 text-white/92">
+                    {releaseLines.map((line, index) => (
+                      line.type === "text" ? (
+                        <p key={`${line.content}-${index}`}>
+                          {renderReleaseNoteInlineSegments(line.content, `text-${index}`)}
+                        </p>
+                      ) : line.type === "listItem" ? (
+                        <div key={`${line.content}-${index}`} className="flex gap-3">
+                          <span className="mt-[0.65rem] h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: activeProduct.accent.primary, boxShadow: `0 0 12px ${activeProduct.accent.glow}` }} />
+                          <p className="min-w-0 flex-1">{renderReleaseNoteInlineSegments(line.content, `list-${index}`)}</p>
+                        </div>
+                      ) : (
+                        <div key={`images-${index}`} className="flex flex-wrap items-center gap-1.5">
+                          {line.images.map((image) => (
+                            <img
+                              key={`${image.src}-${image.alt}`}
+                              src={image.src}
+                              alt={image.alt}
+                              className="h-5 w-auto rounded-sm"
+                              loading="lazy"
+                              referrerPolicy="no-referrer"
+                            />
+                          ))}
+                        </div>
+                      )
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>

@@ -25,6 +25,14 @@ type DownloadPageProps = {
   products: Product[];
 };
 
+const productTitleGradientAccents: Record<string, string> = {
+  extraction: "var(--ucdt-extraction-gradient-from)",
+  processing: "var(--ucdt-processing-gradient-from)",
+  analysis: "var(--ucdt-analysis-gradient-from)",
+  computing: "var(--ucdt-computing-gradient-from)",
+  planning: "var(--ucdt-planning-gradient-from)",
+};
+
 export function DownloadPage({ products }: DownloadPageProps) {
   const [locale, setLocale] = useState<Locale>("zh");
   const [activeId, setActiveId] = useState(() => products.find((product) => product.id === "processing")?.id ?? products[0].id);
@@ -39,11 +47,14 @@ export function DownloadPage({ products }: DownloadPageProps) {
   const githubUrl = activeProduct.repoUrl ?? siteMeta.githubUrl;
   const releaseLines = markdownToLines(activeProduct.releaseMarkdown);
   const displayVersion = getDisplayVersion(activeProduct.version, locale);
+  const titleGradientAccent = productTitleGradientAccents[activeProduct.id] ?? productTitleGradientAccents.processing;
 
   const themeStyle: ThemeStyle = {
     "--accent": activeProduct.accent.primary,
     "--accent-soft": activeProduct.accent.glow,
     "--accent-surface": activeProduct.accent.surface,
+    "--hero-title-gradient-from": activeProduct.accent.secondary,
+    "--hero-title-gradient-to": titleGradientAccent,
   };
 
   return (

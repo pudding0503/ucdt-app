@@ -4,6 +4,16 @@
 
 :root {
   color-scheme: dark;
+  --ucdt-extraction-gradient-from: #9D27B0;
+  --ucdt-extraction-gradient-to: #48158D;
+  --ucdt-processing-gradient-from: #0091EA;
+  --ucdt-processing-gradient-to: #063C7C;
+  --ucdt-analysis-gradient-from: #D81C60;
+  --ucdt-analysis-gradient-to: #880E50;
+  --ucdt-computing-gradient-from: #FF6A00;
+  --ucdt-computing-gradient-to: #C85606;
+  --ucdt-planning-gradient-from: #5FCB5C;
+  --ucdt-planning-gradient-to: #6CA23E;
 }
 
 html {
@@ -81,6 +91,24 @@ a[href]:not(.interactive-chip):not(.platform-button):focus-visible {
 
   .content-fade-in {
     animation: content-fade-in 320ms ease both;
+  }
+
+  .hero-title-gradient {
+    display: inline-block;
+    color: transparent;
+    background-image: linear-gradient(
+      90deg,
+      var(--hero-title-gradient-from, var(--accent, #ffffff)) 0%,
+      color-mix(in srgb, var(--hero-title-gradient-from, var(--accent, #ffffff)) 82%, #ffffff) 30%,
+      color-mix(in srgb, var(--hero-title-gradient-to, var(--accent, #ffffff)) 78%, #ffffff) 66%,
+      var(--hero-title-gradient-from, var(--accent, #ffffff)) 100%
+    );
+    background-size: 360% 100%;
+    background-position: 0% 50%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient 10s ease infinite;
   }
 
   .glass-panel {
@@ -236,12 +264,27 @@ a[href]:not(.interactive-chip):not(.platform-button):focus-visible {
     }
   }
 
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+
+    50% {
+      background-position: 100% 50%;
+    }
+
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .transition-standard,
     .interactive-chip,
     .platform-button,
     .product-switch-card,
     .release-pill,
+    .hero-title-gradient,
     .content-fade-in,
     a[href]:not(.interactive-chip):not(.platform-button) {
       transition-duration: 0.01ms;

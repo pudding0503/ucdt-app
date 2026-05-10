@@ -113,6 +113,8 @@ export type ThemeStyle = CSSProperties & {
   "--accent"?: string;
   "--accent-soft"?: string;
   "--accent-surface"?: string;
+  "--hero-title-gradient-from"?: string;
+  "--hero-title-gradient-to"?: string;
 };
 
 type ReleaseNoteImage = {
@@ -420,7 +422,7 @@ export function HeroSection({ locale, activeProduct, isReleased, displayVersion,
         <h1 className="mt-8 text-balance text-4xl font-semibold leading-[0.95] text-white sm:text-6xl lg:text-7xl">
           {locale === "zh" ? "低碳城市数字孪生" : "Urban Carbon DTs'"}
           <br />
-          <span style={{ color: activeProduct.accent.secondary }}>
+          <span className="hero-title-gradient">
             {locale === "zh" ? "系列软件" : "Series Apps"}
           </span>
         </h1>

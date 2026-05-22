@@ -222,6 +222,71 @@ export const products: Product[] = [
     screenshots: [processingShot1, processingShot2],
   },
   {
+    id: "computing",
+    slug: "UCDT Computing Core",
+    accent: {
+      primary: "#F58A1F",
+      secondary: "#FFC173",
+      surface: "rgba(245, 138, 31, 0.14)",
+      glow: "rgba(245, 138, 31, 0.34)",
+    },
+    status: "comingSoon",
+    badge: {
+      zh: "即将推出",
+      en: "Coming",
+    },
+    title: {
+      zh: "UCDT Computing Core",
+      en: "UCDT Computing Core",
+    },
+    category: {
+      zh: "能耗模拟 / 碳模拟",
+      en: "Energy / Carbon Simulation",
+    },
+    tagline: {
+      zh: "连接基础数据与能耗碳排模拟，为城市运行评估提供统一计算引擎。",
+      en: "Bridge shared data and energy-carbon simulation with one computing engine.",
+    },
+    description: {
+      zh: "Computing Core 将聚焦模拟参数组织、场景计算与结果汇总，支持从城市网格到片区尺度的能耗与碳评估。",
+      en: "Computing Core will focus on simulation parameters, scenario runs, and result summaries from grid to district scale.",
+    },
+    workflowRole: {
+      zh: "承担建筑模型标准化与能耗、碳排放模拟，连接分析到评估计算。",
+      en: "Standardize models and run energy-carbon simulation between analysis and evaluation.",
+    },
+    highlights: [
+      {
+        zh: "连接共享数据与建筑/片区能耗模型",
+        en: "Connect shared data to building and district energy models",
+      },
+      {
+        zh: "支持多场景参数计算与结果回写",
+        en: "Run multi-scenario parameters and write results back",
+      },
+      {
+        zh: "为规划与策略对比提供量化底座",
+        en: "Quantitative support for planning and strategy comparison",
+      },
+    ],
+    releaseNote: {
+      zh: "当前以概念展示形式呈现，后续将补充真实界面与下载入口。",
+      en: "Shown as a concept preview for now. Real UI assets and downloads will follow.",
+    },
+    platforms: ["Windows", "Linux"],
+    version: "Planned",
+    icon: computingIcon,
+    wordmark: computingWordmark,
+    license: {
+      name: "GPL 3.0",
+    },
+    downloads: [
+      { platform: "macOS", available: false },
+      { platform: "Windows", available: false },
+      { platform: "Linux", available: false },
+    ],
+  },
+  {
     id: "analysis",
     slug: "UCDT Analysis Core",
     accent: {
@@ -291,71 +356,6 @@ export const products: Product[] = [
       { platform: "Linux", available: false },
     ],
     screenshots: [analysisShot1, analysisShot2, analysisShot3, analysisShot4],
-  },
-  {
-    id: "computing",
-    slug: "UCDT Computing Core",
-    accent: {
-      primary: "#F58A1F",
-      secondary: "#FFC173",
-      surface: "rgba(245, 138, 31, 0.14)",
-      glow: "rgba(245, 138, 31, 0.34)",
-    },
-    status: "comingSoon",
-    badge: {
-      zh: "即将推出",
-      en: "Coming",
-    },
-    title: {
-      zh: "UCDT Computing Core",
-      en: "UCDT Computing Core",
-    },
-    category: {
-      zh: "能耗模拟 / 碳模拟",
-      en: "Energy / Carbon Simulation",
-    },
-    tagline: {
-      zh: "连接基础数据与能耗碳排模拟，为城市运行评估提供统一计算引擎。",
-      en: "Bridge shared data and energy-carbon simulation with one computing engine.",
-    },
-    description: {
-      zh: "Computing Core 将聚焦模拟参数组织、场景计算与结果汇总，支持从城市网格到片区尺度的能耗与碳评估。",
-      en: "Computing Core will focus on simulation parameters, scenario runs, and result summaries from grid to district scale.",
-    },
-    workflowRole: {
-      zh: "承担建筑模型标准化与能耗、碳排放模拟，连接分析到评估计算。",
-      en: "Standardize models and run energy-carbon simulation between analysis and evaluation.",
-    },
-    highlights: [
-      {
-        zh: "连接共享数据与建筑/片区能耗模型",
-        en: "Connect shared data to building and district energy models",
-      },
-      {
-        zh: "支持多场景参数计算与结果回写",
-        en: "Run multi-scenario parameters and write results back",
-      },
-      {
-        zh: "为规划与策略对比提供量化底座",
-        en: "Quantitative support for planning and strategy comparison",
-      },
-    ],
-    releaseNote: {
-      zh: "当前以概念展示形式呈现，后续将补充真实界面与下载入口。",
-      en: "Shown as a concept preview for now. Real UI assets and downloads will follow.",
-    },
-    platforms: ["Windows", "Linux"],
-    version: "Planned",
-    icon: computingIcon,
-    wordmark: computingWordmark,
-    license: {
-      name: "GPL 3.0",
-    },
-    downloads: [
-      { platform: "macOS", available: false },
-      { platform: "Windows", available: false },
-      { platform: "Linux", available: false },
-    ],
   },
   {
     id: "planning",

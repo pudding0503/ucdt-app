@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { pageSectionShellClass, pageSectionLargeBlockTopClass, pageProductSwitcherSectionClass } from "@/components/layout-spacing";
 import { ProductPreview } from "@/components/product-preview";
 import {
@@ -25,6 +25,17 @@ type DownloadPageProps = {
   products: Product[];
 };
 
+function getDefaultActiveProductId(products: Product[]) {
+  return products.find((product) => product.status === "released")?.id ?? products[0]?.id ?? "";
+}
+
+function getRandomReleasedProductId(products: Product[]) {
+  const releasedProducts = products.filter((product) => product.status === "released");
+  const productPool = releasedProducts.length ? releasedProducts : products;
+
+  return productPool[Math.floor(Math.random() * productPool.length)]?.id ?? "";
+}
+
 const productTitleGradientAccents: Record<string, string> = {
   extraction: "var(--ucdt-extraction-gradient-from)",
   processing: "var(--ucdt-processing-gradient-from)",
@@ -35,8 +46,23 @@ const productTitleGradientAccents: Record<string, string> = {
 
 export function DownloadPage({ products }: DownloadPageProps) {
   const [locale, setLocale] = useState<Locale>("zh");
-  const [activeId, setActiveId] = useState(() => products.find((product) => product.id === "processing")?.id ?? products[0].id);
+  const [activeId, setActiveId] = useState(() => getDefaultActiveProductId(products));
+  const [randomizedInitialProduct, setRandomizedInitialProduct] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (randomizedInitialProduct) {
+      return;
+    }
+
+    const randomProductId = getRandomReleasedProductId(products);
+
+    if (randomProductId) {
+      setActiveId(randomProductId);
+    }
+
+    setRandomizedInitialProduct(true);
+  }, [products, randomizedInitialProduct]);
 
   const activeProduct = useMemo(
     () => products.find((product) => product.id === activeId) ?? products[0],

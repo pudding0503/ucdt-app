@@ -39,8 +39,10 @@ import {
   SparkIcon,
   CheckIcon,
   CopyIcon,
+  ExternalLinkIcon,
   GitHubIcon,
   InfoIcon,
+  LicenseIcon,
   ChevronIcon,
   PlatformIcon,
 } from "@/components/site-icons";
@@ -48,6 +50,7 @@ import {
   ecosystemHighlights,
   faqItems,
   siteMeta,
+  type DownloadPlatform,
   type Locale,
   type Product,
   type ProductStatus,
@@ -120,6 +123,12 @@ export type ThemeStyle = CSSProperties & {
 type ReleaseNoteImage = {
   alt: string;
   src: string;
+};
+
+type ReleaseNoteBadge = {
+  label: string;
+  value: string;
+  tone: "blue" | "orange" | "neutral";
 };
 
 type ReleaseNoteBlock =
@@ -250,6 +259,88 @@ export function getDisplayVersion(version: string, locale: Locale) {
   return version === "Planned" ? (locale === "zh" ? "规划中" : "Planned") : version;
 }
 
+function getPlatformDisplayLabel(platform: DownloadPlatform) {
+  return platform === "macOS" ? "Mac" : platform;
+}
+
+function getDownloadLabel(locale: Locale, platform: DownloadPlatform) {
+  const platformLabel = getPlatformDisplayLabel(platform);
+
+  return locale === "zh" ? `获取 ${platformLabel} 版` : `Get ${platformLabel}`;
+}
+
+function isDownloadPlatform(platform: string): platform is DownloadPlatform {
+  return platform === "macOS" || platform === "Windows" || platform === "Linux";
+}
+
+function normalizeLicenseName(licenseName: string) {
+  return licenseName.replace(/\s+/g, "-");
+}
+
+function parseStaticShieldsBadge(src: string): ReleaseNoteBadge | null {
+  try {
+    const url = new URL(src);
+
+    if (url.hostname !== "img.shields.io") {
+      return null;
+    }
+
+    if (!url.pathname.startsWith("/badge/")) {
+      return null;
+    }
+
+    const escapedHyphen = "\u0000";
+    const badgeParts = decodeURIComponent(url.pathname.slice("/badge/".length))
+      .replace(/--/g, escapedHyphen)
+      .split("-");
+
+    if (badgeParts.length < 3) {
+      return null;
+    }
+
+    const label = badgeParts.shift()?.replaceAll(escapedHyphen, "-");
+    const color = badgeParts.pop();
+    const value = badgeParts.join("-").replaceAll(escapedHyphen, "-");
+
+    if (!label || !value || !color) {
+      return null;
+    }
+
+    return {
+      label,
+      value,
+      tone: color.toLowerCase().includes("blue") ? "blue" : "neutral",
+    };
+  } catch {
+    return null;
+  }
+}
+
+function getReleaseNoteBadge(image: ReleaseNoteImage, activeProduct: Product): ReleaseNoteBadge | null {
+  const staticBadge = parseStaticShieldsBadge(image.src);
+
+  if (staticBadge) {
+    return staticBadge;
+  }
+
+  try {
+    const url = new URL(image.src);
+    const alt = image.alt.toLowerCase();
+
+    if (url.hostname === "img.shields.io" && url.pathname.includes("/github/license/") && alt.includes("license")) {
+      return {
+        label: "license",
+        value: normalizeLicenseName(activeProduct.license.name),
+        tone: "orange",
+      };
+    }
+  } catch {
+    return null;
+  }
+
+  return null;
+}
+
 export function TopNav({ locale, onLocaleChange, githubUrl, accent }: TopNavProps) {
   return (
     <header className="fixed left-1/2 top-4 z-50 w-[95%] max-w-5xl -translate-x-1/2 sm:top-6 sm:w-[90%]">
@@ -356,6 +447,32 @@ export function HeroSection({ locale, activeProduct, isReleased, displayVersion,
       )
     ))
   );
+  const renderReleaseNoteImage = (image: ReleaseNoteImage) => {
+    const badge = getReleaseNoteBadge(image, activeProduct);
+
+    if (badge) {
+      return (
+        <span key={`${image.src}-${image.alt}`} className={`release-badge-chip release-badge-chip--${badge.tone}`}>
+          <span>{badge.label}</span>
+          <strong>{badge.value}</strong>
+        </span>
+      );
+    }
+
+    return (
+      <img
+        key={`${image.src}-${image.alt}`}
+        src={image.src}
+        alt={image.alt}
+        className="h-5 w-auto rounded-sm"
+        loading="lazy"
+        referrerPolicy="no-referrer"
+        onError={(event) => {
+          event.currentTarget.style.display = "none";
+        }}
+      />
+    );
+  };
 
   return (
     <section className={`${pageSectionShellClass} ${pageHeroSectionClass}`}>
@@ -399,16 +516,7 @@ export function HeroSection({ locale, activeProduct, isReleased, displayVersion,
                         </div>
                       ) : (
                         <div key={`images-${index}`} className="flex flex-wrap items-center gap-1.5">
-                          {line.images.map((image) => (
-                            <img
-                              key={`${image.src}-${image.alt}`}
-                              src={image.src}
-                              alt={image.alt}
-                              className="h-5 w-auto rounded-sm"
-                              loading="lazy"
-                              referrerPolicy="no-referrer"
-                            />
-                          ))}
+                          {line.images.map(renderReleaseNoteImage)}
                         </div>
                       )
                     ))}
@@ -510,8 +618,7 @@ export function DownloadsSection({ locale, activeProduct }: DownloadsSectionProp
         {activeProduct.downloads.map((download) => {
           const isMacDownload = download.platform === "macOS";
           const isLinuxDownload = download.platform === "Linux";
-          const platformLabel = download.platform === "macOS" ? "Mac" : download.platform;
-          const label = locale === "zh" ? `下载 ${platformLabel}` : `Download for ${platformLabel}`;
+          const label = getDownloadLabel(locale, download.platform);
           const directHref = isLinuxDownload ? activeProduct.repoUrl : download.href;
           const isDirectAction = Boolean(isLinuxDownload ? activeProduct.repoUrl : download.available && download.href);
           const isMacMenuEnabled = isMacDownload && activeProduct.status === "released";
@@ -701,22 +808,38 @@ export function ProductOverviewSection({ locale, activeProduct, activeStatus, di
 
         <div className={`${pageSectionBlockTopClass} grid ${pageGridGapClass} md:grid-cols-2 xl:grid-cols-4`}>
           <DetailCard label={locale === "zh" ? "版本" : "Version"} value={displayVersion} />
-          <DetailCard label={locale === "zh" ? "平台" : "Platforms"} value={activeProduct.platforms.join(" · ")} compact />
+          <div className="detail-card rounded-[1.5rem] p-5">
+            <p className="text-sm uppercase tracking-[0.28em] text-white/40">{locale === "zh" ? "平台" : "Platforms"}</p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {activeProduct.platforms.map((platform) => (
+                <span key={platform} className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-sm font-medium text-white/82">
+                  {isDownloadPlatform(platform) ? <PlatformIcon platform={platform} className="h-4 w-4" /> : null}
+                  {isDownloadPlatform(platform) ? getPlatformDisplayLabel(platform) : platform}
+                </span>
+              ))}
+            </div>
+          </div>
           <div className="detail-card rounded-[1.5rem] p-5">
             <p className="text-sm uppercase tracking-[0.28em] text-white/40">{locale === "zh" ? "许可证" : "License"}</p>
             {activeProduct.license.url ? (
-              <a href={activeProduct.license.url} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-lg font-medium text-white/86 transition hover:text-white">
+              <a href={activeProduct.license.url} target="_blank" rel="noreferrer" className="mt-4 inline-flex items-center gap-2 text-lg font-medium text-white/86 transition hover:text-white">
+                <LicenseIcon className="h-5 w-5" />
                 {activeProduct.license.name}
               </a>
             ) : (
-              <p className="mt-4 text-lg font-medium text-white/80">{activeProduct.license.name}</p>
+              <p className="mt-4 inline-flex items-center gap-2 text-lg font-medium text-white/80">
+                <LicenseIcon className="h-5 w-5" />
+                {activeProduct.license.name}
+              </p>
             )}
           </div>
           <div className="detail-card rounded-[1.5rem] p-5">
             <p className="text-sm uppercase tracking-[0.28em] text-white/40">GitHub</p>
             {activeProduct.releaseUrl ? (
-              <a href={activeProduct.releaseUrl} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-lg font-medium text-white/86 transition hover:text-white">
+              <a href={activeProduct.releaseUrl} target="_blank" rel="noreferrer" className="mt-4 inline-flex items-center gap-2 text-lg font-medium text-white/86 transition hover:text-white">
+                <GitHubIcon className="h-5 w-5" />
                 {locale === "zh" ? "打开 Releases" : "Open Releases"}
+                <ExternalLinkIcon className="h-4 w-4 text-white/42" />
               </a>
             ) : (
               <p className="mt-4 text-lg font-medium text-white/80">{locale === "zh" ? "暂未公开" : "Not public yet"}</p>
@@ -766,37 +889,37 @@ export function HighlightsSection({ locale, activeProduct, products }: Highlight
         </div>
 
         <div className={pageSectionLargeBlockTopClass}>
-          <div className="max-w-3xl">
-            <p className="text-sm uppercase tracking-[0.3em] text-white/40">{locale === "zh" ? "模块分工" : "Module Responsibilities"}</p>
+          <div className="max-w-4xl">
+            <p className={`uppercase text-white/40 ${locale === "zh" ? "text-sm tracking-[0.3em]" : "text-[11px] tracking-[0.2em] sm:text-sm sm:tracking-[0.26em]"}`}>{locale === "zh" ? "模块分工" : "Module Responsibilities"}</p>
             <p className="mt-4 text-balance text-sm leading-7 text-white/54 sm:text-base">
               {locale === "zh"
                 ? "按软件查看五个核心模块分别承担的工作内容，便于快速理解整套体系如何串联。"
                 : "See how each app fits into the five-part workflow."}
             </p>
           </div>
-          <div className={`${pageSectionSubBlockTopClass} grid ${pageGridGapClass} sm:grid-cols-2 xl:grid-cols-5`}>
+          <div className={`${pageSectionSubBlockTopClass} grid ${pageGridGapClass} sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5`}>
             {products.map((product) => {
               const selected = product.id === activeProduct.id;
 
               return (
                 <div
                   key={`workflow-${product.id}`}
-                  className="rounded-[1.5rem] border p-5"
+                  className="rounded-[1.5rem] border p-5 lg:min-h-[16.5rem]"
                   style={{
                     borderColor: selected ? product.accent.primary : "rgba(255,255,255,0.08)",
                     background: `linear-gradient(180deg, rgba(11,16,24,0.96), ${product.accent.surface})`,
                     boxShadow: selected ? `0 18px 42px ${product.accent.glow}` : "none",
                   }}
                 >
-                  <div className="flex items-center gap-3 xl:flex-col xl:items-start xl:gap-4">
+                  <div className="flex items-center gap-3 2xl:flex-col 2xl:items-start 2xl:gap-4">
                     <div className="shrink-0 flex h-[54px] w-[54px] items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-[#111827] p-1.5">
                       <div className="flex aspect-square h-10 w-10 items-center justify-center overflow-hidden rounded-xl">
                         <Image src={product.icon} alt={`${product.slug} icon`} width={40} height={40} className="h-10 w-10 object-cover" />
                       </div>
                     </div>
-                    <div className="min-w-0 xl:w-full">
-                      <p className="truncate text-balance text-base font-semibold text-white xl:overflow-visible xl:whitespace-normal xl:text-clip">{getShortName(product.slug)}</p>
-                      <p className="mt-1 text-balance text-xs text-white/46">{product.category[locale]}</p>
+                    <div className="min-w-0 2xl:w-full">
+                      <p className="truncate text-balance text-base font-semibold text-white 2xl:overflow-visible 2xl:whitespace-normal 2xl:text-clip">{getShortName(product.slug)}</p>
+                      <p className="mt-1 text-pretty text-xs leading-5 text-white/46">{product.category[locale]}</p>
                     </div>
                   </div>
                   <div className={`mt-4 text-[11px] uppercase tracking-[0.24em] text-white/42 ${pageInlineDotTextClass}`}>

@@ -16,6 +16,36 @@
   --ucdt-planning-gradient-to: #6CA23E;
 }
 
+@property --accent {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #34b27b;
+}
+
+@property --accent-soft {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: rgba(52, 178, 123, 0.24);
+}
+
+@property --accent-surface {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: rgba(52, 178, 123, 0.12);
+}
+
+@property --hero-title-gradient-from {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #34b27b;
+}
+
+@property --hero-title-gradient-to {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #34b27b;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -89,35 +119,26 @@ a[href]:not(.interactive-chip):not(.platform-button):focus-visible {
     transition-timing-function: ease;
   }
 
+  .app-theme-root {
+    transition-property: --accent, --accent-soft, --accent-surface, --hero-title-gradient-from, --hero-title-gradient-to;
+    transition-duration: 420ms;
+    transition-timing-function: ease;
+  }
+
   .content-fade-in {
     animation: content-fade-in 320ms ease both;
   }
 
   .app-switch-soft {
-    transition-property: opacity, transform, filter;
+    transition-property: opacity, transform;
     transition-duration: 260ms;
     transition-timing-function: ease;
-    will-change: opacity, transform, filter;
+    will-change: opacity, transform;
   }
 
   .app-switch-soft[data-switching="true"] {
-    opacity: 0.42;
-    transform: translateY(8px);
-    filter: saturate(0.88);
-  }
-
-  .app-theme-glow {
-    opacity: 1;
-    transition-property: opacity, transform, filter;
-    transition-duration: 460ms;
-    transition-timing-function: ease;
-    will-change: opacity, transform, filter;
-  }
-
-  .app-theme-glow[data-switching="true"] {
-    opacity: 0.58;
-    transform: scale(0.985);
-    filter: saturate(0.82);
+    opacity: 0.72;
+    transform: translateY(6px);
   }
 
   .hero-title-gradient {
@@ -136,6 +157,7 @@ a[href]:not(.interactive-chip):not(.platform-button):focus-visible {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: gradient 10s ease infinite;
+    transition: background-position 300ms ease;
   }
 
   .glass-panel {
@@ -307,8 +329,8 @@ a[href]:not(.interactive-chip):not(.platform-button):focus-visible {
 
   @media (prefers-reduced-motion: reduce) {
     .transition-standard,
+    .app-theme-root,
     .app-switch-soft,
-    .app-theme-glow,
     .interactive-chip,
     .platform-button,
     .product-switch-card,
@@ -322,8 +344,7 @@ a[href]:not(.interactive-chip):not(.platform-button):focus-visible {
 
     .platform-button--active:hover,
     .product-switch-card:hover,
-    .app-switch-soft[data-switching="true"],
-    .app-theme-glow[data-switching="true"] {
+    .app-switch-soft[data-switching="true"] {
       transform: none;
       filter: none;
     }

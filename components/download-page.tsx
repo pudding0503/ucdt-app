@@ -131,30 +131,26 @@ export function DownloadPage({ products }: DownloadPageProps) {
   };
 
   return (
-    <main style={themeStyle} className="relative isolate overflow-hidden bg-[#02050b] text-white">
+    <main style={themeStyle} className="app-theme-root relative isolate overflow-hidden bg-[#02050b] text-white">
       <div
-        className="app-theme-glow pointer-events-none absolute inset-x-0 top-[-8rem] h-[32rem] blur-3xl"
-        data-switching={appSwitching}
-        style={{ background: `radial-gradient(circle, ${activeProduct.accent.glow} 0%, transparent 68%)` }}
+        className="pointer-events-none absolute inset-x-0 top-[-8rem] h-[32rem] blur-3xl"
+        style={{ background: "radial-gradient(circle, var(--accent-soft) 0%, transparent 68%)" }}
       />
       <div
-        className="app-theme-glow pointer-events-none absolute inset-y-[10%] right-[-12rem] h-[28rem] w-[28rem] rounded-full blur-3xl"
-        data-switching={appSwitching}
-        style={{ background: `radial-gradient(circle, ${activeProduct.accent.surface} 0%, transparent 70%)` }}
+        className="pointer-events-none absolute inset-y-[10%] right-[-12rem] h-[28rem] w-[28rem] rounded-full blur-3xl"
+        style={{ background: "radial-gradient(circle, var(--accent-surface) 0%, transparent 70%)" }}
       />
       <div className="pointer-events-none absolute inset-x-0 bottom-[-18rem] h-[34rem] bg-[radial-gradient(circle_at_center,rgba(52,178,123,0.18),transparent_62%)] blur-3xl" />
 
       <TopNav locale={locale} onLocaleChange={setLocale} githubUrl={githubUrl} accent={activeProduct.accent} />
 
-      <div className="app-switch-soft" data-switching={appSwitching}>
-        <HeroSection
-          locale={locale}
-          activeProduct={activeProduct}
-          isReleased={isReleased}
-          displayVersion={displayVersion}
-          releaseLines={releaseLines}
-        />
-      </div>
+      <HeroSection
+        locale={locale}
+        activeProduct={activeProduct}
+        isReleased={isReleased}
+        displayVersion={displayVersion}
+        releaseLines={releaseLines}
+      />
 
       <section className={`${pageSectionShellClass} ${pageProductSwitcherSectionClass}`}>
         <div id="products" className="w-full">

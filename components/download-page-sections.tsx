@@ -125,12 +125,6 @@ type ReleaseNoteImage = {
   src: string;
 };
 
-type ReleaseNoteBadge = {
-  label: string;
-  value: string;
-  tone: "blue" | "orange" | "neutral";
-};
-
 type ReleaseNoteBlock =
   | {
       type: "text";
@@ -273,74 +267,6 @@ function isDownloadPlatform(platform: string): platform is DownloadPlatform {
   return platform === "macOS" || platform === "Windows" || platform === "Linux";
 }
 
-function normalizeLicenseName(licenseName: string) {
-  return licenseName.replace(/\s+/g, "-");
-}
-
-function parseStaticShieldsBadge(src: string): ReleaseNoteBadge | null {
-  try {
-    const url = new URL(src);
-
-    if (url.hostname !== "img.shields.io") {
-      return null;
-    }
-
-    if (!url.pathname.startsWith("/badge/")) {
-      return null;
-    }
-
-    const escapedHyphen = "\u0000";
-    const badgeParts = decodeURIComponent(url.pathname.slice("/badge/".length))
-      .replace(/--/g, escapedHyphen)
-      .split("-");
-
-    if (badgeParts.length < 3) {
-      return null;
-    }
-
-    const label = badgeParts.shift()?.replaceAll(escapedHyphen, "-");
-    const color = badgeParts.pop();
-    const value = badgeParts.join("-").replaceAll(escapedHyphen, "-");
-
-    if (!label || !value || !color) {
-      return null;
-    }
-
-    return {
-      label,
-      value,
-      tone: color.toLowerCase().includes("blue") ? "blue" : "neutral",
-    };
-  } catch {
-    return null;
-  }
-}
-
-function getReleaseNoteBadge(image: ReleaseNoteImage, activeProduct: Product): ReleaseNoteBadge | null {
-  const staticBadge = parseStaticShieldsBadge(image.src);
-
-  if (staticBadge) {
-    return staticBadge;
-  }
-
-  try {
-    const url = new URL(image.src);
-    const alt = image.alt.toLowerCase();
-
-    if (url.hostname === "img.shields.io" && url.pathname.includes("/github/license/") && alt.includes("license")) {
-      return {
-        label: "license",
-        value: normalizeLicenseName(activeProduct.license.name),
-        tone: "orange",
-      };
-    }
-  } catch {
-    return null;
-  }
-
-  return null;
-}
-
 export function TopNav({ locale, onLocaleChange, githubUrl, accent }: TopNavProps) {
   return (
     <header className="fixed left-1/2 top-4 z-50 w-[95%] max-w-5xl -translate-x-1/2 sm:top-6 sm:w-[90%]">
@@ -447,33 +373,6 @@ export function HeroSection({ locale, activeProduct, isReleased, displayVersion,
       )
     ))
   );
-  const renderReleaseNoteImage = (image: ReleaseNoteImage) => {
-    const badge = getReleaseNoteBadge(image, activeProduct);
-
-    if (badge) {
-      return (
-        <span key={`${image.src}-${image.alt}`} className={`release-badge-chip release-badge-chip--${badge.tone}`}>
-          <span>{badge.label}</span>
-          <strong>{badge.value}</strong>
-        </span>
-      );
-    }
-
-    return (
-      <img
-        key={`${image.src}-${image.alt}`}
-        src={image.src}
-        alt={image.alt}
-        className="h-5 w-auto rounded-sm"
-        loading="lazy"
-        referrerPolicy="no-referrer"
-        onError={(event) => {
-          event.currentTarget.style.display = "none";
-        }}
-      />
-    );
-  };
-
   return (
     <section className={`${pageSectionShellClass} ${pageHeroSectionClass}`}>
       <div className={pageHeroBackdropGridClass} />
@@ -516,7 +415,16 @@ export function HeroSection({ locale, activeProduct, isReleased, displayVersion,
                         </div>
                       ) : (
                         <div key={`images-${index}`} className="flex flex-wrap items-center gap-1.5">
-                          {line.images.map(renderReleaseNoteImage)}
+                          {line.images.map((image) => (
+                            <img
+                              key={`${image.src}-${image.alt}`}
+                              src={image.src}
+                              alt={image.alt}
+                              className="h-5 w-auto rounded-sm"
+                              loading="lazy"
+                              referrerPolicy="no-referrer"
+                            />
+                          ))}
                         </div>
                       )
                     ))}
@@ -810,9 +718,9 @@ export function ProductOverviewSection({ locale, activeProduct, activeStatus, di
           <DetailCard label={locale === "zh" ? "版本" : "Version"} value={displayVersion} />
           <div className="detail-card rounded-[1.5rem] p-5">
             <p className="text-sm uppercase tracking-[0.28em] text-white/40">{locale === "zh" ? "平台" : "Platforms"}</p>
-            <div className="mt-4 flex flex-wrap gap-2">
+            <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
               {activeProduct.platforms.map((platform) => (
-                <span key={platform} className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-sm font-medium text-white/82">
+                <span key={platform} className="inline-flex items-center gap-2 text-lg font-medium text-white/82">
                   {isDownloadPlatform(platform) ? <PlatformIcon platform={platform} className="h-4 w-4" /> : null}
                   {isDownloadPlatform(platform) ? getPlatformDisplayLabel(platform) : platform}
                 </span>

@@ -93,6 +93,33 @@ a[href]:not(.interactive-chip):not(.platform-button):focus-visible {
     animation: content-fade-in 320ms ease both;
   }
 
+  .app-switch-soft {
+    transition-property: opacity, transform, filter;
+    transition-duration: 260ms;
+    transition-timing-function: ease;
+    will-change: opacity, transform, filter;
+  }
+
+  .app-switch-soft[data-switching="true"] {
+    opacity: 0.42;
+    transform: translateY(8px);
+    filter: saturate(0.88);
+  }
+
+  .app-theme-glow {
+    opacity: 1;
+    transition-property: opacity, transform, filter;
+    transition-duration: 460ms;
+    transition-timing-function: ease;
+    will-change: opacity, transform, filter;
+  }
+
+  .app-theme-glow[data-switching="true"] {
+    opacity: 0.58;
+    transform: scale(0.985);
+    filter: saturate(0.82);
+  }
+
   .hero-title-gradient {
     display: inline-block;
     color: transparent;
@@ -280,6 +307,8 @@ a[href]:not(.interactive-chip):not(.platform-button):focus-visible {
 
   @media (prefers-reduced-motion: reduce) {
     .transition-standard,
+    .app-switch-soft,
+    .app-theme-glow,
     .interactive-chip,
     .platform-button,
     .product-switch-card,
@@ -292,8 +321,11 @@ a[href]:not(.interactive-chip):not(.platform-button):focus-visible {
     }
 
     .platform-button--active:hover,
-    .product-switch-card:hover {
+    .product-switch-card:hover,
+    .app-switch-soft[data-switching="true"],
+    .app-theme-glow[data-switching="true"] {
       transform: none;
+      filter: none;
     }
   }
  }

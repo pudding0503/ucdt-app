@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { pageSectionShellClass, pageSectionLargeBlockTopClass, pageProductSwitcherSectionClass } from "@/components/layout-spacing";
 import { ProductPreview } from "@/components/product-preview";
 import {
@@ -25,6 +25,22 @@ type DownloadPageProps = {
   products: Product[];
 };
 
+type TimeoutRef = {
+  current: number | null;
+};
+
+const productSwitchExitDelayMs = 180;
+const productSwitchEnterDelayMs = 80;
+
+function clearTimeoutRef(timeoutRef: TimeoutRef) {
+  if (!timeoutRef.current) {
+    return;
+  }
+
+  window.clearTimeout(timeoutRef.current);
+  timeoutRef.current = null;
+}
+
 function getDefaultActiveProductId(products: Product[]) {
   return products.find((product) => product.status === "released")?.id ?? products[0]?.id ?? "";
 }
@@ -48,7 +64,11 @@ export function DownloadPage({ products }: DownloadPageProps) {
   const [locale, setLocale] = useState<Locale>("zh");
   const [activeId, setActiveId] = useState(() => getDefaultActiveProductId(products));
   const [randomizedInitialProduct, setRandomizedInitialProduct] = useState(false);
+  const [isProductSwitching, setIsProductSwitching] = useState(false);
+  const [isPendingProductSwitch, startProductSwitchTransition] = useTransition();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const switchOutTimeoutRef = useRef<number | null>(null);
+  const switchInTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (randomizedInitialProduct) {
@@ -64,6 +84,13 @@ export function DownloadPage({ products }: DownloadPageProps) {
     setRandomizedInitialProduct(true);
   }, [products, randomizedInitialProduct]);
 
+  useEffect(() => (
+    () => {
+      clearTimeoutRef(switchOutTimeoutRef);
+      clearTimeoutRef(switchInTimeoutRef);
+    }
+  ), []);
+
   const activeProduct = useMemo(
     () => products.find((product) => product.id === activeId) ?? products[0],
     [activeId, products],
@@ -74,6 +101,26 @@ export function DownloadPage({ products }: DownloadPageProps) {
   const releaseLines = markdownToLines(activeProduct.releaseMarkdown);
   const displayVersion = getDisplayVersion(activeProduct.version, locale);
   const titleGradientAccent = productTitleGradientAccents[activeProduct.id] ?? productTitleGradientAccents.processing;
+  const appSwitching = isProductSwitching || isPendingProductSwitch;
+
+  const handleProductChange = (productId: string) => {
+    if (productId === activeProduct.id) {
+      return;
+    }
+
+    clearTimeoutRef(switchOutTimeoutRef);
+    clearTimeoutRef(switchInTimeoutRef);
+
+    setIsProductSwitching(true);
+
+    switchOutTimeoutRef.current = window.setTimeout(() => {
+      startProductSwitchTransition(() => setActiveId(productId));
+
+      switchInTimeoutRef.current = window.setTimeout(() => {
+        setIsProductSwitching(false);
+      }, productSwitchEnterDelayMs);
+    }, productSwitchExitDelayMs);
+  };
 
   const themeStyle: ThemeStyle = {
     "--accent": activeProduct.accent.primary,
@@ -86,36 +133,40 @@ export function DownloadPage({ products }: DownloadPageProps) {
   return (
     <main style={themeStyle} className="relative isolate overflow-hidden bg-[#02050b] text-white">
       <div
-        className="pointer-events-none absolute inset-x-0 top-[-8rem] h-[32rem] blur-3xl"
+        className="app-theme-glow pointer-events-none absolute inset-x-0 top-[-8rem] h-[32rem] blur-3xl"
+        data-switching={appSwitching}
         style={{ background: `radial-gradient(circle, ${activeProduct.accent.glow} 0%, transparent 68%)` }}
       />
       <div
-        className="pointer-events-none absolute inset-y-[10%] right-[-12rem] h-[28rem] w-[28rem] rounded-full blur-3xl"
+        className="app-theme-glow pointer-events-none absolute inset-y-[10%] right-[-12rem] h-[28rem] w-[28rem] rounded-full blur-3xl"
+        data-switching={appSwitching}
         style={{ background: `radial-gradient(circle, ${activeProduct.accent.surface} 0%, transparent 70%)` }}
       />
       <div className="pointer-events-none absolute inset-x-0 bottom-[-18rem] h-[34rem] bg-[radial-gradient(circle_at_center,rgba(52,178,123,0.18),transparent_62%)] blur-3xl" />
 
       <TopNav locale={locale} onLocaleChange={setLocale} githubUrl={githubUrl} accent={activeProduct.accent} />
 
-      <HeroSection
-        locale={locale}
-        activeProduct={activeProduct}
-        isReleased={isReleased}
-        displayVersion={displayVersion}
-        releaseLines={releaseLines}
-      />
+      <div className="app-switch-soft" data-switching={appSwitching}>
+        <HeroSection
+          locale={locale}
+          activeProduct={activeProduct}
+          isReleased={isReleased}
+          displayVersion={displayVersion}
+          releaseLines={releaseLines}
+        />
+      </div>
 
       <section className={`${pageSectionShellClass} ${pageProductSwitcherSectionClass}`}>
         <div id="products" className="w-full">
-          <ProductSwitcher locale={locale} products={products} activeId={activeProduct.id} onProductChange={setActiveId} />
+          <ProductSwitcher locale={locale} products={products} activeId={activeProduct.id} onProductChange={handleProductChange} />
         </div>
 
-        <div key={activeProduct.id} className={`content-fade-in w-full max-w-6xl ${pageSectionLargeBlockTopClass}`}>
+        <div key={activeProduct.id} className={`app-switch-soft content-fade-in w-full max-w-6xl ${pageSectionLargeBlockTopClass}`} data-switching={appSwitching}>
           <ProductPreview product={activeProduct} locale={locale} />
         </div>
       </section>
 
-      <div key={`${activeProduct.id}-details`} className="content-fade-in">
+      <div key={`${activeProduct.id}-details`} className="app-switch-soft content-fade-in" data-switching={appSwitching}>
         <ProductOverviewSection
           locale={locale}
           activeProduct={activeProduct}

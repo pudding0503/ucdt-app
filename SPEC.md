@@ -2,7 +2,7 @@
 
 This project is a bilingual Next.js download page for the UCDT software suite and must remain a single-page, tab-switched experience designed for Vercel deployment.
 
-Project package milestone: `1.6.0`.
+Project package milestone: `1.6.1`.
 
 ## Package Management
 - The project must use `pnpm` as its package manager.

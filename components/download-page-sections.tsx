@@ -322,7 +322,7 @@ export function HeroSection({ locale, activeProduct, isReleased, displayVersion,
     borderColor: activeProduct.accent.glow,
     background: `linear-gradient(180deg, rgba(6,10,16,0.96), ${activeProduct.accent.surface})`,
   };
-  const releasePopoverWrapClass = `absolute left-1/2 top-full z-50 w-[22rem] -translate-x-1/2 pt-3 ${
+  const releasePopoverWrapClass = `absolute left-1/2 top-full z-50 w-[24rem] -translate-x-1/2 pt-3 sm:w-[28rem] ${
     releasePopoverVisible ? "visible pointer-events-auto" : "pointer-events-none invisible"
   }`;
   const releasePopoverPanelClass = `release-popover rounded-2xl p-4 text-left transition-standard ${

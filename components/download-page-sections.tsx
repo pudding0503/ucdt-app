@@ -805,7 +805,7 @@ export function HighlightsSection({ locale, activeProduct, products }: Highlight
                 : "See how each app fits into the five-part workflow."}
             </p>
           </div>
-          <div className={`${pageSectionSubBlockTopClass} grid ${pageGridGapClass} sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5`}>
+          <div className={`${pageSectionSubBlockTopClass} grid ${pageGridGapClass} sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5`}>
             {products.map((product) => {
               const selected = product.id === activeProduct.id;
 
@@ -819,14 +819,14 @@ export function HighlightsSection({ locale, activeProduct, products }: Highlight
                     boxShadow: selected ? `0 18px 42px ${product.accent.glow}` : "none",
                   }}
                 >
-                  <div className="flex items-center gap-3 2xl:flex-col 2xl:items-start 2xl:gap-4">
+                  <div className="flex items-center gap-3 xl:flex-col xl:items-start xl:gap-4">
                     <div className="shrink-0 flex h-[54px] w-[54px] items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-[#111827] p-1.5">
                       <div className="flex aspect-square h-10 w-10 items-center justify-center overflow-hidden rounded-xl">
                         <Image src={product.icon} alt={`${product.slug} icon`} width={40} height={40} className="h-10 w-10 object-cover" />
                       </div>
                     </div>
-                    <div className="min-w-0 2xl:w-full">
-                      <p className="truncate text-balance text-base font-semibold text-white 2xl:overflow-visible 2xl:whitespace-normal 2xl:text-clip">{getShortName(product.slug)}</p>
+                    <div className="min-w-0 xl:w-full">
+                      <p className="truncate text-balance text-base font-semibold text-white xl:overflow-visible xl:whitespace-normal xl:text-clip">{getShortName(product.slug)}</p>
                       <p className="mt-1 text-pretty text-xs leading-5 text-white/46">{product.category[locale]}</p>
                     </div>
                   </div>

@@ -615,8 +615,8 @@ export function DownloadsSection({ locale, activeProduct }: DownloadsSectionProp
         })}
       </div>
 
-      <div className={`w-full max-w-3xl sm:max-w-4xl ${pageSectionSubBlockTopClass}`}>
-        <div className="flex flex-col items-center gap-1.5 px-2 sm:px-0">
+      <div className={`${pageSectionSubBlockTopClass}`}>
+        <div className="flex flex-col items-center gap-1.5">
           <p className="flex items-center gap-1 text-[9px] sm:text-[11px]">
             <span className="opacity-50" style={noteTextStyle}>{locale === "zh" ? "如果 macOS 提示 “App is damaged”，请运行以下命令" : 'If macOS says "App is damaged", run this command'}</span>
             <span className="group relative inline-flex">
@@ -630,8 +630,8 @@ export function DownloadsSection({ locale, activeProduct }: DownloadsSectionProp
               </span>
             </span>
           </p>
-          <div className="flex w-full items-center gap-2 overflow-x-auto rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5">
-            <code className="min-w-fit whitespace-nowrap text-[9px] opacity-60 sm:text-[11px]" style={noteTextStyle}>{quarantineCommand}</code>
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5">
+            <code className="whitespace-nowrap text-[9px] opacity-60 sm:text-[11px]" style={noteTextStyle}>{quarantineCommand}</code>
             <button
               type="button"
               onClick={handleCopyCommand}

@@ -459,7 +459,8 @@ export function DownloadsSection({ locale, activeProduct }: DownloadsSectionProp
   const [copiedCommand, setCopiedCommand] = useState(false);
   const [openPlatformMenu, setOpenPlatformMenu] = useState<"macOS" | null>(null);
   const macMenuRef = useRef<HTMLDivElement | null>(null);
-  const quarantineCommand = "xattr -rd com.apple.quarantine /Applications/UCDT-xx.app";
+  const appBundleName = `UCDT-${getShortName(activeProduct.slug).replace(/\s+/g, "-")}.app`;
+  const quarantineCommand = `xattr -rd com.apple.quarantine /Applications/${appBundleName}`;
   const noteTextStyle = { color: activeProduct.accent.secondary };
   const macMenuItems = locale === "zh"
     ? [

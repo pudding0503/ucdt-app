@@ -416,12 +416,14 @@ export function HeroSection({ locale, activeProduct, isReleased, displayVersion,
                       ) : (
                         <div key={`images-${index}`} className="flex flex-wrap items-center gap-1.5">
                           {line.images.map((image) => (
-                            <img
+                            <Image
                               key={`${image.src}-${image.alt}`}
                               src={image.src}
                               alt={image.alt}
+                              width={80}
+                              height={20}
                               className="h-5 w-auto rounded-sm"
-                              loading="lazy"
+                              unoptimized
                               referrerPolicy="no-referrer"
                             />
                           ))}

@@ -6,7 +6,7 @@
 
 ## Project Status
 
-- Current project package version: `1.6.2`
+- Current project package version: `1.7.0`
 - The landing page is in an active maintenance phase with the current single-route UI preserved
 
 ## Features

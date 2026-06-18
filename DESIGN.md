@@ -51,7 +51,7 @@ The site should preserve the current UCDT landing-page UI while staying maintain
   - `logo-words.png`: horizontal wordmark for centered product title display
 - Procedural concept visuals remain the primary preview for every product
 - Real screenshots are shown below the concept visual when available
-- Only Processing and Analysis currently have public GitHub repositories and release links
+- Processing, Analysis, and Computing currently have public GitHub repositories and release links
 - `app/favicon.ico` remains the browser favicon binary
 - `app/icon.tsx`, `app/apple-icon.tsx`, `app/manifest.ts`, `app/opengraph-image.tsx`, and `app/twitter-image.tsx` handle route-based metadata assets
 

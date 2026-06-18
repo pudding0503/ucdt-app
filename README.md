@@ -16,7 +16,7 @@
 - Centered hero layout with GitHub CTA and per-platform download buttons
 - macOS download button uses a two-option CPU dropdown, Windows stays direct-download, and Linux routes users to the relevant GitHub repository for source-based builds
 - Chinese / English content switching
-- Real release metadata and GitHub Releases links for Processing and Analysis
+- Real release metadata and GitHub Releases links for Processing, Analysis, and Computing
 - Procedural concept visuals retained as the main preview layer
 - Real screenshots rendered below the concept visual when available
 - Stable centered screenshot lightbox with dark overlay, blur, and animated thumbnail expansion
@@ -85,7 +85,7 @@ Keep new marketing copy, FAQ content, workflow descriptions, and release-facing 
 - Product `logo.png`: transparent product logo asset
 - Product `logo-rounded.png`: product switcher icon
 - Product `logo-words.png`: centered product wordmark
-- At the moment, only Processing and Analysis expose public GitHub release/license links
+- Processing, Analysis, and Computing expose public GitHub release/license links
 
 ## Metadata and Icons
 

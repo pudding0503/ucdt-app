@@ -15,7 +15,7 @@ This repository contains a bilingual Next.js download page for the UCDT software
 - Preserve the dark glassmorphism design language and floating navigation.
 - Use local runtime assets only.
 - Treat GitHub Releases as the release source of truth for shipped desktop apps.
-- Only Processing and Analysis currently expose public GitHub repository and release links.
+- Processing, Analysis, and Computing currently expose public GitHub repository and release links.
 - Keep product content data-driven in `data/products.ts`.
 - Use `pnpm` for installs and scripts, scoped to the current project only.
 
@@ -30,9 +30,9 @@ This repository contains a bilingual Next.js download page for the UCDT software
 - Released:
   - UCDT Processing Core (`v1.16.0`)
   - UCDT Analysis Core (`v2.2.0`)
+  - UCDT Computing Core (`v0.6.0`)
 - Roadmap / placeholder preview:
   - UCDT Extraction Core
-  - UCDT Computing Core
   - UCDT Planning Core
 
 ## Key Files

@@ -3,12 +3,17 @@ import siteLogo from "@/assets/logo.png";
 import analysisDemoVideo from "@/assets/ucdt-analysis/demo.webm";
 import analysisIcon from "@/assets/ucdt-analysis/logo-rounded.png";
 import analysisWordmark from "@/assets/ucdt-analysis/logo-words.png";
-import analysisShot1 from "@/assets/ucdt-analysis/screenshot-1.png";
-import analysisShot2 from "@/assets/ucdt-analysis/screenshot-2.png";
-import analysisShot3 from "@/assets/ucdt-analysis/screenshot-3.png";
-import analysisShot4 from "@/assets/ucdt-analysis/screenshot-4.png";
+import analysisShot1 from "@/assets/ucdt-analysis/screenshot-1.webp";
+import analysisShot2 from "@/assets/ucdt-analysis/screenshot-2.webp";
+import analysisShot3 from "@/assets/ucdt-analysis/screenshot-3.webp";
+import analysisShot4 from "@/assets/ucdt-analysis/screenshot-4.webp";
+import computingDemoVideo from "@/assets/ucdt-computing/demo.webm";
 import computingIcon from "@/assets/ucdt-computing/logo-rounded.png";
 import computingWordmark from "@/assets/ucdt-computing/logo-words.png";
+import computingShot1 from "@/assets/ucdt-computing/screenshot-1.webp";
+import computingShot2 from "@/assets/ucdt-computing/screenshot-2.webp";
+import computingShot3 from "@/assets/ucdt-computing/screenshot-3.webp";
+import computingShot4 from "@/assets/ucdt-computing/screenshot-4.webp";
 import extractionIcon from "@/assets/ucdt-extraction/logo-rounded.png";
 import extractionWordmark from "@/assets/ucdt-extraction/logo-words.png";
 import planningIcon from "@/assets/ucdt-planning/logo-rounded.png";
@@ -16,8 +21,10 @@ import planningWordmark from "@/assets/ucdt-planning/logo-words.png";
 import processingDemoVideo from "@/assets/ucdt-processing/demo.webm";
 import processingIcon from "@/assets/ucdt-processing/logo-rounded.png";
 import processingWordmark from "@/assets/ucdt-processing/logo-words.png";
-import processingShot1 from "@/assets/ucdt-processing/screenshot-1.png";
-import processingShot2 from "@/assets/ucdt-processing/screenshot-2.png";
+import processingShot1 from "@/assets/ucdt-processing/screenshot-1.webp";
+import processingShot2 from "@/assets/ucdt-processing/screenshot-2.webp";
+import processingShot3 from "@/assets/ucdt-processing/screenshot-3.webp";
+import processingShot4 from "@/assets/ucdt-processing/screenshot-4.webp";
 
 export type Locale = "zh" | "en";
 
@@ -219,7 +226,7 @@ export const products: Product[] = [
       { platform: "Windows", available: true, href: "https://github.com/buildingdata/ucdt-processing-gui/releases" },
       { platform: "Linux", available: false },
     ],
-    screenshots: [processingShot1, processingShot2],
+    screenshots: [processingShot1, processingShot2, processingShot3, processingShot4],
   },
   {
     id: "computing",
@@ -230,10 +237,10 @@ export const products: Product[] = [
       surface: "rgba(245, 138, 31, 0.14)",
       glow: "rgba(245, 138, 31, 0.34)",
     },
-    status: "comingSoon",
+    status: "released",
     badge: {
-      zh: "即将推出",
-      en: "Coming",
+      zh: "已发布",
+      en: "Released",
     },
     title: {
       zh: "UCDT Computing Core",
@@ -270,21 +277,27 @@ export const products: Product[] = [
       },
     ],
     releaseNote: {
-      zh: "当前以概念展示形式呈现，后续将补充真实界面与下载入口。",
-      en: "Shown as a concept preview for now. Real UI assets and downloads will follow.",
+      zh: "首个测试版本已通过 GitHub Releases 提供，可进入能耗与碳排模拟测试流程。",
+      en: "The first test release is available on GitHub Releases for energy-carbon simulation workflows.",
     },
-    platforms: ["Windows", "Linux"],
-    version: "Planned",
+    platforms: ["Windows"],
+    version: "v0.6.0",
+    repoUrl: "https://github.com/buildingdata/ucdt-computing-gui",
+    releaseUrl: "https://github.com/buildingdata/ucdt-computing-gui/releases",
+    releaseMarkdown: "### 更新\n- 发布首个测试版\n- 功能不完整，仅作测试是使用",
     icon: computingIcon,
     wordmark: computingWordmark,
+    previewVideo: computingDemoVideo,
     license: {
       name: "GPL 3.0",
+      url: "https://github.com/buildingdata/ucdt-computing-gui/blob/main/LICENSE",
     },
     downloads: [
       { platform: "macOS", available: false },
-      { platform: "Windows", available: false },
+      { platform: "Windows", available: true, href: "https://github.com/buildingdata/ucdt-computing-gui/releases" },
       { platform: "Linux", available: false },
     ],
+    screenshots: [computingShot1, computingShot2, computingShot3, computingShot4],
   },
   {
     id: "analysis",

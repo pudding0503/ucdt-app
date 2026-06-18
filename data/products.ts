@@ -252,7 +252,7 @@ export const products: Product[] = [
     },
     tagline: {
       zh: "连接基础数据与能耗碳排模拟，为城市运行评估提供统一计算引擎。",
-      en: "Bridge shared data and energy-carbon simulation with one computing engine.",
+      en: "Bridge shared data and energy-carbon simulation in one engine.",
     },
     description: {
       zh: "Computing Core 将聚焦模拟参数组织、场景计算与结果汇总，支持从城市网格到片区尺度的能耗与碳评估。",

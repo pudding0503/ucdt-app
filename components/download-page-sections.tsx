@@ -144,6 +144,11 @@ type ReleaseNoteBlock =
        type: "text";
        content: string;
      }
+  | {
+      type: "emphasis";
+      content: string;
+      emphasis: "italic" | "bold" | "boldItalic";
+    }
    | {
        type: "code";
        content: string;
@@ -155,7 +160,7 @@ type ReleaseNoteBlock =
      };
 
  function parseReleaseNoteInlineSegments(content: string): ReleaseNoteInlineSegment[] {
-   const pattern = /(\[[^\]]+\]\((https?:\/\/[^\s)]+)\)|`[^`]+`)/g;
+   const pattern = /(\[[^\]]+\]\((https?:\/\/[^\s)]+)\)|`[^`]+`|\*\*\*[^*]+?\*\*\*|___[^_]+?___|\*\*[^*]+?\*\*|__[^_]+?__|\*[^*\n]+?\*|_[^_\n]+?_)/g;
    const segments: ReleaseNoteInlineSegment[] = [];
    let lastIndex = 0;
 
@@ -173,6 +178,24 @@ type ReleaseNoteBlock =
      if (fullMatch.startsWith("`") && fullMatch.endsWith("`")) {
        segments.push({
          type: "code",
+         content: fullMatch.slice(1, -1),
+       });
+     } else if ((fullMatch.startsWith("***") && fullMatch.endsWith("***")) || (fullMatch.startsWith("___") && fullMatch.endsWith("___"))) {
+       segments.push({
+         type: "emphasis",
+         emphasis: "boldItalic",
+         content: fullMatch.slice(3, -3),
+       });
+     } else if ((fullMatch.startsWith("**") && fullMatch.endsWith("**")) || (fullMatch.startsWith("__") && fullMatch.endsWith("__"))) {
+       segments.push({
+         type: "emphasis",
+         emphasis: "bold",
+         content: fullMatch.slice(2, -2),
+       });
+     } else if ((fullMatch.startsWith("*") && fullMatch.endsWith("*")) || (fullMatch.startsWith("_") && fullMatch.endsWith("_"))) {
+       segments.push({
+         type: "emphasis",
+         emphasis: "italic",
          content: fullMatch.slice(1, -1),
        });
      } else {
@@ -205,6 +228,8 @@ export function markdownToLines(markdown?: string): ReleaseNoteBlock[] {
     return [] as ReleaseNoteBlock[];
   }
 
+  const unorderedListMarkerPattern = /^[*+-]\s*/;
+
   return markdown
     .split("\n")
     .flatMap((line) => {
@@ -215,11 +240,11 @@ export function markdownToLines(markdown?: string): ReleaseNoteBlock[] {
       }
 
       const imageMatches = [...trimmedLine.matchAll(/!\[(.*?)\]\((https?:\/\/[^\s)]+)\)/g)];
-      const isListItem = /^-\s*/.test(trimmedLine);
+      const isListItem = unorderedListMarkerPattern.test(trimmedLine);
       const textContent = trimmedLine
         .replace(/!\[(.*?)\]\((https?:\/\/[^\s)]+)\)/g, "")
         .replace(/^###\s*/, "")
-        .replace(/^-\s*/, "")
+        .replace(unorderedListMarkerPattern, "")
         .trim();
 
       const blocks: ReleaseNoteBlock[] = [];
@@ -351,6 +376,20 @@ export function HeroSection({ locale, activeProduct, isReleased, displayVersion,
     parseReleaseNoteInlineSegments(content).map((segment, segmentIndex) => (
       segment.type === "text" ? (
         <span key={`${keyPrefix}-text-${segmentIndex}`}>{segment.content}</span>
+      ) : segment.type === "emphasis" ? (
+        segment.emphasis === "boldItalic" ? (
+          <strong key={`${keyPrefix}-emphasis-${segmentIndex}`} className="font-semibold italic">
+            {segment.content}
+          </strong>
+        ) : segment.emphasis === "bold" ? (
+          <strong key={`${keyPrefix}-emphasis-${segmentIndex}`} className="font-semibold">
+            {segment.content}
+          </strong>
+        ) : (
+          <em key={`${keyPrefix}-emphasis-${segmentIndex}`} className="italic">
+            {segment.content}
+          </em>
+        )
       ) : segment.type === "code" ? (
         <code
           key={`${keyPrefix}-code-${segmentIndex}`}

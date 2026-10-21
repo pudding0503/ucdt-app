@@ -722,7 +722,7 @@ export function ProductSwitcher({ locale, products, activeId, onProductChange }:
               <div className={pageProductSwitchHeaderClass}>
                 <div className={pageProductSwitchIconFrameClass}>
                   <div className={pageProductSwitchIconInnerClass}>
-                    <Image src={product.icon} alt={`${product.slug} icon`} width={44} height={44} className={pageProductSwitchIconImageClass} />
+                    <Image src={product.icon} alt="" width={44} height={44} className={pageProductSwitchIconImageClass} />
                   </div>
                 </div>
                 <span className={pageProductSwitchBadgeClass}>
@@ -872,7 +872,7 @@ export function HighlightsSection({ locale, activeProduct, products }: Highlight
                   <div className="flex items-center gap-3 xl:flex-col xl:items-start xl:gap-4">
                     <div className="shrink-0 flex h-[54px] w-[54px] items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-[#111827] p-1.5">
                       <div className="flex aspect-square h-10 w-10 items-center justify-center overflow-hidden rounded-xl">
-                        <Image src={product.icon} alt={`${product.slug} icon`} width={40} height={40} className="h-10 w-10 object-cover" />
+                        <Image src={product.icon} alt="" width={40} height={40} className="h-10 w-10 object-cover" />
                       </div>
                     </div>
                     <div className="min-w-0 xl:w-full">

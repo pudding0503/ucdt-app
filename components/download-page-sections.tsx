@@ -361,9 +361,13 @@ export function HeroSection({ locale, activeProduct, isReleased, displayVersion,
     }
   };
 
+  const openReleasePopover = () => {
+    setReleasePopoverVisible(true);
+    setReleasePopoverOpen(true);
+  };
+
   useEffect(() => {
     if (releasePopoverOpen) {
-      setReleasePopoverVisible(true);
       return;
     }
 
@@ -418,9 +422,9 @@ export function HeroSection({ locale, activeProduct, isReleased, displayVersion,
       <div className="max-w-4xl">
         <div
           className="relative z-30 inline-flex flex-col items-center"
-          onMouseEnter={() => setReleasePopoverOpen(true)}
+          onMouseEnter={openReleasePopover}
           onMouseLeave={() => setReleasePopoverOpen(false)}
-          onFocus={() => setReleasePopoverOpen(true)}
+          onFocus={openReleasePopover}
           onBlur={handleReleasePopoverBlur}
         >
           <div className="release-pill inline-flex cursor-default items-center gap-2 rounded-full px-4 py-2 text-xs text-white/82 sm:text-sm">
@@ -489,7 +493,7 @@ export function HeroSection({ locale, activeProduct, isReleased, displayVersion,
         <p className="mt-5 text-balance text-sm text-white/36 sm:text-base">{activeProduct.category[locale]}</p>
 
         <div id="downloads" className={pageSectionBlockTopClass}>
-          <DownloadsSection locale={locale} activeProduct={activeProduct} />
+          <DownloadsSection key={activeProduct.id} locale={locale} activeProduct={activeProduct} />
         </div>
       </div>
     </section>
@@ -522,10 +526,6 @@ export function DownloadsSection({ locale, activeProduct }: DownloadsSectionProp
 
     return () => window.clearTimeout(timeoutId);
   }, [copiedCommand]);
-
-  useEffect(() => {
-    setOpenPlatformMenu(null);
-  }, [activeProduct.id]);
 
   useEffect(() => {
     if (openPlatformMenu !== "macOS") {

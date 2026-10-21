@@ -75,13 +75,17 @@ export function DownloadPage({ products }: DownloadPageProps) {
       return;
     }
 
-    const randomProductId = getRandomReleasedProductId(products);
+    const timeoutId = window.setTimeout(() => {
+      const randomProductId = getRandomReleasedProductId(products);
 
-    if (randomProductId) {
-      setActiveId(randomProductId);
-    }
+      if (randomProductId) {
+        setActiveId(randomProductId);
+      }
 
-    setRandomizedInitialProduct(true);
+      setRandomizedInitialProduct(true);
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, [products, randomizedInitialProduct]);
 
   useEffect(() => (

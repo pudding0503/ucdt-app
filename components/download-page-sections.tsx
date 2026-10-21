@@ -501,7 +501,8 @@ export function HeroSection({ locale, activeProduct, isReleased, displayVersion,
 }
 
 export function DownloadsSection({ locale, activeProduct }: DownloadsSectionProps) {
-  const [copiedCommand, setCopiedCommand] = useState(false);
+  const [copyCommandStatus, setCopyCommandStatus] = useState<"copied" | "failed" | null>(null);
+  const copiedCommand = copyCommandStatus === "copied";
   const [openPlatformMenu, setOpenPlatformMenu] = useState<"macOS" | null>(null);
   const macMenuRef = useRef<HTMLDivElement | null>(null);
   const appBundleName = `UCDT-${getShortName(activeProduct.slug).replace(/\s+/g, "-")}.app`;
@@ -522,7 +523,7 @@ export function DownloadsSection({ locale, activeProduct }: DownloadsSectionProp
       return;
     }
 
-    const timeoutId = window.setTimeout(() => setCopiedCommand(false), 1600);
+    const timeoutId = window.setTimeout(() => setCopyCommandStatus(null), 1600);
 
     return () => window.clearTimeout(timeoutId);
   }, [copiedCommand]);
@@ -556,9 +557,9 @@ export function DownloadsSection({ locale, activeProduct }: DownloadsSectionProp
   const handleCopyCommand = async () => {
     try {
       await navigator.clipboard.writeText(quarantineCommand);
-      setCopiedCommand(true);
+      setCopyCommandStatus("copied");
     } catch {
-      setCopiedCommand(false);
+      setCopyCommandStatus("failed");
     }
   };
 
@@ -686,6 +687,13 @@ export function DownloadsSection({ locale, activeProduct }: DownloadsSectionProp
                 <CheckIcon className={`absolute inset-0 h-3 w-3 transition-standard ${copiedCommand ? "scale-100 opacity-80" : "scale-75 opacity-0"}`} />
               </span>
             </button>
+            <span role="status" aria-live="polite" aria-atomic="true" className="sr-only">
+              {copyCommandStatus === "copied"
+                ? locale === "zh" ? "命令已复制到剪贴板" : "Command copied to clipboard"
+                : copyCommandStatus === "failed"
+                  ? locale === "zh" ? "复制命令失败，请手动选择并复制" : "Could not copy command. Select and copy it manually."
+                  : ""}
+            </span>
           </div>
         </div>
       </div>

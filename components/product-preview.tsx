@@ -188,6 +188,7 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
     };
   }, [hasPreviewVideo, product.id, product.previewVideo]);
 
+  /* eslint-disable react-hooks/set-state-in-effect -- DOM-measured lightbox state must be applied before paint. */
   useLayoutEffect(() => {
     if (selectedImage === null) {
       return undefined;
@@ -208,7 +209,6 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
 
     setIsLightboxContentVisible(false);
     showLightboxProxy(targetRect, getTransformFromRects(selectedImageOrigin, targetRect), lightboxThumbnailRadius);
-
     animationFrameRef.current = window.requestAnimationFrame(() => {
       setLightboxProxyTransform(lightboxRestingTransform);
       setLightboxProxyBorderRadius(lightboxFrameRadius);
@@ -229,6 +229,7 @@ export function ProductPreview({ product, locale }: ProductPreviewProps) {
       clearPendingLightboxMotion();
     };
   }, [clearPendingLightboxMotion, getLightboxRect, getTransformFromRects, hasRenderableRect, lightboxFrameNode, selectedImage, selectedImageOrigin, showLightboxContentImmediately, showLightboxProxy]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   useEffect(() => {
     return () => {

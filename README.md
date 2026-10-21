@@ -6,7 +6,7 @@
 
 ## Project Status
 
-- Current project package version: `1.7.1`
+- Current project package version: `1.7.2`
 - The landing page is in an active maintenance phase with the current single-route UI preserved
 
 ## Features
@@ -32,6 +32,7 @@
 - `components/product-preview.tsx`: preview video lifecycle, screenshot grid, and stabilized lightbox behavior
 - `components/site-icons.tsx`: shared SVG icon primitives used across sections
 - `data/products.ts`: source of truth for product copy, status, accents, versions, links, and workflow roles
+- `public/videos/`: locally served product preview videos
 - `lib/site-metadata.ts`: shared metadata configuration for layout, Open Graph, Twitter card, and canonical placeholders
 - `app/favicon.ico`: committed favicon binary used for browser favicon resolution
 - `app/icon.tsx`, `app/apple-icon.tsx`, `app/opengraph-image.tsx`, `app/twitter-image.tsx`, `app/manifest.ts`, `app/sw/route.ts`: generated asset, metadata, and service worker routes
@@ -119,6 +120,7 @@ Keep new marketing copy, FAQ content, workflow descriptions, and release-facing 
 ## Deployment
 
 This project is intended for deployment on Vercel.
+- Next.js 16 requires Node.js 20.9.0 or newer; this minimum is declared in `package.json`.
 
 ## License
 

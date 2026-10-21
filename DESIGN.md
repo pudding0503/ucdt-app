@@ -1,6 +1,6 @@
 # DESIGN
 
-Project package milestone: `1.7.0`.
+Project package milestone: `1.7.1`.
 
 ## Design Goal
 The site should preserve the current UCDT landing-page UI while staying maintainable, data-driven, and easy to extend as more products reach release status.
@@ -53,7 +53,7 @@ The site should preserve the current UCDT landing-page UI while staying maintain
 - Real screenshots are shown below the concept visual when available
 - Processing, Analysis, and Computing currently have public GitHub repositories and release links
 - `app/favicon.ico` remains the browser favicon binary
-- `app/icon.tsx`, `app/apple-icon.tsx`, `app/manifest.ts`, `app/opengraph-image.tsx`, and `app/twitter-image.tsx` handle route-based metadata assets
+- `app/icon.tsx`, `app/apple-icon.tsx`, `app/manifest.ts`, `app/opengraph-image.tsx`, and `app/twitter-image.tsx` handle route-based metadata assets; social cards are generated as PNGs for crawler compatibility
 
 ## Interaction Notes
 - Switching products should update:

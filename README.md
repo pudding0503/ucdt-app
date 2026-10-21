@@ -6,7 +6,7 @@
 
 ## Project Status
 
-- Current project package version: `1.7.0`
+- Current project package version: `1.7.1`
 - The landing page is in an active maintenance phase with the current single-route UI preserved
 
 ## Features
@@ -96,8 +96,9 @@ Keep new marketing copy, FAQ content, workflow descriptions, and release-facing 
 - `app/favicon.ico` is the committed browser favicon source
 - `assets/logo.png` is the primary PWA / install identity asset and is resized through `lib/pwa-assets.ts`
 - `app/icon.tsx`, `app/apple-icon.tsx`, and `app/pwa-icon-192/route.ts` provide PNG install icons for browser, Apple touch, and manifest usage
-- Open Graph, Twitter, and manifest assets remain generated through App Router metadata routes
-- `components/service-worker-registration.tsx` registers the dynamic `/sw` route backed by `app/sw/route.ts`, keeping the cache version synchronized with `package.json`
+- Open Graph and Twitter share cards are generated as PNG images through App Router metadata routes for broad crawler compatibility
+- The PWA manifest remains generated through the App Router metadata route
+- `components/service-worker-registration.tsx` registers the dynamic `/sw` route backed by `app/sw/route.ts`; the service-worker cache version follows `package.json`, so bumping the package version refreshes the PWA cache
 
 ## Maintenance Notes
 

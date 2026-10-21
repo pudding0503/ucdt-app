@@ -72,6 +72,7 @@ export const siteMetadata: Metadata = {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
+        type: "image/png",
         alt: "UCDT Series",
       },
     ],
@@ -102,6 +103,7 @@ export const siteMetadata: Metadata = {
   },
   other: {
     "mobile-web-app-capable": "yes",
+    "twitter:image:alt": "UCDT Series urban digital twin software workflow",
   },
   formatDetection: {
     email: false,
